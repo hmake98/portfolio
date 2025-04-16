@@ -4,6 +4,7 @@ import "./globals.css";
 import { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,12 +23,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body
-        className={`${inter.className} bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200`}
-      >
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
+      <body className={`${inter.className} text-foreground bg-background`}>
+        <Providers>
+          <Header />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

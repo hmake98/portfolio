@@ -4,45 +4,16 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FiMenu, FiX, FiMoon, FiSun } from "react-icons/fi";
 import { NavLink } from "@/types";
+import { useTheme } from "@/components/ThemeProvider";
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const { theme, toggleTheme } = useTheme();
+  const isDarkMode = theme === "dark";
 
-  // Menu toggle
-  const toggleMenu = (): void => {
-    setIsOpen(!isOpen);
-  };
-
-  // Dark mode toggle
-  const toggleDarkMode = (): void => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove("dark");
-      localStorage.theme = "light";
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.theme = "dark";
-    }
-    setIsDarkMode(!isDarkMode);
-  };
-
-  // Check for saved theme preference or respect OS preference
+  // Header scroll effect
   useEffect(() => {
-    const isDarkOS =
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const savedTheme = localStorage.theme;
-
-    if (savedTheme === "dark" || (!savedTheme && isDarkOS)) {
-      document.documentElement.classList.add("dark");
-      setIsDarkMode(true);
-    } else {
-      document.documentElement.classList.remove("dark");
-      setIsDarkMode(false);
-    }
-
-    // Header scroll effect
     const handleScroll = (): void => {
       setIsScrolled(window.scrollY > 10);
     };
@@ -50,6 +21,11 @@ const Header: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Menu toggle
+  const toggleMenu = (): void => {
+    setIsOpen(!isOpen);
+  };
 
   // Close menu when clicking on link
   const closeMenuOnClick = (): void => {
@@ -91,7 +67,7 @@ const Header: React.FC = () => {
               key={link.name}
               href={link.href}
               onClick={closeMenuOnClick}
-              className="nav-link text-sm font-medium"
+              className="nav-link text-sm font-medium text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               {link.name}
             </Link>
@@ -99,8 +75,8 @@ const Header: React.FC = () => {
 
           {/* Dark mode toggle */}
           <button
-            onClick={toggleDarkMode}
-            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            onClick={toggleTheme}
+            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-gray-800 dark:text-gray-200"
             aria-label="Toggle dark mode"
           >
             {isDarkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
@@ -110,8 +86,8 @@ const Header: React.FC = () => {
         {/* Mobile Menu Button */}
         <div className="flex items-center space-x-4 md:hidden">
           <button
-            onClick={toggleDarkMode}
-            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700"
+            onClick={toggleTheme}
+            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
             aria-label="Toggle dark mode"
           >
             {isDarkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
@@ -119,7 +95,7 @@ const Header: React.FC = () => {
 
           <button
             onClick={toggleMenu}
-            className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700"
+            className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
             aria-label="Open menu"
           >
             {isOpen ? <FiX size={20} /> : <FiMenu size={20} />}
@@ -136,7 +112,7 @@ const Header: React.FC = () => {
                 key={link.name}
                 href={link.href}
                 onClick={closeMenuOnClick}
-                className="py-3 px-6 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                className="py-3 px-6 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-800 dark:text-gray-200"
               >
                 {link.name}
               </Link>

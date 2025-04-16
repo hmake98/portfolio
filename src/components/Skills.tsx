@@ -1,7 +1,6 @@
-// src/components/Skills.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FiCode,
@@ -32,159 +31,85 @@ import {
   SiGit,
   SiEthereum,
   SiJest,
+  SiGoogle,
+  SiRabbitmq,
 } from "react-icons/si";
+import { skills as skillsData } from "@/data/skills";
 
-// Type definitions for skills
-interface Skill {
+// Define our local skill type that includes the icon component
+interface SkillWithIcon {
   id: number;
   name: string;
-  icon: React.ReactNode;
+  icon: string;
+  iconComponent: React.ReactNode;
   category: "frontend" | "backend" | "database" | "devops" | "other";
 }
 
-// Skills data - you can move this to a separate file
-const skills: Skill[] = [
-  // Frontend
-  {
-    id: 1,
-    name: "JavaScript",
-    icon: <SiJavascript className="text-3xl text-yellow-400" />,
-    category: "frontend",
-  },
-  {
-    id: 2,
-    name: "TypeScript",
-    icon: <SiTypescript className="text-3xl text-blue-600" />,
-    category: "frontend",
-  },
-  {
-    id: 3,
-    name: "React",
-    icon: <SiReact className="text-3xl text-blue-400" />,
-    category: "frontend",
-  },
-  {
-    id: 4,
-    name: "Angular",
-    icon: <SiAngular className="text-3xl text-red-600" />,
-    category: "frontend",
-  },
-  {
-    id: 5,
-    name: "Electron.js",
-    icon: <SiElectron className="text-3xl text-blue-500" />,
-    category: "frontend",
-  },
-
-  // Backend
-  {
-    id: 6,
-    name: "Node.js",
-    icon: <SiNodedotjs className="text-3xl text-green-600" />,
-    category: "backend",
-  },
-  {
-    id: 7,
-    name: "NestJS",
-    icon: <SiNestjs className="text-3xl text-red-500" />,
-    category: "backend",
-  },
-  {
-    id: 8,
-    name: "Express.js",
-    icon: <SiExpress className="text-3xl text-gray-600" />,
-    category: "backend",
-  },
-  {
-    id: 9,
-    name: "GraphQL",
-    icon: <SiGraphql className="text-3xl text-pink-600" />,
-    category: "backend",
-  },
-  {
-    id: 10,
-    name: "Prisma",
-    icon: <SiPrisma className="text-3xl text-blue-800" />,
-    category: "backend",
-  },
-
-  // Database
-  {
-    id: 11,
-    name: "PostgreSQL",
-    icon: <SiPostgresql className="text-3xl text-blue-700" />,
-    category: "database",
-  },
-  {
-    id: 12,
-    name: "MongoDB",
-    icon: <SiMongodb className="text-3xl text-green-500" />,
-    category: "database",
-  },
-  {
-    id: 13,
-    name: "Redis",
-    icon: <SiRedis className="text-3xl text-red-600" />,
-    category: "database",
-  },
-
-  // DevOps
-  {
-    id: 14,
-    name: "Docker",
-    icon: <SiDocker className="text-3xl text-blue-600" />,
-    category: "devops",
-  },
-  {
-    id: 15,
-    name: "Kubernetes",
-    icon: <SiKubernetes className="text-3xl text-blue-500" />,
-    category: "devops",
-  },
-  {
-    id: 16,
-    name: "AWS",
-    icon: <SiAmazonwebservices className="text-3xl text-yellow-500" />,
-    category: "devops",
-  },
-  {
-    id: 17,
-    name: "CircleCI",
-    icon: <SiCircleci className="text-3xl text-black dark:text-white" />,
-    category: "devops",
-  },
-  {
-    id: 18,
-    name: "GitHub Actions",
-    icon: (
-      <SiGithubactions className="text-3xl text-gray-800 dark:text-gray-200" />
-    ),
-    category: "devops",
-  },
-
-  // Other
-  {
-    id: 19,
-    name: "Git",
-    icon: <SiGit className="text-3xl text-orange-600" />,
-    category: "other",
-  },
-  {
-    id: 20,
-    name: "Web3",
-    icon: <SiEthereum className="text-3xl text-purple-600" />,
-    category: "other",
-  },
-  {
-    id: 21,
-    name: "Jest",
-    icon: <SiJest className="text-3xl text-red-700" />,
-    category: "other",
-  },
-];
+// Map icon names to actual icon components
+const iconMap: Record<string, React.ReactNode> = {
+  SiJavascript: <SiJavascript className="text-3xl text-yellow-400" />,
+  SiTypescript: <SiTypescript className="text-3xl text-blue-600" />,
+  SiReact: <SiReact className="text-3xl text-blue-400" />,
+  SiAngular: <SiAngular className="text-3xl text-red-600" />,
+  SiElectron: <SiElectron className="text-3xl text-blue-500" />,
+  SiNodedotjs: <SiNodedotjs className="text-3xl text-green-600" />,
+  SiNestjs: <SiNestjs className="text-3xl text-red-500" />,
+  SiExpress: <SiExpress className="text-3xl text-gray-600" />,
+  SiGraphql: <SiGraphql className="text-3xl text-pink-600" />,
+  SiPrisma: <SiPrisma className="text-3xl text-blue-800" />,
+  SiPostgresql: <SiPostgresql className="text-3xl text-blue-700" />,
+  SiMongodb: <SiMongodb className="text-3xl text-green-500" />,
+  SiRedis: <SiRedis className="text-3xl text-red-600" />,
+  SiDocker: <SiDocker className="text-3xl text-blue-600" />,
+  SiKubernetes: <SiKubernetes className="text-3xl text-blue-500" />,
+  SiAmazonaws: <SiAmazonwebservices className="text-3xl text-yellow-500" />,
+  SiCircleci: <SiCircleci className="text-3xl text-black dark:text-white" />,
+  SiGithubactions: (
+    <SiGithubactions className="text-3xl text-gray-800 dark:text-gray-200" />
+  ),
+  SiGit: <SiGit className="text-3xl text-orange-600" />,
+  SiEthereum: <SiEthereum className="text-3xl text-purple-600" />,
+  SiJest: <SiJest className="text-3xl text-red-700" />,
+  SiGoogle: <SiGoogle className="text-3xl text-blue-500" />,
+  SiRabbitmq: <SiRabbitmq className="text-3xl text-orange-500" />,
+};
 
 const Skills: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [processedSkills, setProcessedSkills] = useState<SkillWithIcon[]>([]);
+  const [filteredSkills, setFilteredSkills] = useState<SkillWithIcon[]>([]);
+
+  // Process skills data on component mount
+  useEffect(() => {
+    // Transform the imported skills data to include the actual icon components
+    const processed = skillsData.map((skill) => ({
+      ...skill,
+      iconComponent: iconMap[skill.icon] || (
+        <FiCode className="text-3xl text-gray-500" />
+      ),
+      category: skill.category as
+        | "frontend"
+        | "backend"
+        | "database"
+        | "devops"
+        | "other",
+    }));
+
+    setProcessedSkills(processed);
+    setFilteredSkills(processed); // Initially show all skills
+  }, []);
+
+  // Update filtered skills when category changes
+  useEffect(() => {
+    if (activeCategory === "all") {
+      setFilteredSkills(processedSkills);
+    } else {
+      const filtered = processedSkills.filter(
+        (skill) => skill.category === activeCategory
+      );
+      setFilteredSkills(filtered);
+    }
+  }, [activeCategory, processedSkills]);
 
   const categories = [
     { id: "all", name: "All", icon: <FiCode /> },
@@ -194,11 +119,6 @@ const Skills: React.FC = () => {
     { id: "devops", name: "DevOps", icon: <FiCloud /> },
     { id: "other", name: "Other", icon: <FiGitBranch /> },
   ];
-
-  const filteredSkills =
-    activeCategory === "all"
-      ? skills
-      : skills.filter((skill) => skill.category === activeCategory);
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -275,23 +195,29 @@ const Skills: React.FC = () => {
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"
             variants={containerVariants}
           >
-            {filteredSkills.map((skill) => (
-              <motion.div
-                key={skill.id}
-                className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-lg transition-all"
-                variants={itemVariants}
-                whileHover={{
-                  y: -5,
-                  scale: 1.05,
-                  transition: { duration: 0.2 },
-                }}
-              >
-                <div className="mb-4">{skill.icon}</div>
-                <h3 className="font-medium text-gray-800 dark:text-gray-200">
-                  {skill.name}
-                </h3>
-              </motion.div>
-            ))}
+            {filteredSkills.length > 0 ? (
+              filteredSkills.map((skill) => (
+                <motion.div
+                  key={skill.id}
+                  className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-lg transition-all"
+                  variants={itemVariants}
+                  whileHover={{
+                    y: -5,
+                    scale: 1.05,
+                    transition: { duration: 0.2 },
+                  }}
+                >
+                  <div className="mb-4">{skill.iconComponent}</div>
+                  <h3 className="font-medium text-gray-800 dark:text-gray-200">
+                    {skill.name}
+                  </h3>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-10 text-gray-500">
+                No skills found in this category.
+              </div>
+            )}
           </motion.div>
 
           {/* Skill Level Section */}
