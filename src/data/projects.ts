@@ -7,7 +7,7 @@ export const projects: Project[] = [
     title: "NestJS Microservices Boilerplate",
     description:
       "A scalable microservices architecture with NestJS and Kafka. Includes authentication, authorization, and database integration with PostgreSQL.",
-    image: "/images/projects/nestjs-project.png",
+    image: "/images/projects/nest-og.png",
     technologies: [
       "NestJS",
       "Microservices",
@@ -24,7 +24,7 @@ export const projects: Project[] = [
     title: "NestJS Starter Template",
     description:
       "A production-ready NestJS starter template with user authentication, role-based access control, and database integration.",
-    image: "/images/projects/nestjs-project.png",
+    image: "/images/projects/nest-og.png",
     technologies: ["NestJS", "Prisma", "PostgreSQL", "JWT", "Swagger"],
     github: "https://github.com/hmake98/nestjs-starter",
   },
