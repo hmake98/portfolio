@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import {
   FiCode,
   FiServer,
   FiDatabase,
   FiCloud,
   FiGitBranch,
+  FiExternalLink,
 } from "react-icons/fi";
 import {
   SiJavascript,
@@ -74,10 +76,30 @@ const iconMap: Record<string, React.ReactNode> = {
   SiRabbitmq: <SiRabbitmq className="text-3xl text-orange-500" />,
 };
 
+const categoryDescriptions = {
+  all: "Here's a comprehensive overview of my technical skills across various domains. Each skill represents technologies I've used in professional projects.",
+  frontend:
+    "My frontend expertise includes modern frameworks and libraries that enable creating responsive, performant user interfaces with seamless interactions.",
+  backend:
+    "I specialize in scalable backend development, building high-performance APIs and microservices with a focus on maintainability and efficiency.",
+  database:
+    "My database skills span both SQL and NoSQL technologies, with experience in designing schemas, optimization, and implementing caching strategies.",
+  devops:
+    "I implement CI/CD pipelines and cloud infrastructure, automating deployment processes and ensuring reliable, scalable application delivery.",
+  other:
+    "Additional specialized skills that complement my technical expertise and enhance project delivery capabilities.",
+};
+
 const Skills: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [processedSkills, setProcessedSkills] = useState<SkillWithIcon[]>([]);
   const [filteredSkills, setFilteredSkills] = useState<SkillWithIcon[]>([]);
+  const [hoveredSkill, setHoveredSkill] = useState<number | null>(null);
+
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: true,
+  });
 
   // Process skills data on component mount
   useEffect(() => {
@@ -120,23 +142,22 @@ const Skills: React.FC = () => {
     { id: "other", name: "Other", icon: <FiGitBranch /> },
   ];
 
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
+  // Skill level data
+  const skillLevels = [
+    { name: "Node.js & NestJS", percentage: 95, color: "bg-blue-600" },
+    { name: "TypeScript", percentage: 90, color: "bg-blue-600" },
+    { name: "GraphQL & REST API", percentage: 92, color: "bg-blue-600" },
+    { name: "Database & Caching", percentage: 88, color: "bg-blue-600" },
+    { name: "DevOps & Cloud", percentage: 85, color: "bg-blue-600" },
+  ];
 
-  const containerVariants = {
+  const sectionVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05,
+        duration: 0.6,
+        staggerChildren: 0.1,
       },
     },
   };
@@ -146,193 +167,212 @@ const Skills: React.FC = () => {
     visible: {
       opacity: 1,
       y: 0,
+      transition: { duration: 0.4, ease: "easeOut" },
+    },
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
       transition: {
-        duration: 0.3,
+        staggerChildren: 0.04,
+        delayChildren: 0.3,
       },
     },
   };
 
+  const skillVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.3, ease: "easeOut" },
+    },
+    exit: {
+      opacity: 0,
+      y: -10,
+      transition: { duration: 0.2 },
+    },
+  };
+
   return (
-    <section id="skills" className="py-20 bg-white dark:bg-gray-900">
+    <section
+      id="skills"
+      className="py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden"
+    >
+      {/* Background decorative elements */}
+      <div className="absolute top-0 left-0 w-40 h-40 bg-blue-200/30 dark:bg-blue-900/20 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute bottom-0 right-0 w-60 h-60 bg-purple-200/30 dark:bg-purple-900/20 rounded-full blur-3xl -z-10"></div>
+
       <div className="container mx-auto px-4">
         <motion.div
+          ref={ref}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          animate={inView ? "visible" : "hidden"}
+          variants={sectionVariants}
           className="max-w-6xl mx-auto"
         >
-          <motion.h2
-            className="text-3xl font-bold text-center mb-12 relative"
-            variants={fadeIn}
-          >
-            Technical Skills
-            <span className="block w-20 h-1 bg-blue-500 mx-auto mt-4"></span>
-          </motion.h2>
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full mb-3">
+              My Expertise
+            </span>
+            <motion.h2
+              className="text-4xl font-bold text-gray-900 dark:text-white mb-4"
+              variants={itemVariants}
+            >
+              Technical Skills
+            </motion.h2>
+            <motion.div
+              className="h-1 w-20 bg-blue-500 mx-auto mb-6"
+              variants={itemVariants}
+            ></motion.div>
+            <motion.p
+              className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
+              variants={itemVariants}
+            >
+              {
+                categoryDescriptions[
+                  activeCategory as keyof typeof categoryDescriptions
+                ]
+              }
+            </motion.p>
+          </motion.div>
 
           {/* Category Filters */}
           <motion.div
-            className="flex flex-wrap justify-center gap-4 mb-12"
-            variants={fadeIn}
+            className="flex flex-wrap justify-center gap-3 mb-12"
+            variants={itemVariants}
           >
             {categories.map((category) => (
-              <button
+              <motion.button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
                 className={`px-5 py-3 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
                   activeCategory === category.id
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+                    ? "bg-blue-600 text-white shadow-md scale-105"
+                    : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm"
                 }`}
+                whileHover={{
+                  scale: activeCategory === category.id ? 1.05 : 1.05,
+                }}
+                whileTap={{ scale: 0.98 }}
               >
                 {category.icon}
                 {category.name}
-              </button>
+              </motion.button>
             ))}
           </motion.div>
 
           {/* Skills Grid */}
-          <motion.div
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"
-            variants={containerVariants}
-          >
-            {filteredSkills.length > 0 ? (
-              filteredSkills.map((skill) => (
-                <motion.div
-                  key={skill.id}
-                  className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-lg transition-all"
-                  variants={itemVariants}
-                  whileHover={{
-                    y: -5,
-                    scale: 1.05,
-                    transition: { duration: 0.2 },
-                  }}
-                >
-                  <div className="mb-4">{skill.iconComponent}</div>
-                  <h3 className="font-medium text-gray-800 dark:text-gray-200">
-                    {skill.name}
-                  </h3>
-                </motion.div>
-              ))
-            ) : (
-              <div className="col-span-full text-center py-10 text-gray-500">
-                No skills found in this category.
-              </div>
-            )}
-          </motion.div>
+          <div className="relative min-h-[400px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCategory}
+                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 lg:gap-6"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                {filteredSkills.length > 0 ? (
+                  filteredSkills.map((skill) => (
+                    <motion.div
+                      key={skill.id}
+                      className={`bg-white dark:bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-lg transition-all ${
+                        hoveredSkill === skill.id
+                          ? "ring-2 ring-blue-400 dark:ring-blue-500 shadow-lg"
+                          : ""
+                      }`}
+                      variants={skillVariants}
+                      onMouseEnter={() => setHoveredSkill(skill.id)}
+                      onMouseLeave={() => setHoveredSkill(null)}
+                      whileHover={{
+                        y: -8,
+                        transition: { duration: 0.2 },
+                      }}
+                    >
+                      <div className="mb-4 transform transition-transform duration-300 group-hover:scale-110">
+                        {skill.iconComponent}
+                      </div>
+                      <h3 className="font-medium text-gray-800 dark:text-gray-200">
+                        {skill.name}
+                      </h3>
+                    </motion.div>
+                  ))
+                ) : (
+                  <motion.div
+                    className="col-span-full text-center py-16 text-gray-500 dark:text-gray-400"
+                    variants={itemVariants}
+                  >
+                    <div className="text-5xl mb-4 opacity-30 flex justify-center">
+                      <FiCode />
+                    </div>
+                    <p>No skills found in this category.</p>
+                  </motion.div>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
           {/* Skill Level Section */}
           {activeCategory === "all" && (
-            <motion.div className="mt-20" variants={fadeIn}>
+            <motion.div
+              className="mt-24 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md"
+              variants={itemVariants}
+              initial="hidden"
+              animate={inView ? "visible" : "hidden"}
+            >
               <h3 className="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">
                 Core Technologies
               </h3>
 
-              <div className="space-y-6 max-w-3xl mx-auto">
-                {/* Node.js */}
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="font-medium text-gray-700 dark:text-gray-300">
-                      Node.js & NestJS
-                    </span>
-                    <span className="font-medium text-blue-600 dark:text-blue-400">
-                      95%
-                    </span>
-                  </div>
-                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
-                    <motion.div
-                      className="h-full bg-blue-600 rounded-full"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "95%" }}
-                      transition={{ duration: 1, delay: 0.2 }}
-                      viewport={{ once: true }}
-                    ></motion.div>
-                  </div>
-                </div>
-
-                {/* TypeScript */}
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="font-medium text-gray-700 dark:text-gray-300">
-                      TypeScript
-                    </span>
-                    <span className="font-medium text-blue-600 dark:text-blue-400">
-                      90%
-                    </span>
-                  </div>
-                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
-                    <motion.div
-                      className="h-full bg-blue-600 rounded-full"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "90%" }}
-                      transition={{ duration: 1, delay: 0.3 }}
-                      viewport={{ once: true }}
-                    ></motion.div>
-                  </div>
-                </div>
-
-                {/* GraphQL */}
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="font-medium text-gray-700 dark:text-gray-300">
-                      GraphQL & REST API
-                    </span>
-                    <span className="font-medium text-blue-600 dark:text-blue-400">
-                      92%
-                    </span>
-                  </div>
-                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
-                    <motion.div
-                      className="h-full bg-blue-600 rounded-full"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "92%" }}
-                      transition={{ duration: 1, delay: 0.4 }}
-                      viewport={{ once: true }}
-                    ></motion.div>
-                  </div>
-                </div>
-
-                {/* Database & Caching */}
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="font-medium text-gray-700 dark:text-gray-300">
-                      Database & Caching
-                    </span>
-                    <span className="font-medium text-blue-600 dark:text-blue-400">
-                      88%
-                    </span>
-                  </div>
-                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
-                    <motion.div
-                      className="h-full bg-blue-600 rounded-full"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "88%" }}
-                      transition={{ duration: 1, delay: 0.5 }}
-                      viewport={{ once: true }}
-                    ></motion.div>
-                  </div>
-                </div>
-
-                {/* DevOps & Cloud */}
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="font-medium text-gray-700 dark:text-gray-300">
-                      DevOps & Cloud
-                    </span>
-                    <span className="font-medium text-blue-600 dark:text-blue-400">
-                      85%
-                    </span>
-                  </div>
-                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
-                    <motion.div
-                      className="h-full bg-blue-600 rounded-full"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "85%" }}
-                      transition={{ duration: 1, delay: 0.6 }}
-                      viewport={{ once: true }}
-                    ></motion.div>
-                  </div>
-                </div>
+              <div className="space-y-8 max-w-3xl mx-auto">
+                {skillLevels.map((skill, index) => (
+                  <motion.div
+                    key={index}
+                    variants={itemVariants}
+                    custom={index}
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                      <span className="font-medium text-gray-800 dark:text-gray-200 mb-1 sm:mb-0">
+                        {skill.name}
+                      </span>
+                      <div className="flex items-center">
+                        <span className="font-medium text-blue-600 dark:text-blue-400 mr-2">
+                          {skill.percentage}%
+                        </span>
+                        <div className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-xs px-2 py-0.5 rounded">
+                          Expert
+                        </div>
+                      </div>
+                    </div>
+                    <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <motion.div
+                        className={`h-full ${skill.color} rounded-full`}
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${skill.percentage}%` }}
+                        transition={{
+                          duration: 1.2,
+                          delay: index * 0.2,
+                          ease: "easeOut",
+                        }}
+                        viewport={{ once: true }}
+                      ></motion.div>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
+
+              <motion.div className="mt-10 text-center" variants={itemVariants}>
+                <a
+                  href="#projects"
+                  className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:underline"
+                >
+                  <span>See these skills in action in my projects</span>
+                  <FiExternalLink className="ml-1" />
+                </a>
+              </motion.div>
             </motion.div>
           )}
         </motion.div>
