@@ -132,9 +132,9 @@ const About: React.FC = () => {
     personal: (
       <>
         <p className="mb-4">
-          Beyond coding, I'm an avid problem solver who enjoys tackling complex
-          challenges. I'm passionate about creating technology that makes a
-          positive impact on users' lives and businesses.
+          Beyond coding, I&rsquo;m an avid problem solver who enjoys tackling complex
+          challenges. I&rsquo;m passionate about creating technology that makes a
+          positive impact on users&rsquo; lives and businesses.
         </p>
         <p className="mb-4">
           I thrive in collaborative environments and enjoy mentoring junior
@@ -142,7 +142,7 @@ const About: React.FC = () => {
           each project with attention to detail and a commitment to excellence.
         </p>
         <p>
-          When I'm not coding, you might find me exploring new technologies,
+          When I&rsquo;m not coding, you might find me exploring new technologies,
           contributing to open-source projects, or sharing my knowledge through
           technical write-ups and community engagement.
         </p>
@@ -206,11 +206,10 @@ const About: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-all ${
-                    activeTab === tab.id
-                      ? "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm"
-                      : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
-                  }`}
+                  className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-all ${activeTab === tab.id
+                    ? "bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm"
+                    : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                    }`}
                 >
                   {tab.icon}
                   {tab.label}
