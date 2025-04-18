@@ -1,4 +1,6 @@
 "use client";
+// eslint-disable-next-line react/no-unescaped-entities
+
 
 import { useState } from "react";
 import { motion, useInView } from "framer-motion";
