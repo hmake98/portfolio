@@ -31,15 +31,38 @@ const Contact: React.FC = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (formData: FormData) => {
     setIsSubmitting(true);
 
     try {
       // Mock form submission - in a real app, you would send this to your API
-      console.log("Form data:", data);
+      console.log("Form data:", formData);
 
       // Simulate API response
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      try {
+        const response = await fetch("/api", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Success handling
+          console.log("Email sent successfully:", data.message);
+          // Reset form or show success message
+        } else {
+          // Error handling
+          console.error("Failed to send email:", data.error);
+          // Show error message
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        // Show network error message
+      }
 
       setSubmitSuccess(true);
       reset();
@@ -186,10 +209,11 @@ const Contact: React.FC = () => {
                     <input
                       type="text"
                       id="name"
-                      className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white border ${errors.name
-                        ? "border-red-500"
-                        : "border-gray-300 dark:border-gray-600"
-                        }`}
+                      className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white border ${
+                        errors.name
+                          ? "border-red-500"
+                          : "border-gray-300 dark:border-gray-600"
+                      }`}
                       placeholder="John Doe"
                       {...register("name", { required: "Name is required" })}
                     />
@@ -210,10 +234,11 @@ const Contact: React.FC = () => {
                     <input
                       type="email"
                       id="email"
-                      className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white border ${errors.email
-                        ? "border-red-500"
-                        : "border-gray-300 dark:border-gray-600"
-                        }`}
+                      className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white border ${
+                        errors.email
+                          ? "border-red-500"
+                          : "border-gray-300 dark:border-gray-600"
+                      }`}
                       placeholder="john@example.com"
                       {...register("email", {
                         required: "Email is required",
@@ -241,10 +266,11 @@ const Contact: React.FC = () => {
                   <input
                     type="text"
                     id="subject"
-                    className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white border ${errors.subject
-                      ? "border-red-500"
-                      : "border-gray-300 dark:border-gray-600"
-                      }`}
+                    className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white border ${
+                      errors.subject
+                        ? "border-red-500"
+                        : "border-gray-300 dark:border-gray-600"
+                    }`}
                     placeholder="Job opportunity"
                     {...register("subject", {
                       required: "Subject is required",
@@ -267,10 +293,11 @@ const Contact: React.FC = () => {
                   <textarea
                     id="message"
                     rows={6}
-                    className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white border ${errors.message
-                      ? "border-red-500"
-                      : "border-gray-300 dark:border-gray-600"
-                      }`}
+                    className={`w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white border ${
+                      errors.message
+                        ? "border-red-500"
+                        : "border-gray-300 dark:border-gray-600"
+                    }`}
                     placeholder="Your message here..."
                     {...register("message", {
                       required: "Message is required",
@@ -291,8 +318,9 @@ const Contact: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`px-6 py-3 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
-                      }`}
+                    className={`px-6 py-3 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${
+                      isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                    }`}
                   >
                     {isSubmitting ? "Sending..." : "Send Message"}
                   </button>

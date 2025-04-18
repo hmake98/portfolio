@@ -6,8 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   FiMenu,
   FiX,
-  FiMoon,
-  FiSun,
   FiHome,
   FiUser,
   FiBriefcase,
@@ -16,14 +14,11 @@ import {
   FiMail,
 } from "react-icons/fi";
 import { NavLink } from "@/types";
-import { useTheme } from "@/components/ThemeProvider";
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>("home");
-  const { theme, toggleTheme } = useTheme();
-  const isDarkMode = theme === "dark";
 
   // Header scroll effect and active section detection
   useEffect(() => {
@@ -130,7 +125,6 @@ const Header: React.FC = () => {
           >
             HM
           </motion.span>
-          <span className="hidden sm:inline">Harsh Makwana</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -159,7 +153,7 @@ const Header: React.FC = () => {
           ))}
 
           {/* Dark mode toggle */}
-          <motion.button
+          {/* <motion.button
             onClick={toggleTheme}
             className="p-2 rounded-full bg-gray-200 dark:bg-gray-700/80 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-gray-800 dark:text-gray-200 shadow-md hover:shadow-lg"
             aria-label="Toggle dark mode"
@@ -167,19 +161,19 @@ const Header: React.FC = () => {
             whileTap={{ scale: 0.9 }}
           >
             {isDarkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
-          </motion.button>
+          </motion.button> */}
         </div>
 
         {/* Mobile Menu Button */}
         <div className="flex items-center space-x-4 md:hidden">
-          <motion.button
+          {/* <motion.button
             onClick={toggleTheme}
             className="p-2 rounded-full bg-gray-200 dark:bg-gray-700/80 text-gray-800 dark:text-gray-200 shadow-sm"
             aria-label="Toggle dark mode"
             whileTap={{ scale: 0.9 }}
           >
             {isDarkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
-          </motion.button>
+          </motion.button> */}
 
           <motion.button
             onClick={toggleMenu}

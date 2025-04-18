@@ -1,12 +1,19 @@
-// src/components/Experience.tsx
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { FiCalendar, FiMapPin } from "react-icons/fi";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FiCalendar,
+  FiMapPin,
+  FiBriefcase,
+  FiAward,
+  FiCode,
+  FiArrowRight,
+} from "react-icons/fi";
+import { useInView } from "react-intersection-observer";
 import { Experience as ExperienceType } from "@/types";
 
-// Sample data - you can move this to a separate file
+// Sample data from the existing component
 const experiences: ExperienceType[] = [
   {
     id: 1,
@@ -86,138 +93,274 @@ const experiences: ExperienceType[] = [
 
 const Experience: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(1);
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  const timelineRef = useRef<HTMLDivElement>(null);
 
   const handleTabClick = (id: number): void => {
     setActiveTab(id);
+    // Optional: Scroll to content on mobile
+    if (window.innerWidth < 768 && timelineRef.current) {
+      timelineRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   };
 
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
-
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
+        delayChildren: 0.3,
       },
     },
   };
 
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+
+  const panelVariants = {
+    hidden: { opacity: 0, x: 20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const getTechIcon = (tech: string) => {
+    const lowercaseTech = tech.toLowerCase();
+    if (lowercaseTech.includes("aws")) return "☁️";
+    if (lowercaseTech.includes("docker")) return "🐳";
+    if (lowercaseTech.includes("nest")) return "🪺";
+    if (lowercaseTech.includes("node")) return "🟢";
+    if (lowercaseTech.includes("graphql")) return "⬢";
+    if (lowercaseTech.includes("react")) return "⚛️";
+    if (lowercaseTech.includes("postgres")) return "🐘";
+    if (lowercaseTech.includes("redis")) return "🔴";
+    if (lowercaseTech.includes("angular")) return "🔺";
+    return "🔧";
+  };
+
   return (
-    <section id="experience" className="py-20 bg-gray-50 dark:bg-gray-800">
+    <section
+      id="experience"
+      className="py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden"
+    >
+      {/* Background Elements */}
+      <div className="absolute top-20 left-0 w-64 h-64 bg-blue-200/30 dark:bg-blue-900/20 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute bottom-20 right-0 w-80 h-80 bg-purple-200/30 dark:bg-purple-900/20 rounded-full blur-3xl -z-10"></div>
+
       <div className="container mx-auto px-4">
         <motion.div
+          ref={ref}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="max-w-5xl mx-auto"
+          animate={inView ? "visible" : "hidden"}
+          variants={containerVariants}
+          className="max-w-6xl mx-auto"
         >
-          <motion.h2
-            className="text-3xl font-bold text-center mb-12 relative"
-            variants={fadeIn}
-          >
-            Work Experience
-            <span className="block w-20 h-1 bg-blue-500 mx-auto mt-4"></span>
-          </motion.h2>
-
-          <div className="flex flex-col md:flex-row gap-8">
-            {/* Company Tabs */}
-            <motion.div
-              className="md:w-1/3 flex flex-row md:flex-col overflow-x-auto md:overflow-visible"
-              variants={containerVariants}
+          <motion.div className="text-center mb-16" variants={itemVariants}>
+            <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full mb-3">
+              Career Path
+            </span>
+            <motion.h2
+              className="text-4xl font-bold text-gray-900 dark:text-white mb-4"
+              variants={itemVariants}
             >
-              {experiences.map((exp) => (
-                <motion.button
-                  key={exp.id}
-                  onClick={() => handleTabClick(exp.id)}
-                  className={`py-4 px-6 text-left rounded-lg mb-2 mr-2 md:mr-0 flex-shrink-0 transition-colors flex flex-col min-w-[200px] ${
-                    activeTab === exp.id
-                      ? "bg-blue-600 text-white"
-                      : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
-                  }`}
-                  variants={fadeIn}
-                >
-                  <span className="text-lg font-semibold">{exp.position}</span>
-                  <span
-                    className={`text-sm ${
+              Work Experience
+            </motion.h2>
+            <motion.div
+              className="h-1 w-20 bg-blue-500 mx-auto mb-6"
+              variants={itemVariants}
+            ></motion.div>
+            <motion.p
+              className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
+              variants={itemVariants}
+            >
+              My professional journey as a software engineer
+            </motion.p>
+          </motion.div>
+
+          <div className="lg:grid lg:grid-cols-12 gap-8">
+            {/* Left sidebar - Timeline */}
+            <motion.div
+              className="lg:col-span-4 mb-6 lg:mb-0"
+              variants={itemVariants}
+            >
+              <div className="bg-white dark:bg-gray-800 rounded-xl p-1 shadow-lg">
+                {experiences.map((exp) => (
+                  <motion.button
+                    key={exp.id}
+                    onClick={() => handleTabClick(exp.id)}
+                    className={`w-full py-4 px-5 text-left rounded-lg mb-1 transition-all flex items-start ${
                       activeTab === exp.id
-                        ? "text-blue-100"
-                        : "text-gray-500 dark:text-gray-400"
+                        ? "bg-blue-600 text-white shadow-md"
+                        : "bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
                     }`}
+                    whileHover={{ x: activeTab === exp.id ? 0 : 5 }}
+                    whileTap={{ scale: 0.98 }}
+                    variants={itemVariants}
                   >
-                    {exp.company}
-                  </span>
-                </motion.button>
-              ))}
+                    <div className="mr-4 mt-1">
+                      <div
+                        className={`p-2 rounded-full ${
+                          activeTab === exp.id
+                            ? "bg-white/20"
+                            : "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                        }`}
+                      >
+                        <FiBriefcase size={18} />
+                      </div>
+                    </div>
+                    <div>
+                      <span className="block text-lg font-semibold leading-tight">
+                        {exp.position}
+                      </span>
+                      <span
+                        className={`block text-sm mb-1 ${
+                          activeTab === exp.id
+                            ? "text-blue-100"
+                            : "text-gray-500 dark:text-gray-400"
+                        }`}
+                      >
+                        {exp.company}
+                      </span>
+                      <span
+                        className={`text-xs flex items-center ${
+                          activeTab === exp.id
+                            ? "text-blue-200"
+                            : "text-gray-500 dark:text-gray-500"
+                        }`}
+                      >
+                        <FiCalendar className="mr-1" size={12} />
+                        {exp.duration}
+                      </span>
+                    </div>
+                    {activeTab === exp.id && (
+                      <FiArrowRight className="ml-auto self-center" />
+                    )}
+                  </motion.button>
+                ))}
+              </div>
             </motion.div>
 
-            {/* Experience Details */}
+            {/* Right content - Experience Details */}
             <motion.div
-              className="md:w-2/3 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md"
-              variants={fadeIn}
+              ref={timelineRef}
+              className="lg:col-span-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg overflow-hidden"
+              variants={itemVariants}
             >
-              {experiences.map((exp) => (
-                <div
-                  key={exp.id}
-                  className={`${activeTab === exp.id ? "block" : "hidden"}`}
-                >
-                  <div className="mb-4">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                      {exp.position}
-                    </h3>
-                    <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400">
-                      {exp.company}
-                    </h4>
-                  </div>
+              <AnimatePresence mode="wait">
+                {experiences.map(
+                  (exp) =>
+                    activeTab === exp.id && (
+                      <motion.div
+                        key={exp.id}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        variants={panelVariants}
+                      >
+                        <div className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+                          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                            {exp.position}
+                          </h3>
+                          <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4">
+                            {exp.company}
+                          </h4>
 
-                  <div className="flex flex-wrap gap-4 mb-6 text-gray-600 dark:text-gray-300">
-                    <div className="flex items-center">
-                      <FiCalendar className="mr-2" />
-                      <span>{exp.duration}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <FiMapPin className="mr-2" />
-                      <span>{exp.location}</span>
-                    </div>
-                  </div>
+                          <div className="flex flex-wrap gap-4 text-gray-600 dark:text-gray-300 mb-2">
+                            <div className="flex items-center bg-gray-100 dark:bg-gray-700/50 px-3 py-1 rounded-full">
+                              <FiCalendar className="mr-2 text-blue-600 dark:text-blue-400" />
+                              <span>{exp.duration}</span>
+                            </div>
+                            <div className="flex items-center bg-gray-100 dark:bg-gray-700/50 px-3 py-1 rounded-full">
+                              <FiMapPin className="mr-2 text-blue-600 dark:text-blue-400" />
+                              <span>{exp.location}</span>
+                            </div>
+                          </div>
+                        </div>
 
-                  <ul className="space-y-2 mb-6">
-                    {exp.description.map((item, idx) => (
-                      <li key={idx} className="flex items-start">
-                        <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mt-2 mr-2"></span>
-                        <span className="text-gray-700 dark:text-gray-300">
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                        <div className="mb-8">
+                          <h4 className="text-lg font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
+                            <FiAward className="mr-2 text-blue-600 dark:text-blue-400" />
+                            Key Achievements
+                          </h4>
+                          <ul className="space-y-4 mb-6">
+                            {exp.description.map((item, idx) => (
+                              <motion.li
+                                key={idx}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{
+                                  opacity: 1,
+                                  x: 0,
+                                  transition: { delay: idx * 0.1 },
+                                }}
+                                className="flex items-start bg-gray-50 dark:bg-gray-700/30 p-3 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-colors"
+                              >
+                                <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-full mr-3 mt-0.5 flex-shrink-0 font-bold text-sm">
+                                  {idx + 1}
+                                </span>
+                                <span className="text-gray-700 dark:text-gray-300">
+                                  {item}
+                                </span>
+                              </motion.li>
+                            ))}
+                          </ul>
+                        </div>
 
-                  <div>
-                    <h4 className="font-semibold mb-3 text-gray-800 dark:text-gray-200">
-                      Technologies:
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {exp.technologies.map((tech, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-full"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                        <div>
+                          <h4 className="text-lg font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
+                            <FiCode className="mr-2 text-blue-600 dark:text-blue-400" />
+                            Technologies
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {exp.technologies.map((tech, idx) => (
+                              <motion.span
+                                key={idx}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{
+                                  opacity: 1,
+                                  scale: 1,
+                                  transition: { delay: idx * 0.05 },
+                                }}
+                                whileHover={{
+                                  y: -3,
+                                  transition: { duration: 0.2 },
+                                }}
+                                className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-full flex items-center shadow-sm transition-all duration-300"
+                              >
+                                <span className="mr-1.5">
+                                  {getTechIcon(tech)}
+                                </span>
+                                {tech}
+                              </motion.span>
+                            ))}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )
+                )}
+              </AnimatePresence>
             </motion.div>
           </div>
         </motion.div>

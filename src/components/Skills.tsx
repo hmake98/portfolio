@@ -142,15 +142,6 @@ const Skills: React.FC = () => {
     { id: "other", name: "Other", icon: <FiGitBranch /> },
   ];
 
-  // Skill level data
-  const skillLevels = [
-    { name: "Node.js & NestJS", percentage: 95, color: "bg-blue-600" },
-    { name: "TypeScript", percentage: 90, color: "bg-blue-600" },
-    { name: "GraphQL & REST API", percentage: 92, color: "bg-blue-600" },
-    { name: "Database & Caching", percentage: 88, color: "bg-blue-600" },
-    { name: "DevOps & Cloud", percentage: 85, color: "bg-blue-600" },
-  ];
-
   const sectionVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -317,62 +308,14 @@ const Skills: React.FC = () => {
 
           {/* Skill Level Section */}
           {activeCategory === "all" && (
-            <motion.div
-              className="mt-24 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md"
-              variants={itemVariants}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
-            >
-              <h3 className="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">
-                Core Technologies
-              </h3>
-
-              <div className="space-y-8 max-w-3xl mx-auto">
-                {skillLevels.map((skill, index) => (
-                  <motion.div
-                    key={index}
-                    variants={itemVariants}
-                    custom={index}
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                      <span className="font-medium text-gray-800 dark:text-gray-200 mb-1 sm:mb-0">
-                        {skill.name}
-                      </span>
-                      <div className="flex items-center">
-                        <span className="font-medium text-blue-600 dark:text-blue-400 mr-2">
-                          {skill.percentage}%
-                        </span>
-                        <div className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-xs px-2 py-0.5 rounded">
-                          Expert
-                        </div>
-                      </div>
-                    </div>
-                    <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                      <motion.div
-                        className={`h-full ${skill.color} rounded-full`}
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.percentage}%` }}
-                        transition={{
-                          duration: 1.2,
-                          delay: index * 0.2,
-                          ease: "easeOut",
-                        }}
-                        viewport={{ once: true }}
-                      ></motion.div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <motion.div className="mt-10 text-center" variants={itemVariants}>
-                <a
-                  href="#projects"
-                  className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:underline"
-                >
-                  <span>See these skills in action in my projects</span>
-                  <FiExternalLink className="ml-1" />
-                </a>
-              </motion.div>
+            <motion.div className="mt-10 text-center" variants={itemVariants}>
+              <a
+                href="#projects"
+                className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:underline"
+              >
+                <span>See these skills in action in my projects</span>
+                <FiExternalLink className="ml-1" />
+              </a>
             </motion.div>
           )}
         </motion.div>

@@ -1,11 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import { FiArrowUp } from "react-icons/fi";
+import { FiArrowUp, FiHeart, FiCode } from "react-icons/fi";
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Footer: React.FC = () => {
   const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
+  const currentYear = new Date().getFullYear();
 
   // Detect scroll position
   useEffect(() => {
@@ -26,67 +27,41 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-gray-900 text-white py-12">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          {/* Quick Links */}
-          <div className="mb-6 md:mb-0">
-            <ul className="flex flex-wrap justify-center gap-6">
-              <li>
-                <Link
-                  href="#about"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#experience"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Experience
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#skills"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Skills
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#projects"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#contact"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
-            </ul>
+    <footer className="py-20 bg-white dark:bg-gray-900 text-white py-12 relative overflow-hidden">
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Copyright Section */}
+        <div className="flex flex-col md:flex-row justify-between items-center pt-2">
+          <div className="text-gray-400 text-sm mb-4 md:mb-0 flex items-center">
+            <span>
+              &copy; {currentYear} Harsh Makwana. All rights reserved.
+            </span>
+          </div>
+          <div className="text-gray-400 text-sm flex items-center">
+            <span className="flex items-center">
+              Built with <FiHeart className="mx-1 text-red-500" /> and{" "}
+              <FiCode className="mx-1 text-blue-500" />
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Scroll to top button */}
-      {showScrollTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-6 right-6 p-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg transition-all z-50"
-          aria-label="Scroll to top"
-        >
-          <FiArrowUp size={24} />
-        </button>
-      )}
+      {/* Scroll to top button with animation */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            onClick={scrollToTop}
+            className="fixed bottom-6 right-6 p-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-lg z-50 transition-colors"
+            aria-label="Scroll to top"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <FiArrowUp size={24} />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </footer>
   );
 };
