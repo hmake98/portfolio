@@ -9,10 +9,18 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                // Primary and secondary colors
+                // Primary colors with variants
                 primary: 'var(--primary)',
                 'primary-dark': 'var(--primary-dark)',
                 'primary-light': 'var(--primary-light)',
+                'primary-50': 'var(--primary-50)',
+                'primary-100': 'var(--primary-100)',
+                'primary-200': 'var(--primary-200)',
+                'primary-700': 'var(--primary-700)',
+                'primary-800': 'var(--primary-800)',
+                'primary-900': 'var(--primary-900)',
+
+                // Secondary colors
                 secondary: 'var(--secondary)',
                 'secondary-dark': 'var(--secondary-dark)',
                 'secondary-light': 'var(--secondary-light)',
@@ -33,28 +41,45 @@ module.exports = {
 
                 // UI Element colors
                 border: 'var(--border)',
+                'border-dark': 'var(--border-dark)',
                 card: 'var(--card)',
                 'card-foreground': 'var(--card-foreground)',
+                'card-hover': 'var(--card-hover)',
+
+                // Accent colors
+                'accent-purple': 'var(--accent-purple)',
+                'accent-pink': 'var(--accent-pink)',
+                'accent-orange': 'var(--accent-orange)',
+                'accent-teal': 'var(--accent-teal)',
             },
 
             // Box shadows
             boxShadow: {
-                'custom-sm': 'var(--shadow-sm)',
-                'custom': 'var(--shadow)',
-                'custom-md': 'var(--shadow-md)',
-                'custom-lg': 'var(--shadow-lg)',
+                'sm': 'var(--shadow-sm)',
+                'DEFAULT': 'var(--shadow)',
+                'md': 'var(--shadow-md)',
+                'lg': 'var(--shadow-lg)',
+                'xl': 'var(--shadow-xl)',
             },
 
             // Border radius
             borderRadius: {
-                'custom': 'var(--border-radius)',
+                'DEFAULT': 'var(--border-radius)',
+            },
+
+            // Backdrop blur
+            backdropBlur: {
+                'xs': '2px',
+                'sm': 'var(--blur-sm)',
+                'md': 'var(--blur-md)',
+                'lg': 'var(--blur-lg)',
             },
 
             // Animations
             animation: {
                 'gradient': 'gradient 15s ease infinite',
-                'fadeIn': 'fadeIn 0.6s ease-in-out',
-                'slideUp': 'slideUp 0.6s ease-out',
+                'fade-in': 'fadeIn 0.6s ease-in-out',
+                'slide-up': 'slideUp 0.6s ease-out',
                 'float': 'float 3s ease-in-out infinite',
                 'typing': 'typing 3.5s steps(30, end), blink-caret 0.75s step-end infinite',
                 'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -65,6 +90,9 @@ module.exports = {
                 'fade-in-up': 'fadeInUp 0.6s ease-out',
                 'fade-in-down': 'fadeInDown 0.6s ease-out',
                 'scale-in': 'scaleIn 0.5s ease-out',
+                'ripple': 'ripple 0.6s ease-out',
+                'shine': 'shine 3s infinite',
+                'pulse-mode': 'pulseMode 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             },
 
             // Keyframes for animations
@@ -79,7 +107,7 @@ module.exports = {
                     'to': { opacity: 1 },
                 },
                 slideUp: {
-                    'from': { transform: 'translateY(50px)', opacity: 0 },
+                    'from': { transform: 'translateY(30px)', opacity: 0 },
                     'to': { transform: 'translateY(0)', opacity: 1 },
                 },
                 float: {
@@ -96,11 +124,11 @@ module.exports = {
                     '50%': { 'border-color': 'var(--primary)' },
                 },
                 slideInRight: {
-                    'from': { transform: 'translateX(50px)', opacity: 0 },
+                    'from': { transform: 'translateX(30px)', opacity: 0 },
                     'to': { transform: 'translateX(0)', opacity: 1 },
                 },
                 slideInLeft: {
-                    'from': { transform: 'translateX(-50px)', opacity: 0 },
+                    'from': { transform: 'translateX(-30px)', opacity: 0 },
                     'to': { transform: 'translateX(0)', opacity: 1 },
                 },
                 fadeInUp: {
@@ -115,6 +143,19 @@ module.exports = {
                     'from': { transform: 'scale(0.9)', opacity: 0 },
                     'to': { transform: 'scale(1)', opacity: 1 },
                 },
+                ripple: {
+                    '0%': { transform: 'scale(0, 0)', opacity: 0.5 },
+                    '20%': { transform: 'scale(25, 25)', opacity: 0.5 },
+                    '100%': { opacity: 0, transform: 'scale(40, 40)' },
+                },
+                shine: {
+                    'from': { left: '-150%' },
+                    'to': { left: '150%' },
+                },
+                pulseMode: {
+                    '0%, 100%': { opacity: 1, transform: 'scale(1)' },
+                    '50%': { opacity: 0.85, transform: 'scale(0.98)' },
+                }
             },
 
             // Typography
@@ -154,11 +195,14 @@ module.exports = {
                 'spacing': 'margin, padding',
                 'width': 'width',
                 'position': 'top, right, bottom, left',
+                'theme': 'background-color, color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter',
             },
-
-            // Blurs
-            backdropBlur: {
-                'xs': '2px',
+            transitionTimingFunction: {
+                'theme': 'cubic-bezier(0.4, 0, 0.2, 1)',
+            },
+            transitionDuration: {
+                '250': '250ms',
+                '400': '400ms',
             },
 
             // Gradient utilities
@@ -166,15 +210,32 @@ module.exports = {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
                 'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
                 'gradient-diagonal': 'linear-gradient(to bottom right, var(--tw-gradient-stops))',
+                'gradient-primary': 'linear-gradient(135deg, var(--primary) 0%, var(--accent-purple) 100%)',
+                'gradient-cool': 'linear-gradient(135deg, var(--primary) 0%, var(--accent-teal) 100%)',
+                'gradient-warm': 'linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-pink) 100%)',
             },
         },
     },
     plugins: [
-        // Add any plugins you want to use here
+        // Add a custom plugin to support theme transition
+        function ({ addUtilities }) {
+            const newUtilities = {
+                '.transition-theme': {
+                    transition: 'background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, fill 0.3s ease, stroke 0.3s ease',
+                },
+                '.no-flickering': {
+                    '-webkit-transform': 'translateZ(0)',
+                    '-moz-transform': 'translateZ(0)',
+                    '-ms-transform': 'translateZ(0)',
+                    '-o-transform': 'translateZ(0)',
+                    'transform': 'translateZ(0)',
+                    'backface-visibility': 'hidden',
+                },
+            }
+            addUtilities(newUtilities, ['responsive', 'hover'])
+        },
     ],
-    // Enable JIT mode for faster development
-    mode: 'jit',
-    // Set future flags for upcoming features
+    // JIT mode is enabled by default in Tailwind v3+
     future: {
         hoverOnlyWhenSupported: true,
     }

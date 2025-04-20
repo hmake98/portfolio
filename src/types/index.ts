@@ -13,8 +13,10 @@ export interface Experience {
 export interface Project {
   id: number;
   title: string;
+  shortDescription: string;
   description: string;
   image: string;
+  features: string[];
   technologies: string[];
   github?: string;
   demo?: string;

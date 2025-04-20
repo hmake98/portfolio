@@ -1,19 +1,67 @@
 // src/app/layout.tsx
-import { Inter } from "next/font/google";
+import { Metadata, Viewport } from "next";
+import { GeistSans, GeistMono } from "geist/font";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
-import { Metadata } from "next";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Providers } from "./providers";
 
-const inter = Inter({ subsets: ["latin"] });
-
+// Define metadata for better SEO
 export const metadata: Metadata = {
-  title: "Harsh Makwana | Senior Software Engineer",
+  title: {
+    template: "%s | Harsh Makwana",
+    default: "Harsh Makwana | Senior Backend Engineer",
+  },
   description:
-    "Backend Engineer with expertise in Node.js, NestJS, GraphQL, AWS, and microservices architecture.",
-  keywords:
-    "software engineer, backend developer, node.js, nestjs, graphql, microservices, aws, web3",
+    "Senior Backend Engineer specializing in scalable microservices, Node.js, NestJS, GraphQL, and cloud infrastructure with AWS.",
+  keywords: [
+    "software engineer",
+    "backend developer",
+    "node.js",
+    "nestjs",
+    "graphql",
+    "microservices",
+    "aws",
+    "web3",
+    "typescript",
+    "cloud architecture",
+  ],
+  authors: [{ name: "Harsh Makwana" }],
+  creator: "Harsh Makwana",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://harshmakwana.dev",
+    title: "Harsh Makwana | Senior Backend Engineer",
+    description:
+      "Senior Backend Engineer with expertise in Node.js, NestJS, GraphQL, and microservices architecture",
+    siteName: "Harsh Makwana Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Harsh Makwana | Senior Backend Engineer",
+    description:
+      "Senior Backend Engineer with expertise in Node.js, NestJS, GraphQL, and microservices architecture",
+    creator: "@hmake98",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+// Define viewport for responsive design
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({
@@ -22,13 +70,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} text-foreground bg-background`}>
+    <html
+      lang="en"
+      className={`scroll-smooth ${GeistSans.variable} ${GeistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="text-foreground bg-background font-sans antialiased flex flex-col min-h-screen">
         <Providers>
           <Header />
-          <main className="min-h-screen">{children}</main>
+          <main className="flex-grow">{children}</main>
           <Footer />
         </Providers>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

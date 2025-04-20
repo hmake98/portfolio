@@ -7,6 +7,7 @@ import {
   useState,
   ReactNode,
   useCallback,
+  useRef,
 } from "react";
 
 type Theme = "light" | "dark" | "system";
@@ -34,12 +35,21 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
+  // Using a ref to track initialization
+  const isInitialized = useRef(false);
+
+  // Store media query instance in a ref to ensure consistency
+  const mediaQueryRef = useRef<MediaQueryList | null>(null);
+
   // Determine if system prefers dark mode
   const getSystemTheme = useCallback((): "light" | "dark" => {
     if (typeof window === "undefined") return "light";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+
+    if (!mediaQueryRef.current) {
+      mediaQueryRef.current = window.matchMedia("(prefers-color-scheme: dark)");
+    }
+
+    return mediaQueryRef.current.matches ? "dark" : "light";
   }, []);
 
   // Function to get theme and apply it to document
@@ -55,16 +65,29 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         // Update the resolved theme state
         setResolvedTheme(resolvedValue);
 
-        // Apply the theme to the document
+        // Apply the theme to the document with a transition class
+        const root = document.documentElement;
+
+        // Add transition class before changing theme
+        if (isInitialized.current) {
+          root.classList.add("transition-theme");
+        }
+
+        // Apply dark/light class
         if (resolvedValue === "dark") {
-          document.documentElement.classList.add("dark");
+          root.classList.add("dark");
         } else {
-          document.documentElement.classList.remove("dark");
+          root.classList.remove("dark");
         }
 
         // Save the theme preference
         if (typeof window !== "undefined") {
           localStorage.setItem("theme", newTheme);
+        }
+
+        // Set initial state flag
+        if (!isInitialized.current) {
+          isInitialized.current = true;
         }
       } catch (e) {
         console.error("Error applying theme:", e);
@@ -76,10 +99,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // Set theme function that can be exposed to consumers
   const setTheme = useCallback(
     (newTheme: Theme) => {
+      if (newTheme === theme) return;
       setThemeState(newTheme);
       applyTheme(newTheme);
     },
-    [applyTheme]
+    [applyTheme, theme]
   );
 
   // Toggle between light and dark (while preserving system preference)
@@ -96,51 +120,105 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // Initialize on mount
   useEffect(() => {
     setMounted(true);
-    setIsLoading(true);
 
     try {
+      // Early script to prevent flash
+      const rootElement = document.documentElement;
+      const initialColorValue = rootElement.classList.contains("dark")
+        ? "dark"
+        : "light";
+      setResolvedTheme(initialColorValue as "light" | "dark");
+
       // Get saved theme preference
-      const savedTheme = localStorage.getItem("theme") as Theme | null;
+      let savedTheme: Theme | null = null;
+
+      try {
+        savedTheme = localStorage.getItem("theme") as Theme | null;
+      } catch (e) {
+        console.warn("Could not access localStorage:", e);
+      }
 
       // Set the initial theme state (default to system if no preference)
       const initialTheme = savedTheme || "system";
       setThemeState(initialTheme);
 
-      // Apply the theme
-      applyTheme(initialTheme);
+      // Apply the theme immediately
+      const resolvedValue =
+        initialTheme === "system" ? getSystemTheme() : initialTheme;
 
-      // Setup listener for system preference changes
-      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      if (resolvedValue === "dark") {
+        rootElement.classList.add("dark");
+      } else {
+        rootElement.classList.remove("dark");
+      }
 
+      setResolvedTheme(resolvedValue);
+      isInitialized.current = true;
+
+      // Setup media query for system preference
+      if (!mediaQueryRef.current) {
+        mediaQueryRef.current = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        );
+      }
+
+      // Handle system theme changes
       const handleSystemThemeChange = () => {
-        // Only update if theme is set to "system"
+        // Only update if current theme is "system"
         if (theme === "system") {
           applyTheme("system");
         }
       };
 
       // Add listener
-      mediaQuery.addEventListener("change", handleSystemThemeChange);
+      mediaQueryRef.current.addEventListener("change", handleSystemThemeChange);
 
-      // Cleanup
       setIsLoading(false);
 
+      // Cleanup
       return () => {
-        mediaQuery.removeEventListener("change", handleSystemThemeChange);
+        if (mediaQueryRef.current) {
+          mediaQueryRef.current.removeEventListener(
+            "change",
+            handleSystemThemeChange
+          );
+        }
       };
     } catch (e) {
       console.error("Error initializing theme:", e);
       setIsLoading(false);
-      return () => {};
     }
-  }, [mounted, applyTheme, theme]);
+  }, [getSystemTheme, applyTheme, theme]);
 
   // Re-apply theme when dependencies change
   useEffect(() => {
-    if (mounted) {
+    if (mounted && isInitialized.current) {
       applyTheme(theme);
     }
   }, [theme, mounted, applyTheme]);
+
+  // Add listener for transition end to remove transition class
+  useEffect(() => {
+    if (!mounted) return;
+
+    const handleTransitionEnd = (e: TransitionEvent) => {
+      if (e.propertyName === "background-color") {
+        document.documentElement.classList.remove("transition-theme");
+      }
+    };
+
+    document.documentElement.addEventListener(
+      "transitionend",
+      handleTransitionEnd
+    );
+
+    return () => {
+      document.documentElement.removeEventListener(
+        "transitionend",
+        handleTransitionEnd
+      );
+    };
+  }, [mounted]);
 
   // Context value
   const contextValue = {
@@ -151,9 +229,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     isLoading,
   };
 
-  // Prevent flash of wrong theme by hiding content until mounted
+  // Return children directly if not mounted to prevent flash
   if (!mounted) {
-    return <>{children}</>;
+    // Apply a class to hide content until mounted if necessary
+    return <div className="invisible">{children}</div>;
   }
 
   return (
