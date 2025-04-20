@@ -1,112 +1,52 @@
 @import "tailwindcss";
 
-/* Light theme variables - refined for better contrast */
+/* Dark mode only CSS variables */
 :root {
-  /* Core colors - enhanced for better light mode visibility */
-  --background: #ffffff;
-  --background-secondary: #f9fafb;
-  --background-tertiary: #f3f4f6;
-  --foreground: #111827; /* Darker text for better readability */
-  --foreground-secondary: #374151;
-  --foreground-tertiary: #6b7280;
-
-  /* Primary colors - adjusted for better contrast */
-  --primary: #2563eb; /* Slightly darker blue for better visibility */
-  --primary-dark: #1d4ed8;
-  --primary-light: #3b82f6;
-  --primary-50: #eff6ff;
-  --primary-100: #dbeafe;
-  --primary-200: #bfdbfe;
-  --primary-700: #1d4ed8;
-  --primary-800: #1e40af;
-  --primary-900: #1e3a8a;
-
-  /* Secondary colors - refined for better contrast */
-  --secondary: #4b5563; /* Darker secondary for light mode */
-  --secondary-dark: #374151;
-  --secondary-light: #9ca3af;
-
-  /* Status colors - slightly adjusted for light mode */
-  --success: #059669; /* Darker green for better visibility */
-  --error: #dc2626; /* Darker red */
-  --warning: #d97706; /* Darker orange */
-  --info: #0284c7; /* Darker blue */
-
-  /* UI Elements */
-  --border: #e5e7eb;
-  --border-dark: #d1d5db; /* Added darker border for light mode */
-  --card: #ffffff;
-  --card-foreground: #111827;
-  --card-hover: #f9fafb;
-  --border-radius: 0.5rem;
-
-  /* Accent colors for variety */
-  --accent-purple: #7c3aed;
-  --accent-pink: #db2777;
-  --accent-orange: #ea580c;
-  --accent-teal: #0d9488;
-
-  /* Enhanced shadows with better depth perception */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
-
-  /* Blurs for glassmorphism effects */
-  --blur-sm: 4px;
-  --blur-md: 8px;
-  --blur-lg: 16px;
-}
-
-/* Dark theme variables - refined for better dark mode visibility */
-.dark {
+  /* Core colors - optimized for dark mode */
   --background: #0f172a;
   --background-secondary: #1e293b;
   --background-tertiary: #334155;
   --foreground: #f8fafc;
-  --foreground-secondary: #e2e8f0; /* Brighter for better readability */
+  --foreground-secondary: #e2e8f0;
   --foreground-tertiary: #cbd5e1;
 
-  /* Brighter primary colors for dark mode - adjusted for improved visibility */
-  --primary: #3b82f6; /* Brighter blue for dark mode */
+  /* Primary colors for dark mode */
+  --primary: #3b82f6;
   --primary-dark: #2563eb;
   --primary-light: #60a5fa;
-  --primary-50: #172554; /* Dark blue for hover effects */
+  --primary-50: #172554;
   --primary-100: #1e3a8a;
   --primary-200: #1e40af;
   --primary-700: #3b82f6;
   --primary-800: #60a5fa;
   --primary-900: #93c5fd;
 
-  /* Secondary colors - adjusted for dark mode */
+  /* Secondary colors */
   --secondary: #94a3b8;
   --secondary-dark: #64748b;
   --secondary-light: #cbd5e1;
 
-  /* Status colors adjusted for dark mode */
+  /* Status colors for dark mode */
   --success: #10b981;
   --error: #ef4444;
   --warning: #f59e0b;
   --info: #0ea5e9;
 
-  /* UI Elements - enhanced contrast for dark mode */
+  /* UI Elements */
   --border: #334155;
-  --border-dark: #475569; /* Added darker border for dark mode */
+  --border-dark: #475569;
   --card: #1e293b;
   --card-foreground: #f8fafc;
   --card-hover: #334155;
+  --border-radius: 0.5rem;
 
-  /* Accent colors for dark mode - brighter for better visibility */
+  /* Accent colors */
   --accent-purple: #a78bfa;
   --accent-pink: #f472b6;
   --accent-orange: #fb923c;
   --accent-teal: #2dd4bf;
 
-  /* Enhanced shadows for dark mode */
+  /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
   --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4),
@@ -115,9 +55,13 @@
     0 4px 6px -2px rgba(0, 0, 0, 0.2);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4),
     0 10px 10px -5px rgba(0, 0, 0, 0.2);
-}
 
-@theme inline {
+  /* Blurs */
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 16px;
+
+  /* Color definitions for theme */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -266,15 +210,15 @@ body {
 .btn-secondary {
   @apply px-6 py-3 rounded-lg font-medium transition-all duration-200;
   color: var(--foreground);
-  background-color: var(--background-tertiary);
-  border: 1px solid var(--border-dark); /* Darker border for light mode visibility */
+  background-color: var(--background-secondary);
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
 }
 
 .btn-secondary:hover {
-  background-color: var(--background-secondary);
+  background-color: var(--background-tertiary);
   transform: translateY(-2px);
   box-shadow: var(--shadow);
 }
@@ -291,7 +235,7 @@ body {
   left: 50%;
   width: 5px;
   height: 5px;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.1);
   opacity: 0;
   border-radius: 100%;
   transform: scale(1, 1) translate(-50%);
@@ -300,28 +244,6 @@ body {
 
 .btn-secondary:focus:not(:active)::after {
   animation: ripple 0.6s ease-out;
-}
-
-/* Light mode specific button styles */
-:root .btn-secondary {
-  background-color: white; /* Pure white background for light mode */
-  border: 1px solid var(--border-dark); /* Darker border for visibility */
-  color: var(--foreground);
-}
-
-:root .btn-secondary:hover {
-  background-color: var(--background-tertiary);
-}
-
-/* Dark mode specific button styles */
-.dark .btn-secondary {
-  background-color: var(--background-secondary);
-  border: 1px solid var(--border);
-  color: var(--foreground);
-}
-
-.dark .btn-secondary:hover {
-  background-color: var(--background-tertiary);
 }
 
 /* Enhanced cards with subtle hover effects */
@@ -338,11 +260,6 @@ body {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
   border-color: var(--primary-light);
-}
-
-/* Light mode specific card styles */
-:root .card {
-  border: 1px solid var(--border-dark); /* More visible border in light mode */
 }
 
 /* Improved section styling */
@@ -391,14 +308,9 @@ body {
 
 /* Glassmorphism effect for overlays */
 .glass {
-  background: rgba(255, 255, 255, 0.2); /* More visible in light mode */
+  background: rgba(15, 23, 42, 0.7);
   backdrop-filter: blur(var(--blur-md));
   -webkit-backdrop-filter: blur(var(--blur-md));
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.dark .glass {
-  background: rgba(15, 23, 42, 0.7); /* More visible in dark mode */
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -442,20 +354,11 @@ body {
   background: linear-gradient(
     to right,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 50%,
     rgba(255, 255, 255, 0) 100%
   );
   transform: rotate(30deg);
   animation: shine 3s infinite;
-}
-
-.dark .shine::after {
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
 }
 
 /* Animated underline for links */
@@ -482,7 +385,7 @@ body {
   transform-origin: bottom left;
 }
 
-/* Mode-specific text colors for better visibility */
+/* Mode-specific text colors */
 .text-mode-primary {
   color: var(--primary);
 }
@@ -607,10 +510,6 @@ body {
 
 .highlight-on-hover:hover {
   color: var(--primary);
-  background-color: var(--background-secondary);
-}
-
-.dark .highlight-on-hover:hover {
   background-color: var(--background-tertiary);
 }
 
@@ -647,12 +546,12 @@ body {
   );
 }
 
-/* Modern gradient backgrounds with improved contrast */
+/* Modern gradient backgrounds */
 .bg-gradient-primary {
   background: linear-gradient(
     135deg,
     var(--primary) 0%,
-    var(--primary-dark) 100%
+    var(--primary-800) 100%
   );
   color: white;
 }
@@ -675,42 +574,16 @@ body {
   color: white;
 }
 
-/* Light mode specific gradient adjustments */
-:root .bg-gradient-primary {
-  background: linear-gradient(
-    135deg,
-    var(--primary) 30%,
-    var(--primary-dark) 100%
-  );
-}
-
-/* Dark mode specific gradient adjustments for better visibility */
-.dark .bg-gradient-primary {
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    var(--primary-800) 100%
-  );
-}
-
-/* Border utilities for better mode-specific visibility */
+/* Border utilities */
 .border-mode {
   border: 1px solid var(--border);
 }
 
 .border-mode-strong {
-  border: 1px solid var(--border-dark);
+  border: 1px solid var(--border);
 }
 
-:root .border-mode {
-  border-color: var(--border-dark);
-}
-
-.dark .border-mode-strong {
-  border-color: var(--border);
-}
-
-/* Shadow utilities for better contrast in each mode */
+/* Shadow utilities */
 .shadow-mode-sm {
   box-shadow: var(--shadow-sm);
 }
@@ -723,7 +596,7 @@ body {
   box-shadow: var(--shadow-lg);
 }
 
-/* Additional animation for pulse specifically for light/dark modes */
+/* Pulse animation */
 .pulse-mode {
   animation: pulseMode 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
@@ -738,4 +611,15 @@ body {
     opacity: 0.85;
     transform: scale(0.98);
   }
+}
+
+/* Add a generic dark class to handle any lingering Tailwind dark: classes */
+.dark {
+  /* This is empty because we're always in dark mode */
+}
+
+/* Force all elements to use dark mode styles */
+html {
+  background-color: var(--background);
+  color: var(--foreground);
 }

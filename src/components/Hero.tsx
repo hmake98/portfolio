@@ -146,7 +146,7 @@ const Hero: React.FC = () => {
               {techIcons.map((tech, index) => (
                 <span
                   key={index}
-                  className="px-3 py-1.5 flex items-center gap-2 text-sm bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-full shadow-sm hover:shadow transition-all hover:-translate-y-1 border border-gray-200 dark:border-gray-700"
+                  className="px-3 py-1.5 flex items-center gap-2 text-sm bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-full shadow-sm hover:shadow transition-all hover:-translate-y-1 border border-gray-300 dark:border-gray-700"
                 >
                   {tech.icon}
                   {tech.name}
@@ -187,7 +187,7 @@ const Hero: React.FC = () => {
                 href="https://github.com/hmake98"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 rounded-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:scale-110 hover:-translate-y-1"
+                className="p-3 rounded-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md hover:shadow-lg border border-gray-300 dark:border-gray-700 transition-all hover:scale-110 hover:-translate-y-1"
                 aria-label="GitHub"
               >
                 <FiGithub size={20} />
@@ -196,14 +196,14 @@ const Hero: React.FC = () => {
                 href="https://linkedin.com/in/hmake98"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 rounded-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:scale-110 hover:-translate-y-1"
+                className="p-3 rounded-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md hover:shadow-lg border border-gray-300 dark:border-gray-700 transition-all hover:scale-110 hover:-translate-y-1"
                 aria-label="LinkedIn"
               >
                 <FiLinkedin size={20} />
               </a>
               <a
                 href="mailto:harsh.make1998@gmail.com"
-                className="p-3 rounded-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:scale-110 hover:-translate-y-1"
+                className="p-3 rounded-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-md hover:shadow-lg border border-gray-300 dark:border-gray-700 transition-all hover:scale-110 hover:-translate-y-1"
                 aria-label="Email"
               >
                 <FiMail size={20} />
@@ -247,21 +247,21 @@ const Hero: React.FC = () => {
 
               {/* Tech orbs floating around the profile with better borders */}
               <div
-                className="absolute -top-2 -left-2 w-16 h-16 bg-white dark:bg-gray-800 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center shadow-lg animate-float"
+                className="absolute -top-2 -left-2 w-16 h-16 bg-white dark:bg-gray-800 rounded-full border-2 border-gray-300 dark:border-gray-700 flex items-center justify-center shadow-lg animate-float"
                 style={{ animationDelay: "0s" }}
               >
                 <SiNodedotjs className="text-3xl text-green-600" />
               </div>
 
               <div
-                className="absolute top-1/4 -right-4 w-14 h-14 bg-white dark:bg-gray-800 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center shadow-lg animate-float"
+                className="absolute top-1/4 -right-4 w-14 h-14 bg-white dark:bg-gray-800 rounded-full border-2 border-gray-300 dark:border-gray-700 flex items-center justify-center shadow-lg animate-float"
                 style={{ animationDelay: "0.8s" }}
               >
                 <SiNestjs className="text-2xl text-red-600" />
               </div>
 
               <div
-                className="absolute bottom-1/4 -left-6 w-12 h-12 bg-white dark:bg-gray-800 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center shadow-lg animate-float"
+                className="absolute bottom-1/4 -left-6 w-12 h-12 bg-white dark:bg-gray-800 rounded-full border-2 border-gray-300 dark:border-gray-700 flex items-center justify-center shadow-lg animate-float"
                 style={{ animationDelay: "1.6s" }}
               >
                 <SiGraphql className="text-xl text-pink-600" />

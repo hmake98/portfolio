@@ -9,7 +9,6 @@ import {
   FiDatabase,
   FiCloud,
   FiGitBranch,
-  FiExternalLink,
 } from "react-icons/fi";
 import {
   SiJavascript,
@@ -305,19 +304,6 @@ const Skills: React.FC = () => {
               </motion.div>
             </AnimatePresence>
           </div>
-
-          {/* Skill Level Section */}
-          {activeCategory === "all" && (
-            <motion.div className="mt-10 text-center" variants={itemVariants}>
-              <a
-                href="#projects"
-                className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:underline"
-              >
-                <span>See these skills in action in my projects</span>
-                <FiExternalLink className="ml-1" />
-              </a>
-            </motion.div>
-          )}
         </motion.div>
       </div>
     </section>

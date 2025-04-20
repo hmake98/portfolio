@@ -34,18 +34,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://harshmakwana.dev",
+    url: "https://hmake.dev",
     title: "Harsh Makwana | Senior Backend Engineer",
     description:
       "Senior Backend Engineer with expertise in Node.js, NestJS, GraphQL, and microservices architecture",
     siteName: "Harsh Makwana Portfolio",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Harsh Makwana | Senior Backend Engineer",
-    description:
-      "Senior Backend Engineer with expertise in Node.js, NestJS, GraphQL, and microservices architecture",
-    creator: "@hmake98",
   },
   robots: {
     index: true,
@@ -53,12 +46,9 @@ export const metadata: Metadata = {
   },
 };
 
-// Define viewport for responsive design
+// Define viewport for responsive design with dark theme color
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
-  ],
+  themeColor: "#0f172a", // Dark blue color for theme
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -72,7 +62,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`scroll-smooth ${GeistSans.variable} ${GeistMono.variable}`}
+      className={`dark scroll-smooth ${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
       <body className="text-foreground bg-background font-sans antialiased flex flex-col min-h-screen">
