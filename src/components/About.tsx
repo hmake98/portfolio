@@ -3,7 +3,6 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
-  FiCode,
   FiDatabase,
   FiServer,
   FiCloud,
