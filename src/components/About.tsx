@@ -1,9 +1,7 @@
 "use client";
-// eslint-disable-next-line react/no-unescaped-entities
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import {
   FiCode,
   FiDatabase,
@@ -12,6 +10,9 @@ import {
   FiBookOpen,
   FiAward,
   FiTrendingUp,
+  FiHeart,
+  FiZap,
+  FiRefreshCw,
 } from "react-icons/fi";
 
 const About: React.FC = () => {
@@ -48,7 +49,7 @@ const About: React.FC = () => {
       iconBg: "bg-blue-100 dark:bg-blue-900",
       color: "text-blue-600 dark:text-blue-400",
       description:
-        "Expert in Node.js, NestJS, Express.js, GraphQL, and gRPC. Experienced in building RESTful APIs, microservices, and event-driven architectures.",
+        "Expert in Node.js, NestJS, Express.js, GraphQL, and gRPC. Specialized in building scalable APIs, microservices architectures, and event-driven systems that handle high traffic efficiently.",
     },
     {
       id: "database",
@@ -59,7 +60,7 @@ const About: React.FC = () => {
       iconBg: "bg-green-100 dark:bg-green-900",
       color: "text-green-600 dark:text-green-400",
       description:
-        "Proficient in PostgreSQL, MongoDB, and Redis. Skilled in database design, indexing, query optimization, and implementing efficient caching strategies.",
+        "Deep expertise in PostgreSQL, MongoDB, and Redis. Skilled in designing optimized schemas, implementing advanced indexing strategies, and developing efficient caching layers that dramatically improve performance.",
     },
     {
       id: "devops",
@@ -70,16 +71,16 @@ const About: React.FC = () => {
       iconBg: "bg-purple-100 dark:bg-purple-900",
       color: "text-purple-600 dark:text-purple-400",
       description:
-        "Experienced in Docker, Kubernetes, GitHub Actions, and CircleCI. Skilled in AWS services like EC2, ECS, S3, Lambda, CloudFront, and SES.",
+        "Proficient with Docker, Kubernetes, and CI/CD pipelines. Extensive experience with AWS services including EC2, ECS, S3, Lambda, CloudFront, and SES. Specialized in automating infrastructure and deployment workflows.",
     },
     {
-      id: "frontend",
-      title: "Frontend Development",
-      icon: <FiCode className="text-orange-600 dark:text-orange-400 text-xl" />,
+      id: "architecture",
+      title: "System Architecture",
+      icon: <FiZap className="text-orange-600 dark:text-orange-400 text-xl" />,
       iconBg: "bg-orange-100 dark:bg-orange-900",
       color: "text-orange-600 dark:text-orange-400",
       description:
-        "Skilled in React, Angular, and Electron.js. Experienced in building responsive web applications and cross-platform desktop applications.",
+        "Experienced in designing fault-tolerant, scalable systems. Skilled in implementing advanced architectural patterns, optimizing performance, and creating maintainable codebases that grow with your business needs.",
     },
   ];
 
@@ -87,69 +88,91 @@ const About: React.FC = () => {
     professional: (
       <>
         <p className="mb-4">
-          I&apos;m a results-driven Backend Engineer with 5+ years of experience
-          in designing scalable, high-performance APIs and microservices. My
-          expertise spans Node.js, NestJS, GraphQL, AWS, and Web3, with a strong
-          focus on low-latency systems, event-driven architecture, and DevOps
-          automation.
+          I&apos;m a Senior Backend Engineer with 5+ years of experience
+          crafting high-performance, scalable solutions. My expertise spans
+          Node.js, NestJS, GraphQL, and cloud infrastructure, with a focus on
+          event-driven architectures and microservices that can handle
+          substantial traffic demands.
         </p>
         <p className="mb-4">
-          I specialize in building efficient backend systems that can handle
-          high traffic and complex business logic. My approach combines
-          technical excellence with pragmatic problem-solving to deliver
-          solutions that scale with your business needs.
+          I excel at optimizing system performance, implementing caching
+          strategies, and designing efficient database schemas. My approach
+          combines deep technical knowledge with business-focused
+          problem-solving to deliver solutions that align with organizational
+          goals.
         </p>
         <p>
-          I&apos;m passionate about building cloud-native applications and
-          optimizing backend performance. I constantly explore new technologies
-          and methodologies to enhance my skills and deliver exceptional
-          software solutions.
+          I continuously explore emerging technologies and methodologies,
+          staying at the forefront of backend development best practices. This
+          commitment ensures I deliver robust solutions that leverage the most
+          appropriate technologies for each specific challenge.
         </p>
       </>
     ),
     education: (
       <>
         <p className="mb-4">
-          I graduated from LDRP Institute of Technology & Research, Gandhinagar,
-          with a B.Tech in Computer Engineering. My academic training provided
-          me with a strong foundation in computer science principles,
-          algorithms, and software design patterns.
+          I hold a B.Tech in Computer Engineering from LDRP Institute of
+          Technology & Research, Gandhinagar, providing me with strong
+          foundations in computer science principles, algorithms, and software
+          architecture.
         </p>
         <p className="mb-4">
-          During my academic years, I developed a full-stack educational portal
-          using PHP and Angular, streamlining administrative workflows and
-          increasing efficiency by 30%. This project was recognized by the
-          department for its innovative approach to solving campus management
+          During my academic career, I developed a full-stack educational portal
+          using PHP and Angular that streamlined administrative processes and
+          increased departmental efficiency by 30%. This project was formally
+          recognized for its innovative approach to campus management
           challenges.
         </p>
         <p>
-          I continuously invest in my education through online courses,
-          technical webinars, and industry conferences. Recent learning focuses
-          include advanced microservices patterns, cloud-native architecture,
-          and performance optimization techniques.
+          My education continues through professional development, focused on
+          cloud-native architectures, distributed systems, and performance
+          optimization. I regularly participate in industry conferences and
+          technical workshops to refine my expertise.
         </p>
       </>
     ),
     personal: (
       <>
         <p className="mb-4">
-          Beyond coding, I&rsquo;m an avid problem solver who enjoys tackling
-          complex challenges. I&rsquo;m passionate about creating technology
-          that makes a positive impact on users&rsquo; lives and businesses.
+          Beyond my technical skills, I&apos;m driven by building technology
+          that delivers real value. I thrive in collaborative environments where
+          I can contribute to innovative solutions while mentoring junior
+          developers on best practices.
         </p>
         <p className="mb-4">
-          I thrive in collaborative environments and enjoy mentoring junior
-          developers. I believe in writing clean, maintainable code and approach
-          each project with attention to detail and a commitment to excellence.
+          I believe in writing clean, maintainable code and approach each
+          project with meticulous attention to detail. My problem-solving
+          mindset and analytical approach help me tackle complex technical
+          challenges effectively.
         </p>
         <p>
-          When I&rsquo;m not coding, you might find me exploring new
-          technologies, contributing to open-source projects, or sharing my
-          knowledge through technical write-ups and community engagement.
+          When not coding, I actively contribute to open-source projects,
+          explore cutting-edge technologies, and share knowledge through
+          technical articles and community engagement. These activities help me
+          maintain a balanced perspective on software development.
         </p>
       </>
     ),
   };
+
+  const values = [
+    {
+      icon: <FiRefreshCw className="text-blue-500" />,
+      title: "Continuous Learning",
+      description: "Always exploring new technologies and methodologies",
+    },
+    {
+      icon: <FiHeart className="text-red-500" />,
+      title: "Quality Craftsmanship",
+      description: "Committed to clean, maintainable, and efficient code",
+    },
+    {
+      icon: <FiZap className="text-yellow-500" />,
+      title: "Performance Optimization",
+      description: "Obsessed with creating high-performance systems",
+    },
+  ];
 
   return (
     <section
@@ -225,6 +248,33 @@ const About: React.FC = () => {
             variants={fadeIn}
           >
             {tabContent[activeTab as keyof typeof tabContent]}
+          </motion.div>
+
+          {/* Core Values Section */}
+          <motion.div variants={fadeIn} className="mb-16">
+            <h3 className="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">
+              Core Values
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {values.map((value, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-white dark:bg-gray-800 p-6 rounded-lg text-center shadow-sm hover:shadow-md transition-all duration-300"
+                  variants={fadeIn}
+                  whileHover={{ y: -5 }}
+                >
+                  <div className="inline-flex items-center justify-center w-12 h-12 mb-4 bg-blue-100 dark:bg-blue-900/30 rounded-full">
+                    {value.icon}
+                  </div>
+                  <h4 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
+                    {value.title}
+                  </h4>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {value.description}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
 
           {/* Key Expertise Areas */}

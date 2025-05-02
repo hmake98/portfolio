@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useRef, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -11,6 +11,8 @@ import {
   FiLayout,
   FiCode,
   FiLayers,
+  FiChevronLeft,
+  FiChevronRight,
 } from "react-icons/fi";
 import { projects } from "@/data/projects";
 import { useInView } from "react-intersection-observer";
@@ -22,6 +24,9 @@ const Projects: React.FC = () => {
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  // Ref for the slider container
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   // Animation variants
   const fadeIn = useMemo(
@@ -63,42 +68,42 @@ const Projects: React.FC = () => {
   };
 
   // Handle body scroll when modal opens/closes
-  useEffect(() => {
+  useState(() => {
     if (selectedProject !== null) {
       document.body.style.overflow = "hidden"; // Prevent scrolling
-    } else {
-      document.body.style.overflow = "auto"; // Re-enable scrolling
+      return () => {
+        document.body.style.overflow = "auto"; // Re-enable scrolling
+      };
     }
+  });
 
-    // Cleanup function to ensure scrolling is re-enabled when component unmounts
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [selectedProject]);
+  // Scroll the slider left or right
+  const scrollSlider = useCallback((direction: "left" | "right") => {
+    if (!sliderRef.current) return;
 
-  // Close modal with escape key
-  useEffect(() => {
-    const handleEscKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && selectedProject !== null) {
-        setSelectedProject(null);
-      }
-    };
+    const scrollAmount = 400; // Amount to scroll each time
+    const currentScroll = sliderRef.current.scrollLeft;
 
-    window.addEventListener("keydown", handleEscKey);
-    return () => window.removeEventListener("keydown", handleEscKey);
-  }, [selectedProject]);
+    sliderRef.current.scrollTo({
+      left:
+        direction === "left"
+          ? currentScroll - scrollAmount
+          : currentScroll + scrollAmount,
+      behavior: "smooth",
+    });
+  }, []);
 
   // Project card component for better organization
   const ProjectCard = useCallback(
     ({ project }: { project: Project }) => (
       <motion.div
         key={project.id}
-        className="bg-white dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all group cursor-pointer"
+        className="w-[280px] h-[360px] flex-shrink-0 mx-2 bg-white dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all group cursor-pointer flex flex-col"
         variants={fadeIn}
         whileHover={{ y: -5, transition: { duration: 0.3 } }}
         onClick={() => setSelectedProject(project.id)}
       >
-        <div className="relative h-52 w-full overflow-hidden">
+        <div className="relative h-[140px] w-full overflow-hidden">
           <Image
             src={project.image}
             alt={project.title}
@@ -136,37 +141,37 @@ const Projects: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-6">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+        <div className="p-4 flex flex-col flex-grow">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
             {project.title}
           </h3>
-          <p className="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3 text-sm lg:text-base">
+          <p className="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3 text-sm">
             {project.shortDescription ||
               project.description.substring(0, 120) + "..."}
           </p>
-          <div className="flex flex-wrap gap-2 mt-4">
-            {project.technologies.slice(0, 4).map((tech, idx) => (
+          <div className="flex flex-wrap gap-1 mt-auto">
+            {project.technologies.slice(0, 3).map((tech, idx) => (
               <span
                 key={idx}
-                className="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 rounded-full"
+                className="px-2 py-0.5 text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 rounded-full"
               >
                 {tech}
               </span>
             ))}
-            {project.technologies.length > 4 && (
-              <span className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-full">
-                +{project.technologies.length - 4} more
+            {project.technologies.length > 3 && (
+              <span className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-full">
+                +{project.technologies.length - 3} more
               </span>
             )}
           </div>
-          <div className="mt-4 flex justify-end">
+          <div className="mt-3 flex justify-end">
             <button
-              className="text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center gap-1 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-md px-2 py-1"
+              className="text-blue-600 dark:text-blue-400 text-xs font-medium flex items-center gap-1 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-md px-2 py-1"
               onClick={() => setSelectedProject(project.id)}
               aria-label={`View details for ${project.title}`}
             >
               View details
-              <FiArrowRight size={14} />
+              <FiArrowRight size={12} />
             </button>
           </div>
         </div>
@@ -224,15 +229,55 @@ const Projects: React.FC = () => {
             </motion.p>
           </motion.div>
 
-          {/* Improved grid with better responsiveness */}
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
-            variants={containerVariants}
-          >
-            {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </motion.div>
+          {/* Horizontal Slider Container */}
+          <div className="relative">
+            {/* Navigation Arrows */}
+            <button
+              onClick={() => scrollSlider("left")}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 shadow-lg backdrop-blur-sm hover:bg-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 md:-left-4"
+              aria-label="Scroll left"
+            >
+              <FiChevronLeft size={24} />
+            </button>
+
+            <button
+              onClick={() => scrollSlider("right")}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 shadow-lg backdrop-blur-sm hover:bg-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 md:-right-4"
+              aria-label="Scroll right"
+            >
+              <FiChevronRight size={24} />
+            </button>
+
+            {/* Slider */}
+            <motion.div
+              ref={sliderRef}
+              className="flex overflow-x-auto py-6 px-2 scrollbar-hide scroll-smooth"
+              style={{
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                gap: "16px",
+              }}
+              variants={containerVariants}
+            >
+              {projects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </motion.div>
+
+            {/* Scroll indicator - subtle hint that content is scrollable */}
+            <div className="mt-6 flex justify-center space-x-2">
+              {projects.map((_, index) => (
+                <div
+                  key={index}
+                  className={`h-1 rounded-full transition-all duration-300 ${
+                    index === 0
+                      ? "w-6 bg-blue-500"
+                      : "w-2 bg-gray-300 dark:bg-gray-600"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
         </motion.div>
       </div>
 
@@ -380,6 +425,13 @@ const Projects: React.FC = () => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Add CSS for hiding scrollbar */}
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
   );
 };

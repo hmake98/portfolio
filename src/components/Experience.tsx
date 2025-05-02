@@ -9,6 +9,9 @@ import {
   FiAward,
   FiCode,
   FiArrowRight,
+  FiCheck,
+  FiTool,
+  FiTarget,
 } from "react-icons/fi";
 import { useInView } from "react-intersection-observer";
 import { Experience as ExperienceType } from "@/types";
@@ -22,12 +25,12 @@ const experiences: ExperienceType[] = [
     duration: "January 2023 - Present",
     location: "Ahmedabad, GJ",
     description: [
-      "Designed and optimized location-based GraphQL APIs using Apollo Server and NestJS, improving response times by 40% for over 10,000+ concurrent users",
-      "Architected scalable microservices using gRPC and built custom Temporal workflows, increasing system reliability and communication efficiency across services",
-      "Automated Electron.js app deployment with CircleCI, implementing release pipelines with approval workflows and multi-platform packaging distributed via S3",
-      "Improved Electron desktop app performance by reducing memory usage by 65%, while integrating real-time notification systems using React",
-      "Developed high-performance payment processing and dynamic social card generation services using cloud-native, event-driven architecture",
-      "Refactored legacy real estate applications with scalable patterns and enforced clean code practices, improving maintainability and system stability",
+      "Built and optimized GraphQL APIs with Apollo Server and NestJS, cutting response times by 40% for 10,000+ concurrent users",
+      "Designed microservices using gRPC and Temporal workflows, improving system reliability and inter-service communication",
+      "Implemented CI/CD for Electron.js apps with CircleCI, creating approval workflows and multi-platform packaging via S3",
+      "Reduced Electron app memory usage by 65% while integrating real-time notifications using React",
+      "Developed high-performance payment processing services using cloud-native, event-driven architecture",
+      "Refactored legacy applications with scalable patterns and clean code practices, enhancing system stability",
     ],
     technologies: [
       "NestJS",
@@ -37,7 +40,7 @@ const experiences: ExperienceType[] = [
       "Prisma",
       "Redis",
       "RabbitMQ",
-      "AWS (ECS, S3, CloudFront, CodePipeline)",
+      "AWS (ECS, S3, CloudFront)",
       "Docker",
       "Electron.js",
       "React",
@@ -51,11 +54,11 @@ const experiences: ExperienceType[] = [
     duration: "January 2020 - December 2022",
     location: "Ahmedabad, GJ",
     description: [
-      "Built a custom Angular-based digital signage system, managing content delivery for 100+ concurrent displays with optimized rendering and caching",
-      "Reduced API query response times by 75% through efficient indexing and search-ranking improvements in a high-traffic application",
-      "Automated infrastructure deployments using AWS CodePipeline and Elastic Beanstalk, decreasing deployment time by 60%",
-      "Mentored over 10 junior developers on backend best practices, microservice architecture, and DevOps workflows",
-      "Contributed to an open-source microservices boilerplate, which gained 200+ GitHub stars, promoting clean architecture across projects",
+      "Created an Angular-based digital signage system managing content for 100+ displays with optimized rendering",
+      "Slashed API query response times by 75% through efficient indexing and search algorithm improvements",
+      "Automated infrastructure deployment with AWS CodePipeline and Elastic Beanstalk, reducing deployment time by 60%",
+      "Mentored 10+ junior developers on backend best practices, microservice architecture, and DevOps workflows",
+      "Contributed to an open-source microservices boilerplate with 200+ GitHub stars, promoting clean architecture",
     ],
     technologies: [
       "Node.js",
@@ -76,9 +79,9 @@ const experiences: ExperienceType[] = [
     duration: "June 2019 - January 2020",
     location: "Ahmedabad, GJ",
     description: [
-      "Developed a cross-platform employee management desktop application using Electron.js and Angular, improving employee productivity by 50%",
-      "Established standardized coding practices and documentation for desktop application teams, streamlining development collaboration",
-      "Participated in organization-wide training on modern software development workflows, tools, and project methodologies",
+      "Built a cross-platform employee management app using Electron.js and Angular, boosting productivity by 50%",
+      "Established coding standards and documentation for desktop application teams, improving collaboration",
+      "Participated in training on modern development workflows, tools, and project methodologies",
     ],
     technologies: [
       "Electron.js",
@@ -147,6 +150,56 @@ const Experience: React.FC = () => {
     },
   };
 
+  // Group technologies by category for better visual organization
+  const groupTechnologies = (techs: string[]) => {
+    const groups = {
+      frontend: [] as string[],
+      backend: [] as string[],
+      database: [] as string[],
+      devops: [] as string[],
+      other: [] as string[],
+    };
+
+    const categoryMap: Record<string, keyof typeof groups> = {
+      React: "frontend",
+      Angular: "frontend",
+      "Electron.js": "frontend",
+      TypeScript: "frontend",
+      "HTML/CSS": "frontend",
+
+      "Node.js": "backend",
+      NestJS: "backend",
+      GraphQL: "backend",
+      gRPC: "backend",
+      Prisma: "backend",
+      TypeORM: "backend",
+      RabbitMQ: "backend",
+      Microservices: "backend",
+      "RESTful APIs": "backend",
+
+      PostgreSQL: "database",
+      Redis: "database",
+
+      Docker: "devops",
+      Kubernetes: "devops",
+      "AWS (ECS, S3, CloudFront)": "devops",
+      "AWS (Elastic Beanstalk, CodePipeline)": "devops",
+      CircleCI: "devops",
+      "CI/CD": "devops",
+
+      Git: "other",
+      Jira: "other",
+      Zoho: "other",
+    };
+
+    techs.forEach((tech) => {
+      const category = categoryMap[tech] || "other";
+      groups[category].push(tech);
+    });
+
+    return groups;
+  };
+
   const getTechIcon = (tech: string) => {
     const lowercaseTech = tech.toLowerCase();
     if (lowercaseTech.includes("aws")) return "☁️";
@@ -157,7 +210,12 @@ const Experience: React.FC = () => {
     if (lowercaseTech.includes("react")) return "⚛️";
     if (lowercaseTech.includes("postgres")) return "🐘";
     if (lowercaseTech.includes("redis")) return "🔴";
-    if (lowercaseTech.includes("angular")) return "🔺";
+    if (lowercaseTech.includes("angular")) return "🅰️";
+    if (lowercaseTech.includes("typescript")) return "TS";
+    if (lowercaseTech.includes("microservice")) return "μ️";
+    if (lowercaseTech.includes("kubernetes")) return "☸️";
+    if (lowercaseTech.includes("jira")) return "📋";
+    if (lowercaseTech.includes("git")) return "🔄";
     return "🔧";
   };
 
@@ -196,7 +254,7 @@ const Experience: React.FC = () => {
               className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
               variants={itemVariants}
             >
-              My professional journey as a software engineer
+              My professional journey as a backend engineer
             </motion.p>
           </motion.div>
 
@@ -300,14 +358,16 @@ const Experience: React.FC = () => {
                           </div>
                         </div>
 
+                        {/* Key Achievements - Improved UI with categories */}
                         <div className="mb-8">
-                          <h4 className="text-lg font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
-                            <FiAward className="mr-2 text-blue-600 dark:text-blue-400" />
-                            Key Achievements
+                          <h4 className="text-lg font-semibold mb-6 flex items-center text-gray-900 dark:text-white">
+                            <FiTarget className="mr-2 text-blue-600 dark:text-blue-400" />
+                            Key Accomplishments
                           </h4>
-                          <ul className="space-y-4 mb-6">
+
+                          <div className="space-y-4">
                             {exp.description.map((item, idx) => (
-                              <motion.li
+                              <motion.div
                                 key={idx}
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{
@@ -315,46 +375,62 @@ const Experience: React.FC = () => {
                                   x: 0,
                                   transition: { delay: idx * 0.1 },
                                 }}
-                                className="flex items-start bg-gray-50 dark:bg-gray-700/30 p-3 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-colors"
+                                className="flex items-start bg-gray-50 dark:bg-gray-700/30 p-3 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-colors group"
                               >
-                                <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-full mr-3 mt-0.5 flex-shrink-0 font-bold text-sm">
-                                  {idx + 1}
-                                </span>
-                                <span className="text-gray-700 dark:text-gray-300">
+                                <div className="flex-shrink-0 mr-3 mt-0.5">
+                                  <div className="inline-flex items-center justify-center w-6 h-6 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-full group-hover:bg-blue-200 dark:group-hover:bg-blue-800/50 transition-colors">
+                                    <FiCheck size={14} />
+                                  </div>
+                                </div>
+                                <p className="text-gray-700 dark:text-gray-300">
                                   {item}
-                                </span>
-                              </motion.li>
+                                </p>
+                              </motion.div>
                             ))}
-                          </ul>
+                          </div>
                         </div>
 
+                        {/* Technologies with categories */}
                         <div>
-                          <h4 className="text-lg font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
-                            <FiCode className="mr-2 text-blue-600 dark:text-blue-400" />
-                            Technologies
+                          <h4 className="text-lg font-semibold mb-6 flex items-center text-gray-900 dark:text-white">
+                            <FiTool className="mr-2 text-blue-600 dark:text-blue-400" />
+                            Technology Stack
                           </h4>
-                          <div className="flex flex-wrap gap-2">
-                            {exp.technologies.map((tech, idx) => (
-                              <motion.span
-                                key={idx}
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{
-                                  opacity: 1,
-                                  scale: 1,
-                                  transition: { delay: idx * 0.05 },
-                                }}
-                                whileHover={{
-                                  y: -3,
-                                  transition: { duration: 0.2 },
-                                }}
-                                className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-full flex items-center shadow-sm transition-all duration-300"
-                              >
-                                <span className="mr-1.5">
-                                  {getTechIcon(tech)}
-                                </span>
-                                {tech}
-                              </motion.span>
-                            ))}
+
+                          <div className="space-y-4">
+                            {Object.entries(groupTechnologies(exp.technologies))
+                              .filter(([_, techs]) => techs.length > 0)
+                              .map(([category, techs]) => (
+                                <div key={category} className="mb-4">
+                                  <h5 className="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 ml-1">
+                                    {category.charAt(0).toUpperCase() +
+                                      category.slice(1)}
+                                  </h5>
+                                  <div className="flex flex-wrap gap-2">
+                                    {techs.map((tech, idx) => (
+                                      <motion.span
+                                        key={idx}
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{
+                                          opacity: 1,
+                                          scale: 1,
+                                          transition: { delay: idx * 0.05 },
+                                        }}
+                                        whileHover={{
+                                          y: -3,
+                                          transition: { duration: 0.2 },
+                                        }}
+                                        className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-full flex items-center shadow-sm transition-all duration-300"
+                                      >
+                                        <span className="mr-1.5">
+                                          {getTechIcon(tech)}
+                                        </span>
+                                        {tech}
+                                      </motion.span>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
                           </div>
                         </div>
                       </motion.div>
