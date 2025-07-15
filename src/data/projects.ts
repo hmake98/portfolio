@@ -124,32 +124,4 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/hmake98/nestjs-redis-cache",
   },
-  {
-    id: 6,
-    title: "NestJS GraphQL Boilerplate",
-    description:
-      "A robust backend starter built with NestJS, GraphQL, Prisma, and PostgreSQL. This comprehensive boilerplate provides a production-ready foundation for developing GraphQL APIs with NestJS. It includes a secure authentication system, Docker containerization for easy deployment, comprehensive testing setup with Jest, and seamless database integration with Prisma ORM. The project is fully configured with best practices for scalable application development and includes AWS services integration.",
-    shortDescription:
-      "Production-ready GraphQL API starter with NestJS, Prisma, authentication, and containerization.",
-    image: "/images/projects/nest-og.png",
-    technologies: [
-      "NestJS",
-      "GraphQL",
-      "Apollo Server",
-      "Prisma",
-      "PostgreSQL",
-      "Docker",
-      "Jest",
-      "AWS",
-      "JWT",
-    ],
-    features: [
-      "Fully-featured GraphQL API with Apollo Server",
-      "Secure JWT-based authentication system",
-      "Type-safe database access with Prisma ORM",
-      "Docker containerization for development and production",
-      "Comprehensive test suite with Jest",
-    ],
-    github: "https://github.com/hmake98/nestjs-graphql-starter",
-  },
 ];

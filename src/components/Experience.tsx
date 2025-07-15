@@ -1,442 +1,138 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  FiCalendar,
-  FiMapPin,
-  FiBriefcase,
-  FiArrowRight,
-  FiCheck,
-  FiTool,
-  FiTarget,
-} from "react-icons/fi";
+import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { Experience as ExperienceType } from "@/types";
-
-// Sample data from the existing component
-const experiences: ExperienceType[] = [
-  {
-    id: 1,
-    company: "Simform Solutions",
-    position: "Sr. Software Engineer",
-    duration: "January 2023 - Present",
-    location: "Ahmedabad, GJ",
-    description: [
-      "Built and optimized GraphQL APIs with Apollo Server and NestJS, cutting response times by 40% for 10,000+ concurrent users",
-      "Designed microservices using gRPC and Temporal workflows, improving system reliability and inter-service communication",
-      "Implemented CI/CD for Electron.js apps with CircleCI, creating approval workflows and multi-platform packaging via S3",
-      "Reduced Electron app memory usage by 65% while integrating real-time notifications using React",
-      "Developed high-performance payment processing services using cloud-native, event-driven architecture",
-      "Refactored legacy applications with scalable patterns and clean code practices, enhancing system stability",
-    ],
-    technologies: [
-      "NestJS",
-      "GraphQL",
-      "gRPC",
-      "PostgreSQL",
-      "Prisma",
-      "Redis",
-      "RabbitMQ",
-      "AWS (ECS, S3, CloudFront)",
-      "Docker",
-      "Electron.js",
-      "React",
-      "CircleCI",
-    ],
-  },
-  {
-    id: 2,
-    company: "Simform Solutions",
-    position: "Software Engineer",
-    duration: "January 2020 - December 2022",
-    location: "Ahmedabad, GJ",
-    description: [
-      "Created an Angular-based digital signage system managing content for 100+ displays with optimized rendering",
-      "Slashed API query response times by 75% through efficient indexing and search algorithm improvements",
-      "Automated infrastructure deployment with AWS CodePipeline and Elastic Beanstalk, reducing deployment time by 60%",
-      "Mentored 10+ junior developers on backend best practices, microservice architecture, and DevOps workflows",
-      "Contributed to an open-source microservices boilerplate with 200+ GitHub stars, promoting clean architecture",
-    ],
-    technologies: [
-      "Node.js",
-      "NestJS",
-      "Angular",
-      "TypeORM",
-      "Redis",
-      "PostgreSQL",
-      "AWS (Elastic Beanstalk, CodePipeline)",
-      "Docker",
-      "Microservices",
-    ],
-  },
-  {
-    id: 3,
-    company: "Simform Solutions",
-    position: "Junior Software Engineer",
-    duration: "June 2019 - January 2020",
-    location: "Ahmedabad, GJ",
-    description: [
-      "Built a cross-platform employee management app using Electron.js and Angular, boosting productivity by 50%",
-      "Established coding standards and documentation for desktop application teams, improving collaboration",
-      "Participated in training on modern development workflows, tools, and project methodologies",
-    ],
-    technologies: [
-      "Electron.js",
-      "Angular",
-      "TypeScript",
-      "Git",
-      "Jira",
-      "Zoho",
-    ],
-  },
-];
+import { FiMapPin, FiCalendar } from "react-icons/fi";
+import { experiences } from "@/data/experiences";
 
 const Experience: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<number>(1);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
 
-  const timelineRef = useRef<HTMLDivElement>(null);
-
-  const handleTabClick = (id: number): void => {
-    setActiveTab(id);
-    // Optional: Scroll to content on mobile
-    if (window.innerWidth < 768 && timelineRef.current) {
-      timelineRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
-
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
-        delayChildren: 0.3,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.22, 1, 0.36, 1],
-      },
+      transition: { duration: 0.6 },
     },
-  };
-
-  const panelVariants = {
-    hidden: { opacity: 0, x: 20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  // Group technologies by category for better visual organization
-  const groupTechnologies = (techs: string[]) => {
-    const groups = {
-      frontend: [] as string[],
-      backend: [] as string[],
-      database: [] as string[],
-      devops: [] as string[],
-      other: [] as string[],
-    };
-
-    const categoryMap: Record<string, keyof typeof groups> = {
-      React: "frontend",
-      Angular: "frontend",
-      "Electron.js": "frontend",
-      TypeScript: "frontend",
-      "HTML/CSS": "frontend",
-
-      "Node.js": "backend",
-      NestJS: "backend",
-      GraphQL: "backend",
-      gRPC: "backend",
-      Prisma: "backend",
-      TypeORM: "backend",
-      RabbitMQ: "backend",
-      Microservices: "backend",
-      "RESTful APIs": "backend",
-
-      PostgreSQL: "database",
-      Redis: "database",
-
-      Docker: "devops",
-      Kubernetes: "devops",
-      "AWS (ECS, S3, CloudFront)": "devops",
-      "AWS (Elastic Beanstalk, CodePipeline)": "devops",
-      CircleCI: "devops",
-      "CI/CD": "devops",
-
-      Git: "other",
-      Jira: "other",
-      Zoho: "other",
-    };
-
-    techs.forEach((tech) => {
-      const category = categoryMap[tech] || "other";
-      groups[category].push(tech);
-    });
-
-    return groups;
-  };
-
-  const getTechIcon = (tech: string) => {
-    const lowercaseTech = tech.toLowerCase();
-    if (lowercaseTech.includes("aws")) return "☁️";
-    if (lowercaseTech.includes("docker")) return "🐳";
-    if (lowercaseTech.includes("nest")) return "🪺";
-    if (lowercaseTech.includes("node")) return "🟢";
-    if (lowercaseTech.includes("graphql")) return "⬢";
-    if (lowercaseTech.includes("react")) return "⚛️";
-    if (lowercaseTech.includes("postgres")) return "🐘";
-    if (lowercaseTech.includes("redis")) return "🔴";
-    if (lowercaseTech.includes("angular")) return "🅰️";
-    if (lowercaseTech.includes("typescript")) return "TS";
-    if (lowercaseTech.includes("microservice")) return "μ️";
-    if (lowercaseTech.includes("kubernetes")) return "☸️";
-    if (lowercaseTech.includes("jira")) return "📋";
-    if (lowercaseTech.includes("git")) return "🔄";
-    return "🔧";
   };
 
   return (
-    <section
-      id="experience"
-      className="py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden"
-    >
-      {/* Background Elements */}
-      <div className="absolute top-20 left-0 w-64 h-64 bg-blue-200/30 dark:bg-blue-900/20 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-20 right-0 w-80 h-80 bg-purple-200/30 dark:bg-purple-900/20 rounded-full blur-3xl -z-10"></div>
-
-      <div className="container mx-auto px-4">
+    <section id="experience" className="section">
+      <div className="container mx-auto px-6">
         <motion.div
           ref={ref}
+          variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          variants={containerVariants}
-          className="max-w-6xl mx-auto"
+          className="max-w-4xl mx-auto"
         >
-          <motion.div className="text-center mb-16" variants={itemVariants}>
-            <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full mb-3">
-              Career Path
-            </span>
-            <motion.h2
-              className="text-4xl font-bold text-gray-900 dark:text-white mb-4"
-              variants={itemVariants}
-            >
-              Work Experience
-            </motion.h2>
-            <motion.div
-              className="h-1 w-20 bg-blue-500 mx-auto mb-6"
-              variants={itemVariants}
-            ></motion.div>
-            <motion.p
-              className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
-              variants={itemVariants}
-            >
-              My professional journey as a backend engineer
-            </motion.p>
+          {/* Section Header */}
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <h2 className="section-title">Experience</h2>
+            <p className="section-subtitle mx-auto">
+              My professional journey in backend development and system architecture
+            </p>
           </motion.div>
 
-          <div className="lg:grid lg:grid-cols-12 gap-8">
-            {/* Left sidebar - Timeline */}
-            <motion.div
-              className="lg:col-span-4 mb-6 lg:mb-0"
-              variants={itemVariants}
-            >
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-1 shadow-lg">
-                {experiences.map((exp) => (
-                  <motion.button
-                    key={exp.id}
-                    onClick={() => handleTabClick(exp.id)}
-                    className={`w-full py-4 px-5 text-left rounded-lg mb-1 transition-all flex items-start ${
-                      activeTab === exp.id
-                        ? "bg-blue-600 text-white shadow-md"
-                        : "bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
-                    }`}
-                    whileHover={{ x: activeTab === exp.id ? 0 : 5 }}
-                    whileTap={{ scale: 0.98 }}
-                    variants={itemVariants}
-                  >
-                    <div className="mr-4 mt-1">
-                      <div
-                        className={`p-2 rounded-full ${
-                          activeTab === exp.id
-                            ? "bg-white/20"
-                            : "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                        }`}
-                      >
-                        <FiBriefcase size={18} />
+          {/* Timeline */}
+          <div className="relative">
+            {/* Timeline Line */}
+            <div className="absolute left-8 top-8 bottom-8 w-px bg-border-primary hidden md:block" />
+            
+            {experiences.map((experience) => (
+              <motion.div
+                key={experience.id}
+                variants={itemVariants}
+                className="timeline-item mb-12 last:mb-0"
+              >
+                <div className="bg-bg-secondary rounded-xl p-6 border border-border-primary ml-0 md:ml-16">
+                  {/* Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+                    <div>
+                      <h3 className="text-xl font-semibold text-text-primary mb-1">
+                        {experience.position}
+                      </h3>
+                      <h4 className="text-lg text-accent-primary font-medium">
+                        {experience.company}
+                      </h4>
+                    </div>
+                    <div className="flex flex-col sm:items-end gap-1 mt-2 sm:mt-0">
+                      <div className="flex items-center gap-2 text-text-secondary text-sm">
+                        <FiCalendar size={14} />
+                        <span>{experience.duration}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-text-secondary text-sm">
+                        <FiMapPin size={14} />
+                        <span>{experience.location}</span>
                       </div>
                     </div>
-                    <div>
-                      <span className="block text-lg font-semibold leading-tight">
-                        {exp.position}
-                      </span>
-                      <span
-                        className={`block text-sm mb-1 ${
-                          activeTab === exp.id
-                            ? "text-blue-100"
-                            : "text-gray-500 dark:text-gray-400"
-                        }`}
-                      >
-                        {exp.company}
-                      </span>
-                      <span
-                        className={`text-xs flex items-center ${
-                          activeTab === exp.id
-                            ? "text-blue-200"
-                            : "text-gray-500 dark:text-gray-500"
-                        }`}
-                      >
-                        <FiCalendar className="mr-1" size={12} />
-                        {exp.duration}
-                      </span>
+                  </div>
+
+                  {/* Description */}
+                  <div className="space-y-3 mb-6">
+                    {experience.description.map((item, idx) => (
+                      <div key={idx} className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 bg-accent-primary rounded-full mt-2 flex-shrink-0" />
+                        <p className="text-text-secondary text-sm leading-relaxed">
+                          {item}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Technologies */}
+                  <div>
+                    <h5 className="text-text-primary font-medium mb-3 text-sm">
+                      Technologies & Tools
+                    </h5>
+                    <div className="flex flex-wrap gap-2">
+                      {experience.technologies.map((tech, techIndex) => (
+                        <span
+                          key={techIndex}
+                          className="skill-badge text-xs"
+                        >
+                          {tech}
+                        </span>
+                      ))}
                     </div>
-                    {activeTab === exp.id && (
-                      <FiArrowRight className="ml-auto self-center" />
-                    )}
-                  </motion.button>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Right content - Experience Details */}
-            <motion.div
-              ref={timelineRef}
-              className="lg:col-span-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg overflow-hidden"
-              variants={itemVariants}
-            >
-              <AnimatePresence mode="wait">
-                {experiences.map(
-                  (exp) =>
-                    activeTab === exp.id && (
-                      <motion.div
-                        key={exp.id}
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        variants={panelVariants}
-                      >
-                        <div className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-                          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                            {exp.position}
-                          </h3>
-                          <h4 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4">
-                            {exp.company}
-                          </h4>
-
-                          <div className="flex flex-wrap gap-4 text-gray-600 dark:text-gray-300 mb-2">
-                            <div className="flex items-center bg-gray-100 dark:bg-gray-700/50 px-3 py-1 rounded-full">
-                              <FiCalendar className="mr-2 text-blue-600 dark:text-blue-400" />
-                              <span>{exp.duration}</span>
-                            </div>
-                            <div className="flex items-center bg-gray-100 dark:bg-gray-700/50 px-3 py-1 rounded-full">
-                              <FiMapPin className="mr-2 text-blue-600 dark:text-blue-400" />
-                              <span>{exp.location}</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Key Achievements - Improved UI with categories */}
-                        <div className="mb-8">
-                          <h4 className="text-lg font-semibold mb-6 flex items-center text-gray-900 dark:text-white">
-                            <FiTarget className="mr-2 text-blue-600 dark:text-blue-400" />
-                            Key Accomplishments
-                          </h4>
-
-                          <div className="space-y-4">
-                            {exp.description.map((item, idx) => (
-                              <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{
-                                  opacity: 1,
-                                  x: 0,
-                                  transition: { delay: idx * 0.1 },
-                                }}
-                                className="flex items-start bg-gray-50 dark:bg-gray-700/30 p-3 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-colors group"
-                              >
-                                <div className="flex-shrink-0 mr-3 mt-0.5">
-                                  <div className="inline-flex items-center justify-center w-6 h-6 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-full group-hover:bg-blue-200 dark:group-hover:bg-blue-800/50 transition-colors">
-                                    <FiCheck size={14} />
-                                  </div>
-                                </div>
-                                <p className="text-gray-700 dark:text-gray-300">
-                                  {item}
-                                </p>
-                              </motion.div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Technologies with categories */}
-                        <div>
-                          <h4 className="text-lg font-semibold mb-6 flex items-center text-gray-900 dark:text-white">
-                            <FiTool className="mr-2 text-blue-600 dark:text-blue-400" />
-                            Technology Stack
-                          </h4>
-
-                          <div className="space-y-4">
-                            {Object.entries(groupTechnologies(exp.technologies))
-                              .filter(([, techs]) => techs.length > 0)
-                              .map(([category, techs]) => (
-                                <div key={category} className="mb-4">
-                                  <h5 className="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2 ml-1">
-                                    {category.charAt(0).toUpperCase() +
-                                      category.slice(1)}
-                                  </h5>
-                                  <div className="flex flex-wrap gap-2">
-                                    {techs.map((tech, idx) => (
-                                      <motion.span
-                                        key={idx}
-                                        initial={{ opacity: 0, scale: 0.8 }}
-                                        animate={{
-                                          opacity: 1,
-                                          scale: 1,
-                                          transition: { delay: idx * 0.05 },
-                                        }}
-                                        whileHover={{
-                                          y: -3,
-                                          transition: { duration: 0.2 },
-                                        }}
-                                        className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-full flex items-center shadow-sm transition-all duration-300"
-                                      >
-                                        <span className="mr-1.5">
-                                          {getTechIcon(tech)}
-                                        </span>
-                                        {tech}
-                                      </motion.span>
-                                    ))}
-                                  </div>
-                                </div>
-                              ))}
-                          </div>
-                        </div>
-                      </motion.div>
-                    )
-                )}
-              </AnimatePresence>
-            </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
+
+          {/* Summary Stats */}
+          <motion.div
+            variants={itemVariants}
+            className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            <div className="text-center p-6 bg-bg-secondary rounded-xl border border-border-primary">
+              <div className="text-3xl font-bold text-accent-primary mb-2">5+</div>
+              <div className="text-text-secondary text-sm">Years of Experience</div>
+            </div>
+            <div className="text-center p-6 bg-bg-secondary rounded-xl border border-border-primary">
+              <div className="text-3xl font-bold text-accent-primary mb-2">50+</div>
+              <div className="text-text-secondary text-sm">Projects Completed</div>
+            </div>
+            <div className="text-center p-6 bg-bg-secondary rounded-xl border border-border-primary">
+              <div className="text-3xl font-bold text-accent-primary mb-2">10+</div>
+              <div className="text-text-secondary text-sm">Developers Mentored</div>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Harsh Makwana - Portfolio
 
-## Getting Started
+A modern, dark-themed portfolio website showcasing my work as a Senior Backend Engineer. Built with Next.js, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## 🎨 Design Features
+
+- **Modern Dark Theme**: Clean, GitHub-inspired dark color scheme with excellent contrast
+- **Minimal & Professional**: Focused on content with subtle animations and clean typography
+- **Mobile-First**: Fully responsive design optimized for all devices
+- **Accessible**: WCAG-compliant with proper focus states and semantic markup
+- **Performance**: Optimized for Core Web Vitals with minimal animations
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Styling**: Tailwind CSS with custom design system
+- **Animations**: Framer Motion for smooth interactions
+- **Typography**: Geist Sans & Geist Mono fonts
+- **Icons**: Feather Icons (react-icons/fi)
+- **Analytics**: Vercel Analytics & Speed Insights
+
+## 📱 Sections
+
+1. **Hero** - Introduction with tech stack highlights
+2. **About** - Professional overview and key strengths
+3. **Skills** - Organized by technology categories
+4. **Projects** - Featured open-source work with detailed modals
+5. **Experience** - Timeline-based professional journey
+6. **Contact** - Clean contact form with social links
+
+## 🚀 Getting Started
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the portfolio.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🎯 Key Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Clean Architecture**: Modular components with TypeScript
+- **Dark Theme Only**: Optimized for developer-focused aesthetic
+- **Smooth Animations**: Subtle motion design with reduced motion support
+- **SEO Optimized**: Proper meta tags and semantic HTML
+- **Fast Loading**: Optimized images and minimal JavaScript
 
-## Learn More
+## 📄 License
 
-To learn more about Next.js, take a look at the following resources:
+MIT License - feel free to use this as inspiration for your own portfolio.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with ❤️ by [Harsh Makwana](https://github.com/hmake98)

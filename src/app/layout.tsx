@@ -46,9 +46,9 @@ export const metadata: Metadata = {
   },
 };
 
-// Define viewport for responsive design with dark theme color
+// Define viewport for responsive design
 export const viewport: Viewport = {
-  themeColor: "#0f172a", // Dark blue color for theme
+  themeColor: "#0d1117",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -62,13 +62,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark scroll-smooth ${GeistSans.variable} ${GeistMono.variable}`}
+      className={`scroll-smooth ${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="text-foreground bg-background font-sans antialiased flex flex-col min-h-screen">
+      <body className="bg-bg-primary text-text-primary font-sans antialiased min-h-screen flex flex-col">
         <Providers>
           <Header />
-          <main className="flex-grow">{children}</main>
+          <main className="flex-1 relative">{children}</main>
           <Footer />
         </Providers>
         <Analytics />

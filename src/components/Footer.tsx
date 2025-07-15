@@ -1,67 +1,54 @@
 "use client";
 
-import { FiArrowUp, FiHeart, FiCode } from "react-icons/fi";
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { FiGithub, FiLinkedin, FiMail, FiHeart } from "react-icons/fi";
 
 const Footer: React.FC = () => {
-  const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
   const currentYear = new Date().getFullYear();
 
-  // Detect scroll position
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 500);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Scroll to top function
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+  const socialLinks = [
+    {
+      name: "GitHub",
+      href: "https://github.com/hmake98",
+      icon: <FiGithub size={20} />,
+    },
+    {
+      name: "LinkedIn",
+      href: "https://linkedin.com/in/hmake98",
+      icon: <FiLinkedin size={20} />,
+    },
+    {
+      name: "Email",
+      href: "mailto:harsh.make1998@gmail.com",
+      icon: <FiMail size={20} />,
+    },
+  ];
 
   return (
-    <footer className="py-20 bg-white dark:bg-gray-900 text-white py-12 relative overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Copyright Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center pt-2">
-          <div className="text-gray-400 text-sm mb-4 md:mb-0 flex items-center">
-            <span>
-              &copy; {currentYear} Harsh Makwana. All rights reserved.
-            </span>
-          </div>
-          <div className="text-gray-400 text-sm flex items-center">
-            <span className="flex items-center">
-              Built with <FiHeart className="mx-1 text-red-500" /> and{" "}
-              <FiCode className="mx-1 text-blue-500" />
-            </span>
+    <footer className="bg-bg-secondary border-t border-border-primary">
+      <div className="container mx-auto px-6 py-8">
+        {/* Bottom Bar */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-text-secondary text-sm flex items-center gap-1">
+            © {currentYear} Harsh Makwana. Built with
+            <FiHeart className="text-accent-secondary w-4 h-4" />
+            and Next.js
+          </p>
+          <div className="flex space-x-4">
+            {socialLinks.map((social) => (
+              <a
+                key={social.name}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 bg-bg-tertiary border border-border-primary rounded-lg flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-hover transition-all duration-200"
+                aria-label={social.name}
+              >
+                {social.icon}
+              </a>
+            ))}
           </div>
         </div>
       </div>
-
-      {/* Scroll to top button with animation */}
-      <AnimatePresence>
-        {showScrollTop && (
-          <motion.button
-            onClick={scrollToTop}
-            className="fixed bottom-6 right-6 p-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-lg z-50 transition-colors"
-            aria-label="Scroll to top"
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            whileHover={{ y: -3 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <FiArrowUp size={24} />
-          </motion.button>
-        )}
-      </AnimatePresence>
     </footer>
   );
 };

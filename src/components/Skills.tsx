@@ -1,15 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import {
-  FiCode,
-  FiServer,
-  FiDatabase,
-  FiCloud,
-  FiGitBranch,
-} from "react-icons/fi";
 import {
   SiJavascript,
   SiTypescript,
@@ -20,133 +12,40 @@ import {
   SiNestjs,
   SiExpress,
   SiGraphql,
-  SiDocker,
-  SiKubernetes,
-  SiAmazonwebservices,
-  SiMongodb,
-  SiPostgresql,
-  SiRedis,
   SiPrisma,
-  SiGithubactions,
+  SiGoogle,
+  SiRabbitmq,
+  SiPostgresql,
+  SiMongodb,
+  SiRedis,
+  SiDocker,
+  SiAmazon,
   SiCircleci,
+  SiGithubactions,
   SiGit,
   SiEthereum,
   SiJest,
-  SiGoogle,
-  SiRabbitmq,
+  SiPython,
+  SiSocketdotio,
+  SiBlender,
+  SiFfmpeg,
+  SiTemporal,
+  SiPuppeteer,
+  SiBitbucket,
+  SiGithub,
 } from "react-icons/si";
-import { skills as skillsData } from "@/data/skills";
-
-// Define our local skill type that includes the icon component
-interface SkillWithIcon {
-  id: number;
-  name: string;
-  icon: string;
-  iconComponent: React.ReactNode;
-  category: "frontend" | "backend" | "database" | "devops" | "other";
-}
-
-// Map icon names to actual icon components
-const iconMap: Record<string, React.ReactNode> = {
-  SiJavascript: <SiJavascript className="text-3xl text-yellow-400" />,
-  SiTypescript: <SiTypescript className="text-3xl text-blue-600" />,
-  SiReact: <SiReact className="text-3xl text-blue-400" />,
-  SiAngular: <SiAngular className="text-3xl text-red-600" />,
-  SiElectron: <SiElectron className="text-3xl text-blue-500" />,
-  SiNodedotjs: <SiNodedotjs className="text-3xl text-green-600" />,
-  SiNestjs: <SiNestjs className="text-3xl text-red-500" />,
-  SiExpress: <SiExpress className="text-3xl text-gray-600" />,
-  SiGraphql: <SiGraphql className="text-3xl text-pink-600" />,
-  SiPrisma: <SiPrisma className="text-3xl text-blue-800" />,
-  SiPostgresql: <SiPostgresql className="text-3xl text-blue-700" />,
-  SiMongodb: <SiMongodb className="text-3xl text-green-500" />,
-  SiRedis: <SiRedis className="text-3xl text-red-600" />,
-  SiDocker: <SiDocker className="text-3xl text-blue-600" />,
-  SiKubernetes: <SiKubernetes className="text-3xl text-blue-500" />,
-  SiAmazonaws: <SiAmazonwebservices className="text-3xl text-yellow-500" />,
-  SiCircleci: <SiCircleci className="text-3xl text-black dark:text-white" />,
-  SiGithubactions: (
-    <SiGithubactions className="text-3xl text-gray-800 dark:text-gray-200" />
-  ),
-  SiGit: <SiGit className="text-3xl text-orange-600" />,
-  SiEthereum: <SiEthereum className="text-3xl text-purple-600" />,
-  SiJest: <SiJest className="text-3xl text-red-700" />,
-  SiGoogle: <SiGoogle className="text-3xl text-blue-500" />,
-  SiRabbitmq: <SiRabbitmq className="text-3xl text-orange-500" />,
-};
-
-const categoryDescriptions = {
-  all: "Here's a comprehensive overview of my technical skills across various domains. Each skill represents technologies I've used in professional projects.",
-  frontend:
-    "My frontend expertise includes modern frameworks and libraries that enable creating responsive, performant user interfaces with seamless interactions.",
-  backend:
-    "I specialize in scalable backend development, building high-performance APIs and microservices with a focus on maintainability and efficiency.",
-  database:
-    "My database skills span both SQL and NoSQL technologies, with experience in designing schemas, optimization, and implementing caching strategies.",
-  devops:
-    "I implement CI/CD pipelines and cloud infrastructure, automating deployment processes and ensuring reliable, scalable application delivery.",
-  other:
-    "Additional specialized skills that complement my technical expertise and enhance project delivery capabilities.",
-};
 
 const Skills: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [processedSkills, setProcessedSkills] = useState<SkillWithIcon[]>([]);
-  const [filteredSkills, setFilteredSkills] = useState<SkillWithIcon[]>([]);
-  const [hoveredSkill, setHoveredSkill] = useState<number | null>(null);
-
   const [ref, inView] = useInView({
-    threshold: 0.1,
     triggerOnce: true,
+    threshold: 0.1,
   });
 
-  // Process skills data on component mount
-  useEffect(() => {
-    // Transform the imported skills data to include the actual icon components
-    const processed = skillsData.map((skill) => ({
-      ...skill,
-      iconComponent: iconMap[skill.icon] || (
-        <FiCode className="text-3xl text-gray-500" />
-      ),
-      category: skill.category as
-        | "frontend"
-        | "backend"
-        | "database"
-        | "devops"
-        | "other",
-    }));
-
-    setProcessedSkills(processed);
-    setFilteredSkills(processed); // Initially show all skills
-  }, []);
-
-  // Update filtered skills when category changes
-  useEffect(() => {
-    if (activeCategory === "all") {
-      setFilteredSkills(processedSkills);
-    } else {
-      const filtered = processedSkills.filter(
-        (skill) => skill.category === activeCategory
-      );
-      setFilteredSkills(filtered);
-    }
-  }, [activeCategory, processedSkills]);
-
-  const categories = [
-    { id: "all", name: "All", icon: <FiCode /> },
-    { id: "frontend", name: "Frontend", icon: <FiCode /> },
-    { id: "backend", name: "Backend", icon: <FiServer /> },
-    { id: "database", name: "Database", icon: <FiDatabase /> },
-    { id: "devops", name: "DevOps", icon: <FiCloud /> },
-    { id: "other", name: "Other", icon: <FiGitBranch /> },
-  ];
-
-  const sectionVariants = {
+  const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.6,
         staggerChildren: 0.1,
       },
     },
@@ -157,153 +56,242 @@ const Skills: React.FC = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.4, ease: "easeOut" },
+      transition: { duration: 0.5 },
     },
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.04,
-        delayChildren: 0.3,
-      },
+  const skillCategories = [
+    {
+      title: "Frontend Development",
+      description: "Modern web technologies and frameworks",
+      skills: [
+        { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E", proficiency: 95 },
+        { name: "TypeScript", icon: SiTypescript, color: "#3178C6", proficiency: 90 },
+        { name: "Angular", icon: SiAngular, color: "#DD0031", proficiency: 85 },
+        { name: "React", icon: SiReact, color: "#61DAFB", proficiency: 80 },
+        { name: "Electron.js", icon: SiElectron, color: "#47848F", proficiency: 85 },
+      ],
     },
+    {
+      title: "Backend Development",
+      description: "Server-side technologies and APIs",
+      skills: [
+        { name: "Node.js", icon: SiNodedotjs, color: "#339933", proficiency: 95 },
+        { name: "NestJS", icon: SiNestjs, color: "#E0234E", proficiency: 90 },
+        { name: "Express.js", icon: SiExpress, color: "#000000", proficiency: 88 },
+        { name: "GraphQL", icon: SiGraphql, color: "#E10098", proficiency: 85 },
+        { name: "Prisma", icon: SiPrisma, color: "#2D3748", proficiency: 88 },
+        { name: "gRPC", icon: SiGoogle, color: "#4285F4", proficiency: 80 },
+        { name: "RabbitMQ", icon: SiRabbitmq, color: "#FF6600", proficiency: 85 },
+
+        { name: "Temporal", icon: SiTemporal, color: "#E0234E", proficiency: 75 },
+        { name: "Socket.IO", icon: SiSocketdotio, color: "#010101", proficiency: 85 },
+        { name: "Python", icon: SiPython, color: "#3776AB", proficiency: 75 },
+      ],
+    },
+    {
+      title: "Database & Storage",
+      description: "Data persistence and caching solutions",
+      skills: [
+        { name: "PostgreSQL", icon: SiPostgresql, color: "#336791", proficiency: 90 },
+        { name: "MongoDB", icon: SiMongodb, color: "#47A248", proficiency: 85 },
+        { name: "Redis", icon: SiRedis, color: "#DC382D", proficiency: 88 },
+      ],
+    },
+    {
+      title: "DevOps & Cloud",
+      description: "Infrastructure and deployment tools",
+      skills: [
+        { name: "Docker", icon: SiDocker, color: "#2496ED", proficiency: 88 },
+        { name: "AWS", icon: SiAmazon, color: "#FF9900", proficiency: 85 },
+        { name: "CircleCI", icon: SiCircleci, color: "#343434", proficiency: 85 },
+        { name: "GitHub Actions", icon: SiGithubactions, color: "#2088FF", proficiency: 88 },
+        { name: "Bitbucket", icon: SiBitbucket, color: "#0052CC", proficiency: 75 },
+      ],
+    },
+    {
+      title: "Web3 & Blockchain",
+      description: "Blockchain technologies and decentralized systems",
+      skills: [
+        { name: "Web3", icon: SiEthereum, color: "#F16822", proficiency: 80 },
+        { name: "Ethereum", icon: SiEthereum, color: "#627EEA", proficiency: 75 },
+        { name: "Web3Auth", icon: SiEthereum, color: "#627EEA", proficiency: 70 },
+        { name: "NFT Systems", icon: SiEthereum, color: "#627EEA", proficiency: 75 },
+      ],
+    },
+    {
+      title: "Tools & Automation",
+      description: "Development tools and automation utilities",
+      skills: [
+        { name: "Git", icon: SiGit, color: "#F05032", proficiency: 95 },
+        { name: "GitHub", icon: SiGithub, color: "#181717", proficiency: 90 },
+        { name: "Puppeteer", icon: SiPuppeteer, color: "#40B5A4", proficiency: 80 },
+        { name: "FFmpeg", icon: SiFfmpeg, color: "#007808", proficiency: 70 },
+        { name: "Blender", icon: SiBlender, color: "#F5792A", proficiency: 65 },
+        { name: "Jest", icon: SiJest, color: "#C21325", proficiency: 85 },
+      ],
+    },
+  ];
+
+  const getProficiencyColor = (proficiency: number) => {
+    if (proficiency >= 90) return "text-accent-success";
+    if (proficiency >= 80) return "text-accent-primary";
+    if (proficiency >= 70) return "text-accent-warning";
+    return "text-text-secondary";
   };
 
-  const skillVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.3, ease: "easeOut" },
-    },
-    exit: {
-      opacity: 0,
-      y: -10,
-      transition: { duration: 0.2 },
-    },
+  const getProficiencyLabel = (proficiency: number) => {
+    if (proficiency >= 90) return "Expert";
+    if (proficiency >= 80) return "Advanced";
+    if (proficiency >= 70) return "Intermediate";
+    return "Beginner";
   };
 
   return (
-    <section
-      id="skills"
-      className="py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden"
-    >
-      {/* Background decorative elements */}
-      <div className="absolute top-0 left-0 w-40 h-40 bg-blue-200/30 dark:bg-blue-900/20 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-0 right-0 w-60 h-60 bg-purple-200/30 dark:bg-purple-900/20 rounded-full blur-3xl -z-10"></div>
-
-      <div className="container mx-auto px-4">
+    <section id="skills" className="section">
+      <div className="container mx-auto px-6">
         <motion.div
           ref={ref}
+          variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          variants={sectionVariants}
-          className="max-w-6xl mx-auto"
+          className="max-w-7xl mx-auto"
         >
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full mb-3">
-              My Expertise
-            </span>
-            <motion.h2
-              className="text-4xl font-bold text-gray-900 dark:text-white mb-4"
-              variants={itemVariants}
-            >
-              Technical Skills
-            </motion.h2>
-            <motion.div
-              className="h-1 w-20 bg-blue-500 mx-auto mb-6"
-              variants={itemVariants}
-            ></motion.div>
-            <motion.p
-              className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
-              variants={itemVariants}
-            >
-              {
-                categoryDescriptions[
-                  activeCategory as keyof typeof categoryDescriptions
-                ]
-              }
-            </motion.p>
-          </motion.div>
-
-          {/* Category Filters */}
-          <motion.div
-            className="flex flex-wrap justify-center gap-3 mb-12"
-            variants={itemVariants}
-          >
-            {categories.map((category) => (
-              <motion.button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`px-5 py-3 rounded-lg text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
-                  activeCategory === category.id
-                    ? "bg-blue-600 text-white shadow-md scale-105"
-                    : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm"
-                }`}
-                whileHover={{
-                  scale: activeCategory === category.id ? 1.05 : 1.05,
-                }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {category.icon}
-                {category.name}
-              </motion.button>
-            ))}
+          {/* Section Header */}
+          <motion.div variants={itemVariants} className="text-center mb-20">
+            <h2 className="section-title">Skills & Technologies</h2>
+            <p className="section-subtitle mx-auto">
+              A comprehensive toolkit evolved through 5+ years of building production systems, from frontend to backend to full-stack development
+            </p>
           </motion.div>
 
           {/* Skills Grid */}
-          <div className="relative min-h-[400px]">
-            <AnimatePresence mode="wait">
+          <div className="grid gap-12">
+            {skillCategories.map((category) => (
               <motion.div
-                key={activeCategory}
-                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 lg:gap-6"
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
+                key={category.title}
+                variants={itemVariants}
+                className="relative"
               >
-                {filteredSkills.length > 0 ? (
-                  filteredSkills.map((skill) => (
-                    <motion.div
-                      key={skill.id}
-                      className={`bg-white dark:bg-gray-800 rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-lg transition-all ${
-                        hoveredSkill === skill.id
-                          ? "ring-2 ring-blue-400 dark:ring-blue-500 shadow-lg"
-                          : ""
-                      }`}
-                      variants={skillVariants}
-                      onMouseEnter={() => setHoveredSkill(skill.id)}
-                      onMouseLeave={() => setHoveredSkill(null)}
-                      whileHover={{
-                        y: -8,
-                        transition: { duration: 0.2 },
-                      }}
-                    >
-                      <div className="mb-4 transform transition-transform duration-300 group-hover:scale-110">
-                        {skill.iconComponent}
-                      </div>
-                      <h3 className="font-medium text-gray-800 dark:text-gray-200">
-                        {skill.name}
-                      </h3>
-                    </motion.div>
-                  ))
-                ) : (
-                  <motion.div
-                    className="col-span-full text-center py-16 text-gray-500 dark:text-gray-400"
-                    variants={itemVariants}
-                  >
-                    <div className="text-5xl mb-4 opacity-30 flex justify-center">
-                      <FiCode />
-                    </div>
-                    <p>No skills found in this category.</p>
-                  </motion.div>
-                )}
+                {/* Category Header */}
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold text-text-primary mb-3">
+                    {category.title}
+                  </h3>
+                  <p className="text-text-secondary max-w-2xl mx-auto">
+                    {category.description}
+                  </p>
+                </div>
+
+                {/* Skills Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {category.skills.map((skill) => {
+                    const IconComponent = skill.icon;
+                    return (
+                      <motion.div
+                        key={skill.name}
+                        variants={itemVariants}
+                        className="group relative bg-bg-secondary rounded-xl p-6 border border-border-primary hover:border-accent-primary/30 transition-all duration-300 hover:transform hover:scale-105"
+                        whileHover={{ y: -5 }}
+                      >
+                        {/* Skill Icon and Name */}
+                        <div className="flex items-center space-x-3 mb-4">
+                          <div className="flex-shrink-0">
+                            <IconComponent
+                              className="text-2xl transition-colors duration-200"
+                              style={{ 
+                                color: skill.color,
+                                filter: 'brightness(0.9)'
+                              }}
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-text-primary font-semibold text-sm truncate">
+                              {skill.name}
+                            </h4>
+                          </div>
+                        </div>
+
+                        {/* Proficiency Bar */}
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs text-text-secondary">
+                              {getProficiencyLabel(skill.proficiency)}
+                            </span>
+                            <span className={`text-xs font-medium ${getProficiencyColor(skill.proficiency)}`}>
+                              {skill.proficiency}%
+                            </span>
+                          </div>
+                          <div className="w-full bg-bg-tertiary rounded-full h-2">
+                            <motion.div
+                              className="h-2 rounded-full bg-gradient-to-r from-accent-primary to-accent-success"
+                              initial={{ width: 0 }}
+                              animate={inView ? { width: `${skill.proficiency}%` } : { width: 0 }}
+                              transition={{ duration: 1, delay: 0.2 }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Hover Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-accent-primary/5 to-accent-success/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </motion.div>
+                    );
+                  })}
+                </div>
               </motion.div>
-            </AnimatePresence>
+            ))}
           </div>
+
+          {/* Skills Summary */}
+          <motion.div
+            variants={itemVariants}
+            className="mt-20"
+          >
+            <div className="bg-gradient-to-r from-bg-secondary to-bg-tertiary rounded-2xl p-8 border border-border-primary">
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-bold text-text-primary mb-3">
+                  Technical Expertise Overview
+                </h3>
+                <p className="text-text-secondary max-w-2xl mx-auto">
+                  Evolved from frontend development to full-stack engineering with expertise in microservices, cloud infrastructure, and blockchain technologies
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="text-center p-4 rounded-xl bg-bg-primary/50">
+                  <div className="w-12 h-12 bg-gradient-to-br from-accent-primary to-accent-success rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-white font-bold text-lg">5+</span>
+                  </div>
+                  <h4 className="font-semibold text-text-primary mb-1">Years Experience</h4>
+                  <p className="text-text-secondary text-sm">Full-stack development</p>
+                </div>
+                
+                <div className="text-center p-4 rounded-xl bg-bg-primary/50">
+                  <div className="w-12 h-12 bg-gradient-to-br from-accent-warning to-accent-secondary rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-white font-bold text-lg">40+</span>
+                  </div>
+                  <h4 className="font-semibold text-text-primary mb-1">Technologies</h4>
+                  <p className="text-text-secondary text-sm">Languages & frameworks</p>
+                </div>
+                
+                <div className="text-center p-4 rounded-xl bg-bg-primary/50">
+                  <div className="w-12 h-12 bg-gradient-to-br from-accent-success to-accent-primary rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-white font-bold text-lg">50+</span>
+                  </div>
+                  <h4 className="font-semibold text-text-primary mb-1">Projects Delivered</h4>
+                  <p className="text-text-secondary text-sm">Production applications</p>
+                </div>
+                
+                <div className="text-center p-4 rounded-xl bg-bg-primary/50">
+                  <div className="w-12 h-12 bg-gradient-to-br from-accent-secondary to-accent-warning rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-white font-bold text-lg">2</span>
+                  </div>
+                  <h4 className="font-semibold text-text-primary mb-1">Open Source</h4>
+                  <p className="text-text-secondary text-sm">NPM packages published</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>
