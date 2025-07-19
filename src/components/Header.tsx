@@ -13,7 +13,7 @@ const Header: React.FC = () => {
   // Header scroll effect and active section detection
   useEffect(() => {
     const handleScroll = (): void => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 10);
 
       // Determine active section for navigation highlighting
       const sections = document.querySelectorAll("section[id]");
@@ -59,10 +59,10 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-bg-primary/90 backdrop-blur-md border-b border-border-primary"
-          : "bg-transparent"
+      className={`fixed w-full top-0 z-50 transition-all duration-500 ease-out ${
+        isScrolled || isOpen
+          ? "bg-bg-primary/95 backdrop-blur-md border-b border-border-primary shadow-lg"
+          : "bg-bg-primary/10 backdrop-blur-sm"
       }`}
     >
       <div className="container mx-auto px-6 py-4">
@@ -123,7 +123,7 @@ const Header: React.FC = () => {
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="md:hidden border-t border-border-primary mt-4 pt-4 overflow-hidden"
             >
-              <nav className="flex flex-col space-y-3">
+              <nav className="flex flex-col space-y-3 pb-4">
                 {navLinks.map((link, index) => (
                   <motion.div
                     key={link.name}

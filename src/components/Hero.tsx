@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import { FiGithub, FiLinkedin, FiMail, FiDownload, FiChevronDown } from "react-icons/fi";
-import { SiNodedotjs, SiNestjs, SiGraphql, SiAmazonwebservices, SiPostgresql, SiDocker } from "react-icons/si";
-import { motion } from "framer-motion";
+
+import { motion, Variants } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
+import { ShootingStars } from "@/components/ui/shooting-stars";
+import { StarsBackground } from "@/components/ui/stars-background";
 
 const Hero: React.FC = () => {
   const [ref, inView] = useInView({
@@ -13,7 +15,7 @@ const Hero: React.FC = () => {
     threshold: 0.1,
   });
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -23,23 +25,17 @@ const Hero: React.FC = () => {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
     },
   };
 
-  const techStack = [
-    { name: "Node.js", icon: <SiNodedotjs className="text-[#339933]" /> },
-    { name: "NestJS", icon: <SiNestjs className="text-[#E0234E]" /> },
-    { name: "GraphQL", icon: <SiGraphql className="text-[#E10098]" /> },
-    { name: "AWS", icon: <SiAmazonwebservices className="text-[#FF9900]" /> },
-    { name: "PostgreSQL", icon: <SiPostgresql className="text-[#336791]" /> },
-    { name: "Docker", icon: <SiDocker className="text-[#2496ED]" /> },
-  ];
+  const itemTransition = { duration: 0.6 };
+
+
 
   const scrollToNext = () => {
     const aboutSection = document.getElementById("about");
@@ -49,54 +45,108 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-bg-primary via-bg-secondary to-bg-primary"></div>
-      
-      {/* Enhanced grid pattern */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: `radial-gradient(circle at 1px 1px, rgb(255,255,255) 1px, transparent 0)`,
-        backgroundSize: '32px 32px'
-      }}></div>
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 md:pt-0">
+      {/* Space Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-bg-secondary to-bg-primary">
+        {/* Accent Stars */}
+        <div className="absolute inset-0">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={`accent-star-${i}`}
+              className="absolute w-1 h-1 bg-accent-primary rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                opacity: [0.2, 0.8, 0.2],
+                scale: [0.5, 1.2, 0.5],
+              }}
+              transition={{
+                duration: 3 + Math.random() * 4,
+                repeat: Infinity,
+                delay: Math.random() * 5,
+              }}
+            />
+          ))}
+        </div>
 
-      {/* Stars */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full animate-twinkle"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 2}s`,
-            }}
-          />
-        ))}
+        {/* Cosmic Dust Clouds */}
+        <div className="absolute inset-0 opacity-20">
+          {[...Array(25)].map((_, i) => (
+            <motion.div
+              key={`dust-${i}`}
+              className="absolute rounded-full bg-gradient-to-r from-accent-primary/30 to-transparent"
+              style={{
+                width: `${60 + Math.random() * 120}px`,
+                height: `${25 + Math.random() * 50}px`,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                transform: `rotate(${Math.random() * 360}deg)`,
+              }}
+              animate={{
+                x: [0, 40, -40, 0],
+                opacity: [0.1, 0.4, 0.1],
+                rotate: [0, 180, 360],
+              }}
+              transition={{
+                duration: 20 + Math.random() * 15,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Advanced Shooting Stars */}
+        <ShootingStars 
+          minSpeed={15}
+          maxSpeed={35}
+          minDelay={8000}
+          maxDelay={25000}
+          starColor="#ffffff"
+          trailColor="#58a6ff"
+          starWidth={15}
+          starHeight={2}
+        />
+        
+        {/* Enhanced Stars Background */}
+        <StarsBackground 
+          starDensity={0.0002}
+          allStarsTwinkle={true}
+          twinkleProbability={0.8}
+          minTwinkleSpeed={0.3}
+          maxTwinkleSpeed={1.2}
+        />
+
+        {/* Nebula Effects */}
+        <div className="absolute inset-0">
+          {[...Array(4)].map((_, i) => (
+            <motion.div
+              key={`nebula-${i}`}
+              className="absolute rounded-full blur-3xl opacity-10"
+              style={{
+                width: `${200 + Math.random() * 300}px`,
+                height: `${200 + Math.random() * 300}px`,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                background: `radial-gradient(circle, ${
+                  ['#58a6ff', '#3fb950', '#f85149', '#d29922'][i]
+                }40, transparent 70%)`,
+              }}
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.05, 0.15, 0.05],
+              }}
+              transition={{
+                duration: 15 + i * 5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </div>
       </div>
-
-      {/* Shooting Stars */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={`shooting-${i}`}
-            className="absolute w-1 h-1 bg-white rounded-full animate-shooting-star shadow-lg"
-            style={{
-              left: `${10 + Math.random() * 80}%`,
-              top: `${10 + Math.random() * 80}%`,
-              animationDelay: `${Math.random() * 10}s`,
-              animationDuration: `${4 + Math.random() * 3}s`,
-              boxShadow: '0 0 4px rgba(255, 255, 255, 0.8)',
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Floating elements with better positioning */}
-      <div className="absolute top-1/4 left-1/4 w-3 h-3 bg-accent-primary rounded-full animate-pulse-slow opacity-60"></div>
-      <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-accent-primary rounded-full animate-pulse-slow opacity-40" style={{ animationDelay: '1s' }}></div>
-      <div className="absolute bottom-1/4 left-1/3 w-2.5 h-2.5 bg-accent-primary rounded-full animate-pulse-slow opacity-50" style={{ animationDelay: '2s' }}></div>
-      <div className="absolute top-1/2 right-1/4 w-1.5 h-1.5 bg-accent-success rounded-full animate-pulse-slow opacity-30" style={{ animationDelay: '3s' }}></div>
 
       <div className="container mx-auto px-6 py-20 relative z-10">
         <motion.div
@@ -104,11 +154,11 @@ const Hero: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="max-w-6xl mx-auto"
+          className="max-w-6xl mx-auto mt-8 md:mt-12"
         >
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Column - Content */}
-            <motion.div variants={itemVariants} className="text-left">
+            <motion.div variants={itemVariants} transition={itemTransition} className="text-left">
               <div className="mb-6">
                 <h1 className="text-4xl md:text-5xl font-bold mb-4 text-text-primary leading-tight">
                   Harsh Makwana
@@ -122,23 +172,7 @@ const Hero: React.FC = () => {
                 </p>
               </div>
 
-              {/* Tech Stack */}
-              <motion.div variants={itemVariants} className="mb-8">
-                <h3 className="text-sm font-medium text-text-muted mb-4 uppercase tracking-wider">
-                  Tech Stack
-                </h3>
-                <div className="flex flex-wrap gap-3">
-                  {techStack.map((tech, index) => (
-                    <div
-                      key={index}
-                      className="skill-badge flex items-center gap-2 text-sm px-4 py-2"
-                    >
-                      {tech.icon}
-                      <span>{tech.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
+
 
               {/* CTA Buttons */}
               <motion.div variants={itemVariants} className="mb-8">
@@ -160,7 +194,7 @@ const Hero: React.FC = () => {
               </motion.div>
 
               {/* Social Links */}
-              <motion.div variants={itemVariants}>
+              <motion.div variants={itemVariants} transition={itemTransition}>
                 <div className="flex gap-4">
                   <a
                     href="https://github.com/hmake98"
@@ -194,113 +228,130 @@ const Hero: React.FC = () => {
             {/* Right Column - Profile Image */}
             <motion.div
               variants={itemVariants}
-              className="flex justify-center lg:justify-end"
+              transition={itemTransition}
+              className="flex justify-center lg:justify-center lg:ml-8"
             >
               <div className="relative">
-                {/* Background glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-accent-primary/20 to-accent-success/20 rounded-full blur-3xl scale-110"></div>
-                
-                {/* Main profile image container */}
+                {/* Cosmic Background Effects */}
                 <motion.div 
-                  className="relative w-80 h-80 rounded-full overflow-hidden border-4 border-border-primary shadow-2xl"
-                  animate={{ 
-                    scale: [1, 1.02, 1],
-                    rotate: [0, 1, -1, 0]
+                  className="absolute inset-0 bg-gradient-to-r from-accent-primary/20 to-accent-success/20 rounded-full blur-3xl scale-110"
+                  animate={{
+                    scale: [1.1, 1.3, 1.1],
+                    opacity: [0.3, 0.6, 0.3],
                   }}
-                  transition={{ 
-                    duration: 6,
+                  transition={{
+                    duration: 8,
                     repeat: Infinity,
-                    ease: "easeInOut"
+                    ease: "easeInOut",
+                  }}
+                />
+                
+                {/* Orbital Rings */}
+                <motion.div
+                  className="absolute inset-0 rounded-full border border-white/10 scale-125"
+                  animate={{
+                    rotate: [0, 360],
+                  }}
+                  transition={{
+                    duration: 30,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                />
+                <motion.div
+                  className="absolute inset-0 rounded-full border border-accent-primary/20 scale-150"
+                  animate={{
+                    rotate: [360, 0],
+                  }}
+                  transition={{
+                    duration: 45,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                />
+                
+                {/* Main profile image container - Planet Core */}
+                <div 
+                  className="relative w-80 h-80 rounded-full overflow-hidden border-4 border-white/30 shadow-2xl"
+                  style={{
+                    boxShadow: "0 0 60px rgba(88, 166, 255, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.1)",
                   }}
                 >
+                  {/* Atmosphere Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent-primary/10 via-transparent to-accent-success/10 rounded-full" />
+                  
                   <Image
                     src="/images/profile.jpg"
                     alt="Harsh Makwana"
                     width={320}
                     height={320}
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full relative z-10"
                     priority
                   />
-                </motion.div>
+                </div>
                 
-                {/* Online status indicator */}
-                <motion.div 
-                  className="absolute -bottom-2 -right-2 w-12 h-12 bg-accent-success rounded-full border-4 border-bg-primary flex items-center justify-center shadow-lg"
-                  animate={{ 
-                    scale: [1, 1.1, 1],
-                    rotate: [0, 10, -10, 0]
-                  }}
-                  transition={{ 
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <div className="w-4 h-4 bg-accent-success rounded-full animate-pulse"></div>
-                </motion.div>
-                
-                {/* Floating tech badges around the image */}
-                <motion.div 
-                  className="absolute -top-4 -left-4 w-16 h-16 bg-bg-secondary border border-border-primary rounded-full flex items-center justify-center shadow-lg"
-                  animate={{ 
-                    y: [0, -10, 0],
-                    rotate: [0, 5, -5, 0]
-                  }}
-                  transition={{ 
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <SiNodedotjs className="text-2xl text-[#339933]" />
-                </motion.div>
-                <motion.div 
-                  className="absolute -bottom-4 -right-4 w-16 h-16 bg-bg-secondary border border-border-primary rounded-full flex items-center justify-center shadow-lg"
-                  animate={{ 
-                    y: [0, 10, 0],
-                    rotate: [0, -5, 5, 0]
-                  }}
-                  transition={{ 
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 1
-                  }}
-                >
-                  <SiNestjs className="text-2xl text-[#E0234E]" />
-                </motion.div>
-                <motion.div 
-                  className="absolute top-1/2 -left-8 w-12 h-12 bg-bg-secondary border border-border-primary rounded-full flex items-center justify-center shadow-lg"
-                  animate={{ 
-                    x: [0, -5, 5, 0],
-                    scale: [1, 1.1, 1]
-                  }}
-                  transition={{ 
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 2
-                  }}
-                >
-                  <SiDocker className="text-xl text-[#2496ED]" />
-                </motion.div>
+
               </div>
             </motion.div>
           </div>
 
-          {/* Scroll Indicator - Centered at bottom */}
+          {/* Cosmic Scroll Indicator */}
           <motion.div
             variants={itemVariants}
+            transition={itemTransition}
             className="flex flex-col items-center cursor-pointer mt-16"
             onClick={scrollToNext}
           >
-            <span className="text-sm text-text-muted mb-2">Scroll to explore</span>
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              className="text-accent-primary"
+            <motion.span 
+              className="text-sm mb-2"
+              animate={{
+                color: ["#8b949e", "#58a6ff", "#8b949e"],
+                textShadow: [
+                  "0 0 5px rgba(139, 148, 158, 0.3)",
+                  "0 0 15px rgba(88, 166, 255, 0.8)",
+                  "0 0 5px rgba(139, 148, 158, 0.3)",
+                ],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             >
-              <FiChevronDown size={24} />
+              Explore the universe
+            </motion.span>
+            <motion.div
+              className="relative"
+              animate={{ y: [0, 12, 0] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+            >
+              <motion.div
+                className="absolute inset-0 rounded-full blur-lg"
+                animate={{
+                  boxShadow: [
+                    "0 0 10px rgba(88, 166, 255, 0.4)",
+                    "0 0 20px rgba(88, 166, 255, 0.8)",
+                    "0 0 10px rgba(88, 166, 255, 0.4)",
+                  ],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              <motion.div
+                animate={{
+                  color: ["#58a6ff", "#3fb950", "#58a6ff"],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <FiChevronDown size={28} />
+              </motion.div>
             </motion.div>
           </motion.div>
         </motion.div>
