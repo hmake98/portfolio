@@ -246,29 +246,6 @@ const Hero: React.FC = () => {
                   }}
                 />
                 
-                {/* Orbital Rings */}
-                <motion.div
-                  className="absolute inset-0 rounded-full border border-white/10 scale-125"
-                  animate={{
-                    rotate: [0, 360],
-                  }}
-                  transition={{
-                    duration: 30,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                />
-                <motion.div
-                  className="absolute inset-0 rounded-full border border-accent-primary/20 scale-150"
-                  animate={{
-                    rotate: [360, 0],
-                  }}
-                  transition={{
-                    duration: 45,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                />
                 
                 {/* Main profile image container - Planet Core */}
                 <div 

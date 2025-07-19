@@ -117,19 +117,19 @@ const Skills: React.FC = () => {
   const generatePositions = () => {
     const positions: { x: number; y: number }[] = [];
     
-    // Create a grid system to ensure proper spacing
-    const cols = 8;
-    const rows = 4;
-    const cellWidth = 80 / cols; // 80% of width divided by columns
-    const cellHeight = 70 / rows; // 70% of height divided by rows
+    // Create a grid system to ensure proper spacing with more space between bubbles
+    const cols = 7;
+    const rows = 5;
+    const cellWidth = 90 / cols; // 90% of width divided by columns - spread across full width
+    const cellHeight = 80 / rows; // 80% of height divided by rows
     
     // Create all possible grid positions
     const gridPositions: { x: number; y: number }[] = [];
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         gridPositions.push({
-          x: 10 + col * cellWidth + cellWidth / 2 + (Math.random() - 0.5) * cellWidth * 0.6,
-          y: 15 + row * cellHeight + cellHeight / 2 + (Math.random() - 0.5) * cellHeight * 0.6,
+          x: 5 + col * cellWidth + cellWidth / 2 + (Math.random() - 0.5) * cellWidth * 0.3,
+          y: 10 + row * cellHeight + cellHeight / 2 + (Math.random() - 0.5) * cellHeight * 0.3,
         });
       }
     }
@@ -217,10 +217,10 @@ const Skills: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Skills Universe - Random Positioned Bubbles */}
+          {/* Desktop: Skills Universe - Random Positioned Bubbles */}
           <motion.div
             variants={containerVariants}
-            className="relative h-[700px] md:h-[800px] overflow-hidden"
+            className="hidden lg:block relative h-[700px] md:h-[800px] overflow-hidden"
           >
             {allSkills.map((skill, index) => {
               const IconComponent = skill.icon;
@@ -322,26 +322,38 @@ const Skills: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Orbital ring for large bubbles */}
-                  {skill.size === "large" && (
-                    <motion.div
-                      className="absolute inset-0 pointer-events-none"
-                      animate={{
-                        rotate: [0, 360],
-                      }}
-                      transition={{
-                        duration: 20,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                    >
-                      <div className="absolute top-1/2 left-1/2 w-28 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-1/2 -translate-y-1/2" />
-                    </motion.div>
-                  )}
+
                 </motion.div>
               );
             })}
           </motion.div>
+
+          {/* Mobile: Simple Grid Layout */}
+          <div className="lg:hidden grid grid-cols-3 sm:grid-cols-4 gap-4 max-w-md mx-auto">
+            {allSkills.map((skill, index) => {
+              const IconComponent = skill.icon;
+              
+              return (
+                <motion.div
+                  key={skill.name}
+                  variants={bubbleVariants}
+                  transition={{ duration: 0.6, delay: index * 0.02 }}
+                  className="group flex flex-col items-center p-3 bg-white/5 backdrop-blur-md border border-white/20 rounded-xl hover:bg-white/10 transition-all duration-300"
+                >
+                  <IconComponent
+                    className="text-2xl mb-2 transition-transform duration-300 group-hover:scale-110"
+                    style={{ 
+                      color: skill.color,
+                      filter: `drop-shadow(0 0 4px ${skill.color}60)`,
+                    }}
+                  />
+                  <span className="text-xs text-text-secondary text-center leading-tight">
+                    {skill.name}
+                  </span>
+                </motion.div>
+              );
+            })}
+          </div>
         </motion.div>
       </div>
     </section>
