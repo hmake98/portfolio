@@ -229,44 +229,124 @@ const Hero: React.FC = () => {
             <motion.div
               variants={itemVariants}
               transition={itemTransition}
-              className="flex justify-center lg:justify-center lg:ml-8"
+              className="flex justify-center items-center lg:ml-8"
             >
-              <div className="relative">
-                {/* Cosmic Background Effects */}
+              <div className="relative w-96 h-96 flex justify-center items-center">
+                {/* Outer Space Nebula */}
                 <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-accent-primary/20 to-accent-success/20 rounded-full blur-3xl scale-110"
+                  className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-blue-500/30 to-cyan-400/20 rounded-full blur-3xl scale-150"
                   animate={{
-                    scale: [1.1, 1.3, 1.1],
-                    opacity: [0.3, 0.6, 0.3],
+                    scale: [1.5, 1.8, 1.5],
+                    opacity: [0.2, 0.5, 0.2],
+                    rotate: [0, 360],
                   }}
                   transition={{
-                    duration: 8,
+                    scale: { duration: 12, repeat: Infinity, ease: "easeInOut" },
+                    opacity: { duration: 8, repeat: Infinity, ease: "easeInOut" },
+                    rotate: { duration: 60, repeat: Infinity, ease: "linear" },
+                  }}
+                />
+
+                {/* Cosmic Background Effects */}
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-r from-accent-primary/25 to-accent-success/25 rounded-full blur-2xl scale-125"
+                  animate={{
+                    scale: [1.25, 1.45, 1.25],
+                    opacity: [0.3, 0.7, 0.3],
+                  }}
+                  transition={{
+                    duration: 10,
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
                 />
-                
+
+
+
+                {/* Space Dust Cloud */}
+                <motion.div
+                  className="absolute inset-0 pointer-events-none"
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+                >
+                  {[...Array(20)].map((_, i) => (
+                    <motion.div
+                      key={`dust-${i}`}
+                      className="absolute w-px h-px bg-white/30 rounded-full"
+                      style={{
+                        left: `${20 + Math.random() * 60}%`,
+                        top: `${20 + Math.random() * 60}%`,
+                      }}
+                      animate={{
+                        opacity: [0, 1, 0],
+                        scale: [0, 1, 0],
+                      }}
+                      transition={{
+                        duration: 4 + Math.random() * 3,
+                        repeat: Infinity,
+                        delay: Math.random() * 2,
+                      }}
+                    />
+                  ))}
+                </motion.div>
                 
                 {/* Main profile image container - Planet Core */}
-                <div 
-                  className="relative w-80 h-80 rounded-full overflow-hidden border-4 border-white/30 shadow-2xl"
-                  style={{
-                    boxShadow: "0 0 60px rgba(88, 166, 255, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.1)",
+                <motion.div 
+                  className="relative w-80 h-80 rounded-full overflow-hidden border-4 border-white/40 shadow-2xl"
+                  animate={{
+                    boxShadow: [
+                      "0 0 80px rgba(88, 166, 255, 0.6), inset 0 0 30px rgba(255, 255, 255, 0.15)",
+                      "0 0 120px rgba(88, 166, 255, 0.8), inset 0 0 40px rgba(255, 255, 255, 0.25)",
+                      "0 0 80px rgba(88, 166, 255, 0.6), inset 0 0 30px rgba(255, 255, 255, 0.15)",
+                    ],
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut",
                   }}
                 >
-                  {/* Atmosphere Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-accent-primary/10 via-transparent to-accent-success/10 rounded-full" />
+                  {/* Planet Atmosphere Layers */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-transparent to-purple-500/20 rounded-full" />
+                  <div className="absolute inset-0 bg-gradient-to-tl from-cyan-400/15 via-transparent to-blue-500/15 rounded-full" />
+                  
+                  {/* Surface Glow Effect */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: `radial-gradient(circle at 35% 35%, rgba(88, 166, 255, 0.4), transparent 60%)`,
+                    }}
+                    animate={{
+                      opacity: [0.3, 0.7, 0.3],
+                      scale: [1, 1.05, 1],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  />
                   
                   <Image
                     src="/images/profile.jpg"
                     alt="Harsh Makwana"
                     width={320}
                     height={320}
-                    className="object-cover w-full h-full relative z-10"
+                    className="object-cover w-full h-full relative z-10 brightness-110 contrast-110"
+                    style={{ transform: 'rotate(245deg)' }}
                     priority
                   />
-                </div>
+
+                  {/* Planet Surface Highlight */}
+                  <div 
+                    className="absolute inset-0 rounded-full opacity-30"
+                    style={{
+                      background: `radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.3), transparent 50%)`,
+                    }}
+                  />
+                </motion.div>
                 
+
 
               </div>
             </motion.div>
