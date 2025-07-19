@@ -148,25 +148,25 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-20 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-20 relative z-10">
         <motion.div
           ref={ref}
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="max-w-6xl mx-auto mt-8 md:mt-12"
+          className="max-w-6xl mx-auto mt-4 sm:mt-8 md:mt-12"
         >
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Column - Content */}
-            <motion.div variants={itemVariants} transition={itemTransition} className="text-left">
-              <div className="mb-6">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-text-primary leading-tight">
+            <motion.div variants={itemVariants} transition={itemTransition} className="text-left order-2 lg:order-1">
+              <div className="mb-4 sm:mb-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-text-primary leading-tight">
                   Harsh Makwana
                 </h1>
-                <h2 className="text-xl md:text-2xl text-accent-primary font-medium mb-6">
+                <h2 className="text-lg sm:text-xl md:text-2xl text-accent-primary font-medium mb-4 sm:mb-6">
                   Senior Backend Engineer
                 </h2>
-                <p className="text-base md:text-lg text-text-secondary leading-relaxed mb-8">
+                <p className="text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed mb-6 sm:mb-8">
                   Building scalable microservices and GraphQL APIs with Node.js, NestJS, and cloud-native technologies. 
                   Passionate about clean code, system architecture, and developer experience.
                 </p>
@@ -175,9 +175,9 @@ const Hero: React.FC = () => {
 
 
               {/* CTA Buttons */}
-              <motion.div variants={itemVariants} className="mb-8">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="#contact" className="btn-primary text-center">
+              <motion.div variants={itemVariants} className="mb-6 sm:mb-8">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <Link href="#contact" className="btn-primary text-center text-sm sm:text-base">
                     <FiMail className="inline mr-2" />
                     Get in Touch
                   </Link>
@@ -185,7 +185,7 @@ const Hero: React.FC = () => {
                     href="/resume.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-secondary text-center"
+                    className="btn-secondary text-center text-sm sm:text-base"
                   >
                     <FiDownload className="inline mr-2" />
                     Download Resume
@@ -195,31 +195,31 @@ const Hero: React.FC = () => {
 
               {/* Social Links */}
               <motion.div variants={itemVariants} transition={itemTransition}>
-                <div className="flex gap-4">
+                <div className="flex gap-3 sm:gap-4 justify-center sm:justify-start">
                   <a
                     href="https://github.com/hmake98"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 bg-bg-secondary border border-border-primary rounded-lg flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-all duration-200 hover:scale-105"
+                    className="w-10 h-10 sm:w-12 sm:h-12 bg-bg-secondary border border-border-primary rounded-lg flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-all duration-200 hover:scale-105"
                     aria-label="GitHub"
                   >
-                    <FiGithub size={20} />
+                    <FiGithub size={18} className="sm:w-5 sm:h-5" />
                   </a>
                   <a
                     href="https://linkedin.com/in/hmake98"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 bg-bg-secondary border border-border-primary rounded-lg flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-all duration-200 hover:scale-105"
+                    className="w-10 h-10 sm:w-12 sm:h-12 bg-bg-secondary border border-border-primary rounded-lg flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-all duration-200 hover:scale-105"
                     aria-label="LinkedIn"
                   >
-                    <FiLinkedin size={20} />
+                    <FiLinkedin size={18} className="sm:w-5 sm:h-5" />
                   </a>
                   <a
                     href="mailto:harsh.make1998@gmail.com"
-                    className="w-12 h-12 bg-bg-secondary border border-border-primary rounded-lg flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-all duration-200 hover:scale-105"
+                    className="w-10 h-10 sm:w-12 sm:h-12 bg-bg-secondary border border-border-primary rounded-lg flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-all duration-200 hover:scale-105"
                     aria-label="Email"
                   >
-                    <FiMail size={20} />
+                    <FiMail size={18} className="sm:w-5 sm:h-5" />
                   </a>
                 </div>
               </motion.div>
@@ -229,9 +229,9 @@ const Hero: React.FC = () => {
             <motion.div
               variants={itemVariants}
               transition={itemTransition}
-              className="flex justify-center items-center lg:ml-8"
+              className="flex justify-center items-center order-1 lg:order-2 lg:ml-8"
             >
-              <div className="relative w-96 h-96 flex justify-center items-center">
+              <div className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 flex justify-center items-center">
                 {/* Outer Space Nebula */}
                 <motion.div 
                   className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-blue-500/30 to-cyan-400/20 rounded-full blur-3xl scale-150"
@@ -269,30 +269,38 @@ const Hero: React.FC = () => {
                   animate={{ rotate: [0, 360] }}
                   transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
                 >
-                  {[...Array(20)].map((_, i) => (
-                    <motion.div
-                      key={`dust-${i}`}
-                      className="absolute w-px h-px bg-white/30 rounded-full"
-                      style={{
-                        left: `${20 + Math.random() * 60}%`,
-                        top: `${20 + Math.random() * 60}%`,
-                      }}
-                      animate={{
-                        opacity: [0, 1, 0],
-                        scale: [0, 1, 0],
-                      }}
-                      transition={{
-                        duration: 4 + Math.random() * 3,
-                        repeat: Infinity,
-                        delay: Math.random() * 2,
-                      }}
-                    />
-                  ))}
+                  {[...Array(20)].map((_, i) => {
+                    // Use index-based positioning to ensure consistency between server and client
+                    const leftPos = 20 + (i * 17) % 60;
+                    const topPos = 20 + (i * 23) % 60;
+                    const duration = 4 + (i % 3);
+                    const delay = (i % 5) * 0.4;
+                    
+                    return (
+                      <motion.div
+                        key={`dust-${i}`}
+                        className="absolute w-px h-px bg-white/30 rounded-full"
+                        style={{
+                          left: `${leftPos}%`,
+                          top: `${topPos}%`,
+                        }}
+                        animate={{
+                          opacity: [0, 1, 0],
+                          scale: [0, 1, 0],
+                        }}
+                        transition={{
+                          duration: duration,
+                          repeat: Infinity,
+                          delay: delay,
+                        }}
+                      />
+                    );
+                  })}
                 </motion.div>
                 
                 {/* Main profile image container - Planet Core */}
                 <motion.div 
-                  className="relative w-80 h-80 rounded-full overflow-hidden border-4 border-white/40 shadow-2xl"
+                  className="relative w-60 h-60 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-2 sm:border-4 border-white/40 shadow-2xl"
                   animate={{
                     boxShadow: [
                       "0 0 80px rgba(88, 166, 255, 0.6), inset 0 0 30px rgba(255, 255, 255, 0.15)",
@@ -356,11 +364,11 @@ const Hero: React.FC = () => {
           <motion.div
             variants={itemVariants}
             transition={itemTransition}
-            className="flex flex-col items-center cursor-pointer mt-16"
+            className="flex flex-col items-center cursor-pointer mt-8 sm:mt-12 lg:mt-16"
             onClick={scrollToNext}
           >
             <motion.span 
-              className="text-sm mb-2"
+              className="text-xs sm:text-sm mb-2 text-center"
               animate={{
                 color: ["#8b949e", "#58a6ff", "#8b949e"],
                 textShadow: [
