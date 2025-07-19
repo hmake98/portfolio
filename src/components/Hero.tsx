@@ -333,7 +333,7 @@ const Hero: React.FC = () => {
                     width={320}
                     height={320}
                     className="object-cover w-full h-full relative z-10 brightness-110 contrast-110"
-                    style={{ transform: 'rotate(245deg)' }}
+                    style={{ transform: 'rotate(0deg)' }}
                     priority
                   />
 
