@@ -8,6 +8,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Providers } from "./providers";
+import ClientPerformanceMonitor from "@/components/ClientPerformanceMonitor";
 
 // Define metadata for better SEO
 export const metadata: Metadata = {
@@ -65,6 +66,21 @@ export default function RootLayout({
       className={`scroll-smooth ${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Preload critical resources */}
+        <link rel="preload" href="/images/profile.jpg" as="image" />
+        <link rel="preload" href="/resume.pdf" as="document" />
+        
+        {/* DNS prefetch for external domains */}
+        <link rel="dns-prefetch" href="//github.com" />
+        <link rel="dns-prefetch" href="//linkedin.com" />
+        <link rel="dns-prefetch" href="//vercel.com" />
+        
+        {/* Preconnect to external domains */}
+        <link rel="preconnect" href="https://github.com" />
+        <link rel="preconnect" href="https://linkedin.com" />
+        <link rel="preconnect" href="https://vercel.com" />
+      </head>
       <body className="bg-bg-primary text-text-primary font-sans antialiased min-h-screen flex flex-col">
         <Providers>
           <Header />
@@ -73,6 +89,7 @@ export default function RootLayout({
         </Providers>
         <Analytics />
         <SpeedInsights />
+        <ClientPerformanceMonitor />
       </body>
     </html>
   );

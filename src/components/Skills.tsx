@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { useEffect, useState, useMemo } from "react";
 import {
   SiJavascript,
   SiTypescript,
@@ -35,11 +36,31 @@ import {
   SiGithub,
 } from "react-icons/si";
 
+// Seeded random number generator for consistent positioning
+class SeededRandom {
+  private seed: number;
+
+  constructor(seed: number) {
+    this.seed = seed;
+  }
+
+  next(): number {
+    this.seed = (this.seed * 9301 + 49297) % 233280;
+    return this.seed / 233280;
+  }
+}
+
 const Skills: React.FC = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -113,9 +134,10 @@ const Skills: React.FC = () => {
     }
   };
 
-  // Generate random positions with guaranteed spacing
-  const generatePositions = () => {
+  // Generate deterministic positions with guaranteed spacing - memoized for performance
+  const skillPositions = useMemo(() => {
     const positions: { x: number; y: number }[] = [];
+    const seededRandom = new SeededRandom(67890); // Different seed for skill positions
     
     // Create a grid system to ensure proper spacing with more space between bubbles
     const cols = 7;
@@ -128,15 +150,15 @@ const Skills: React.FC = () => {
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         gridPositions.push({
-          x: 5 + col * cellWidth + cellWidth / 2 + (Math.random() - 0.5) * cellWidth * 0.3,
-          y: 10 + row * cellHeight + cellHeight / 2 + (Math.random() - 0.5) * cellHeight * 0.3,
+          x: 5 + col * cellWidth + cellWidth / 2 + (seededRandom.next() - 0.5) * cellWidth * 0.3,
+          y: 10 + row * cellHeight + cellHeight / 2 + (seededRandom.next() - 0.5) * cellHeight * 0.3,
         });
       }
     }
     
-    // Shuffle the grid positions
+    // Shuffle the grid positions using seeded random
     for (let i = gridPositions.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = Math.floor(seededRandom.next() * (i + 1));
       [gridPositions[i], gridPositions[j]] = [gridPositions[j], gridPositions[i]];
     }
     
@@ -146,59 +168,69 @@ const Skills: React.FC = () => {
     }
     
     return positions;
-  };
+  }, []);
 
-  const skillPositions = generatePositions();
+  // Generate optimized star positions - reduced count and memoized
+  const starPositions = useMemo(() => {
+    if (!isClient) return [];
+    
+    const seededRandom = new SeededRandom(12345);
+    return Array.from({ length: 30 }, () => ({ // Reduced from 100 to 30
+      x: seededRandom.next() * 100,
+      y: seededRandom.next() * 100,
+    }));
+  }, [isClient]);
+
+  // Generate optimized twinkle positions - reduced count and memoized
+  const twinklePositions = useMemo(() => {
+    if (!isClient) return [];
+    
+    const seededRandom = new SeededRandom(12345);
+    return Array.from({ length: 15 }, () => ({ // Reduced from 50 to 15
+      x: seededRandom.next() * 100,
+      y: seededRandom.next() * 100,
+    }));
+  }, [isClient]);
 
   return (
     <section id="skills" className="section relative overflow-hidden min-h-screen">
       {/* Stars Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-bg-secondary to-bg-primary">
-        {/* Animated Stars */}
-        <div className="absolute inset-0">
-          {[...Array(100)].map((_, i) => (
-            <motion.div
-              key={`star-${i}`}
-              className="absolute w-0.5 h-0.5 bg-white rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                opacity: [0.3, 1, 0.3],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: 2 + Math.random() * 3,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
-        </div>
+        {/* Optimized Animated Stars - Reduced count and simplified animations */}
+        {isClient && (
+          <div className="absolute inset-0">
+            {starPositions.map((position, i) => (
+              <div
+                key={`star-${i}`}
+                className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse"
+                style={{
+                  left: `${position.x}%`,
+                  top: `${position.y}%`,
+                  animationDelay: `${(i % 3) * 0.5}s`,
+                  animationDuration: `${2 + (i % 2)}s`,
+                }}
+              />
+            ))}
+          </div>
+        )}
 
-        {/* Additional twinkling stars */}
-        <div className="absolute inset-0">
-          {[...Array(50)].map((_, i) => (
-            <motion.div
-              key={`twinkle-${i}`}
-              className="absolute w-px h-px bg-accent-primary rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                opacity: [0, 1, 0],
-                scale: [0, 1.5, 0],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 3,
-              }}
-            />
-          ))}
-        </div>
+        {/* Optimized twinkling stars - Reduced count and simplified animations */}
+        {isClient && (
+          <div className="absolute inset-0">
+            {twinklePositions.map((position, i) => (
+              <div
+                key={`twinkle-${i}`}
+                className="absolute w-px h-px bg-accent-primary rounded-full opacity-0 animate-ping"
+                style={{
+                  left: `${position.x}%`,
+                  top: `${position.y}%`,
+                  animationDelay: `${(i % 2) * 1}s`,
+                  animationDuration: `${3 + (i % 2)}s`,
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
@@ -217,7 +249,7 @@ const Skills: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Desktop: Skills Universe - Random Positioned Bubbles */}
+          {/* Desktop: Skills Universe - Optimized animations */}
           <motion.div
             variants={containerVariants}
             className="hidden lg:block relative h-[700px] md:h-[800px] overflow-hidden"
@@ -239,63 +271,47 @@ const Skills: React.FC = () => {
                     transform: 'translate(-50%, -50%)',
                   }}
                   whileHover={{ 
-                    scale: 1.2,
-                    rotate: [0, -10, 10, 0],
-                    transition: { duration: 0.4 }
+                    scale: 1.1, // Reduced from 1.2 to 1.1 for better performance
+                    transition: { duration: 0.3 } // Reduced duration
                   }}
                 >
                   {/* Bubble with blurry background */}
                   <motion.div
                     className={`${sizeClasses} rounded-full bg-white/10 backdrop-blur-md border-2 border-white/40 flex items-center justify-center shadow-2xl relative overflow-hidden`}
-                    animate={{
-                      boxShadow: skill.shining ? [
+                    animate={skill.shining ? {
+                      boxShadow: [
                         `0 0 20px ${skill.color}60`,
-                        `0 0 40px ${skill.color}80`,
-                        `0 0 60px ${skill.color}60`,
+                        `0 0 30px ${skill.color}80`,
                         `0 0 20px ${skill.color}60`,
-                      ] : [
+                      ],
+                    } : {
+                      boxShadow: [
                         `0 0 15px rgba(255,255,255,0.3)`,
-                        `0 0 25px rgba(255,255,255,0.4)`,
+                        `0 0 20px rgba(255,255,255,0.4)`,
                         `0 0 15px rgba(255,255,255,0.3)`,
                       ],
-                      y: [0, -5, 0],
                     }}
                     transition={{
                       boxShadow: {
-                        duration: skill.shining ? 2 : 4,
+                        duration: skill.shining ? 3 : 4,
                         repeat: Infinity,
                         ease: "easeInOut",
-                      },
-                      y: {
-                        duration: 3 + index * 0.2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: index * 0.1,
                       },
                     }}
                   >
-                    {/* Shining effect for selected bubbles */}
+                    {/* Shining effect for selected bubbles - Simplified */}
                     {skill.shining && (
-                      <motion.div
-                        className="absolute inset-0 rounded-full"
+                      <div
+                        className="absolute inset-0 rounded-full opacity-30"
                         style={{
                           background: `radial-gradient(circle at 30% 30%, ${skill.color}40, transparent 70%)`,
-                        }}
-                        animate={{
-                          opacity: [0.2, 0.6, 0.2],
-                          scale: [1, 1.1, 1],
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeInOut",
                         }}
                       />
                     )}
                     
                     {/* Icon */}
                     <IconComponent
-                      className="relative z-10 transition-all duration-300 group-hover:scale-110"
+                      className="relative z-10 transition-transform duration-300 group-hover:scale-110"
                       style={{ 
                         color: skill.color,
                         filter: `drop-shadow(0 0 8px ${skill.color}80)`,
@@ -321,8 +337,6 @@ const Skills: React.FC = () => {
                       <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900/95 border-l border-t border-white/20 rotate-45"></div>
                     </div>
                   </div>
-
-
                 </motion.div>
               );
             })}

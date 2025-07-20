@@ -8,6 +8,18 @@ import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
+import { useMemo } from "react";
+
+// Seeded random function for consistent values
+const seededRandom = (seed: number) => {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+};
+
+// Helper function to round to consistent precision
+const roundToPrecision = (value: number, precision: number = 2) => {
+  return Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision);
+};
 
 const Hero: React.FC = () => {
   const [ref, inView] = useInView({
@@ -35,7 +47,57 @@ const Hero: React.FC = () => {
 
   const itemTransition = { duration: 0.6 };
 
+  // Memoize accent stars to prevent recreation with deterministic values
+  const accentStars = useMemo(() => 
+    [...Array(8)].map((_, i) => {
+      const seed = i * 123.456;
+      return {
+        id: i,
+        left: `${roundToPrecision(seededRandom(seed) * 100, 2)}%`,
+        top: `${roundToPrecision(seededRandom(seed + 1) * 100, 2)}%`,
+        duration: 3 + seededRandom(seed + 2) * 4,
+        delay: seededRandom(seed + 3) * 5,
+      };
+    }), []
+  );
 
+  // Memoize dust clouds to prevent recreation with deterministic values
+  const dustClouds = useMemo(() => 
+    [...Array(6)].map((_, i) => {
+      const seed = i * 234.567;
+      const width = roundToPrecision(60 + seededRandom(seed) * 120, 2);
+      const height = roundToPrecision(25 + seededRandom(seed + 1) * 50, 2);
+      const left = roundToPrecision(seededRandom(seed + 2) * 100, 2);
+      const top = roundToPrecision(seededRandom(seed + 3) * 100, 2);
+      const rotate = roundToPrecision(seededRandom(seed + 4) * 360, 2);
+      
+      return {
+        id: i,
+        width: `${width}px`,
+        height: `${height}px`,
+        left: `${left}%`,
+        top: `${top}%`,
+        rotate: `${rotate}deg`,
+        duration: 20 + seededRandom(seed + 5) * 15,
+      };
+    }), []
+  );
+
+  // Memoize nebula effects to prevent recreation with deterministic values
+  const nebulaEffects = useMemo(() => 
+    [...Array(2)].map((_, i) => {
+      const seed = i * 345.678;
+      return {
+        id: i,
+        width: `${roundToPrecision(200 + seededRandom(seed) * 300, 2)}px`,
+        height: `${roundToPrecision(200 + seededRandom(seed + 1) * 300, 2)}px`,
+        left: `${roundToPrecision(seededRandom(seed + 2) * 100, 2)}%`,
+        top: `${roundToPrecision(seededRandom(seed + 3) * 100, 2)}%`,
+        color: ['#58a6ff', '#3fb950', '#f85149', '#d29922'][i],
+        duration: 15 + i * 5,
+      };
+    }), []
+  );
 
   const scrollToNext = () => {
     const aboutSection = document.getElementById("about");
@@ -48,41 +110,41 @@ const Hero: React.FC = () => {
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 md:pt-0">
       {/* Space Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-bg-secondary to-bg-primary">
-        {/* Accent Stars */}
+        {/* Accent Stars - Reduced count */}
         <div className="absolute inset-0">
-          {[...Array(20)].map((_, i) => (
+          {accentStars.map((star) => (
             <motion.div
-              key={`accent-star-${i}`}
+              key={`accent-star-${star.id}`}
               className="absolute w-1 h-1 bg-accent-primary rounded-full"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+                left: star.left,
+                top: star.top,
               }}
               animate={{
                 opacity: [0.2, 0.8, 0.2],
                 scale: [0.5, 1.2, 0.5],
               }}
               transition={{
-                duration: 3 + Math.random() * 4,
+                duration: star.duration,
                 repeat: Infinity,
-                delay: Math.random() * 5,
+                delay: star.delay,
               }}
             />
           ))}
         </div>
 
-        {/* Cosmic Dust Clouds */}
+        {/* Cosmic Dust Clouds - Reduced count */}
         <div className="absolute inset-0 opacity-20">
-          {[...Array(25)].map((_, i) => (
+          {dustClouds.map((dust) => (
             <motion.div
-              key={`dust-${i}`}
+              key={`dust-${dust.id}`}
               className="absolute rounded-full bg-gradient-to-r from-accent-primary/30 to-transparent"
               style={{
-                width: `${60 + Math.random() * 120}px`,
-                height: `${25 + Math.random() * 50}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                transform: `rotate(${Math.random() * 360}deg)`,
+                width: dust.width,
+                height: dust.height,
+                left: dust.left,
+                top: dust.top,
+                transform: `rotate(${dust.rotate})`,
               }}
               animate={{
                 x: [0, 40, -40, 0],
@@ -90,7 +152,7 @@ const Hero: React.FC = () => {
                 rotate: [0, 180, 360],
               }}
               transition={{
-                duration: 20 + Math.random() * 15,
+                duration: dust.duration,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
@@ -98,48 +160,48 @@ const Hero: React.FC = () => {
           ))}
         </div>
 
-        {/* Advanced Shooting Stars */}
+        {/* Optimized Shooting Stars */}
         <ShootingStars 
-          minSpeed={15}
-          maxSpeed={35}
-          minDelay={8000}
-          maxDelay={25000}
+          minSpeed={12}
+          maxSpeed={25}
+          minDelay={20000}
+          maxDelay={60000}
           starColor="#ffffff"
           trailColor="#58a6ff"
-          starWidth={15}
-          starHeight={2}
+          starWidth={12}
+          starHeight={1.5}
+          isVisible={inView}
         />
         
-        {/* Enhanced Stars Background */}
+        {/* Optimized Stars Background */}
         <StarsBackground 
-          starDensity={0.0002}
-          allStarsTwinkle={true}
-          twinkleProbability={0.8}
-          minTwinkleSpeed={0.3}
-          maxTwinkleSpeed={1.2}
+          starDensity={0.00005}
+          allStarsTwinkle={false}
+          twinkleProbability={0.2}
+          minTwinkleSpeed={1.0}
+          maxTwinkleSpeed={2.0}
+          isVisible={inView}
         />
 
-        {/* Nebula Effects */}
+        {/* Nebula Effects - Reduced count */}
         <div className="absolute inset-0">
-          {[...Array(4)].map((_, i) => (
+          {nebulaEffects.map((nebula) => (
             <motion.div
-              key={`nebula-${i}`}
+              key={`nebula-${nebula.id}`}
               className="absolute rounded-full blur-3xl opacity-10"
               style={{
-                width: `${200 + Math.random() * 300}px`,
-                height: `${200 + Math.random() * 300}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                background: `radial-gradient(circle, ${
-                  ['#58a6ff', '#3fb950', '#f85149', '#d29922'][i]
-                }40, transparent 70%)`,
+                width: nebula.width,
+                height: nebula.height,
+                left: nebula.left,
+                top: nebula.top,
+                background: `radial-gradient(circle, ${nebula.color}40, transparent 70%)`,
               }}
               animate={{
                 scale: [1, 1.2, 1],
                 opacity: [0.05, 0.15, 0.05],
               }}
               transition={{
-                duration: 15 + i * 5,
+                duration: nebula.duration,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
@@ -171,8 +233,6 @@ const Hero: React.FC = () => {
                   Passionate about clean code, system architecture, and developer experience.
                 </p>
               </div>
-
-
 
               {/* CTA Buttons */}
               <motion.div variants={itemVariants} className="mb-6 sm:mb-8">
@@ -232,22 +292,20 @@ const Hero: React.FC = () => {
               className="flex justify-center items-center order-1 lg:order-2 lg:ml-8"
             >
               <div className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 flex justify-center items-center">
-                {/* Outer Space Nebula */}
+                {/* Simplified Outer Space Nebula */}
                 <motion.div 
                   className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-blue-500/30 to-cyan-400/20 rounded-full blur-3xl scale-150"
                   animate={{
                     scale: [1.5, 1.8, 1.5],
                     opacity: [0.2, 0.5, 0.2],
-                    rotate: [0, 360],
                   }}
                   transition={{
                     scale: { duration: 12, repeat: Infinity, ease: "easeInOut" },
                     opacity: { duration: 8, repeat: Infinity, ease: "easeInOut" },
-                    rotate: { duration: 60, repeat: Infinity, ease: "linear" },
                   }}
                 />
 
-                {/* Cosmic Background Effects */}
+                {/* Simplified Cosmic Background Effects */}
                 <motion.div 
                   className="absolute inset-0 bg-gradient-to-r from-accent-primary/25 to-accent-success/25 rounded-full blur-2xl scale-125"
                   animate={{
@@ -261,16 +319,13 @@ const Hero: React.FC = () => {
                   }}
                 />
 
-
-
-                {/* Space Dust Cloud */}
+                {/* Simplified Space Dust Cloud - Reduced count */}
                 <motion.div
                   className="absolute inset-0 pointer-events-none"
                   animate={{ rotate: [0, 360] }}
                   transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
                 >
-                  {[...Array(20)].map((_, i) => {
-                    // Use index-based positioning to ensure consistency between server and client
+                  {[...Array(8)].map((_, i) => { // Reduced from 20 to 8
                     const leftPos = 20 + (i * 17) % 60;
                     const topPos = 20 + (i * 23) % 60;
                     const duration = 4 + (i % 3);
@@ -298,7 +353,7 @@ const Hero: React.FC = () => {
                   })}
                 </motion.div>
                 
-                {/* Main profile image container - Planet Core */}
+                {/* Main profile image container - Simplified */}
                 <motion.div 
                   className="relative w-60 h-60 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-2 sm:border-4 border-white/40 shadow-2xl"
                   animate={{
@@ -314,11 +369,11 @@ const Hero: React.FC = () => {
                     ease: "easeInOut",
                   }}
                 >
-                  {/* Planet Atmosphere Layers */}
+                  {/* Simplified Planet Atmosphere Layers */}
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-transparent to-purple-500/20 rounded-full" />
                   <div className="absolute inset-0 bg-gradient-to-tl from-cyan-400/15 via-transparent to-blue-500/15 rounded-full" />
                   
-                  {/* Surface Glow Effect */}
+                  {/* Simplified Surface Glow Effect */}
                   <motion.div
                     className="absolute inset-0 rounded-full"
                     style={{
@@ -326,7 +381,6 @@ const Hero: React.FC = () => {
                     }}
                     animate={{
                       opacity: [0.3, 0.7, 0.3],
-                      scale: [1, 1.05, 1],
                     }}
                     transition={{
                       duration: 4,
@@ -345,7 +399,7 @@ const Hero: React.FC = () => {
                     priority
                   />
 
-                  {/* Planet Surface Highlight */}
+                  {/* Simplified Planet Surface Highlight */}
                   <div 
                     className="absolute inset-0 rounded-full opacity-30"
                     style={{
@@ -353,14 +407,11 @@ const Hero: React.FC = () => {
                     }}
                   />
                 </motion.div>
-                
-
-
               </div>
             </motion.div>
           </div>
 
-          {/* Cosmic Scroll Indicator */}
+          {/* Simplified Cosmic Scroll Indicator */}
           <motion.div
             variants={itemVariants}
             transition={itemTransition}
@@ -371,11 +422,6 @@ const Hero: React.FC = () => {
               className="text-xs sm:text-sm mb-2 text-center"
               animate={{
                 color: ["#8b949e", "#58a6ff", "#8b949e"],
-                textShadow: [
-                  "0 0 5px rgba(139, 148, 158, 0.3)",
-                  "0 0 15px rgba(88, 166, 255, 0.8)",
-                  "0 0 5px rgba(139, 148, 158, 0.3)",
-                ],
               }}
               transition={{
                 duration: 2,
