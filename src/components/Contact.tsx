@@ -61,7 +61,7 @@ const Contact: React.FC = () => {
   // Generate background stars
   const backgroundStars = useMemo(() => {
     const seededRandom = new SeededRandom(55555);
-    return Array.from({ length: 60 }, (_, i) => ({
+    return Array.from({ length: 60 }, () => ({
       x: seededRandom.next() * 100,
       y: seededRandom.next() * 100,
       size: seededRandom.next() < 0.7 ? 1 : 2,

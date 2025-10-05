@@ -57,7 +57,7 @@ const ShootingStarsComponent: React.FC<ShootingStarsProps> = ({
 }) => {
   const [star, setStar] = useState<ShootingStar | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const lastRenderTime = useRef<number>(0);
 
   const createStar = useCallback(() => {

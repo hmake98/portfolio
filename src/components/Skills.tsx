@@ -95,7 +95,6 @@ const Skills: React.FC = () => {
   // All skills with random size assignment
   const allSkills = useMemo(() => {
     const seededRandom = new SeededRandom(42);
-    const sizes = ['small', 'medium', 'large'];
 
     const skills = [
       { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
@@ -131,7 +130,7 @@ const Skills: React.FC = () => {
       { name: "Ethereum", icon: SiEthereum, color: "#627EEA" },
     ];
 
-    return skills.map((skill, index) => {
+    return skills.map((skill) => {
       const rand = seededRandom.next();
       let size;
       if (rand < 0.2) size = 'large';
@@ -203,25 +202,12 @@ const Skills: React.FC = () => {
     if (!isClient) return [];
 
     const seededRandom = new SeededRandom(99999);
-    return Array.from({ length: 40 }, (_, i) => ({
+    return Array.from({ length: 40 }, () => ({
       x: seededRandom.next() * 100,
       y: seededRandom.next() * 100,
       size: seededRandom.next() < 0.7 ? 1 : 2,
       opacity: 0.3 + seededRandom.next() * 0.5,
       duration: 2 + seededRandom.next() * 3
-    }));
-  }, [isClient]);
-
-  // Reduced shooting stars for better performance
-  const shootingStars = useMemo(() => {
-    if (!isClient) return [];
-
-    const seededRandom = new SeededRandom(55555);
-    return Array.from({ length: 3 }, (_, i) => ({
-      delay: i * 10,
-      duration: 1.5 + seededRandom.next(),
-      startX: seededRandom.next() * 100,
-      startY: seededRandom.next() * 50,
     }));
   }, [isClient]);
 

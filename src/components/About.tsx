@@ -52,7 +52,7 @@ const About: React.FC = () => {
   // Generate background stars
   const backgroundStars = useMemo(() => {
     const seededRandom = new SeededRandom(66666);
-    return Array.from({ length: 50 }, (_, i) => ({
+    return Array.from({ length: 50 }, () => ({
       x: seededRandom.next() * 100,
       y: seededRandom.next() * 100,
       size: seededRandom.next() < 0.7 ? 1 : 2,

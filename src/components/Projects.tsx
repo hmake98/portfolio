@@ -57,7 +57,7 @@ const Projects: React.FC = () => {
   // Generate background stars
   const backgroundStars = useMemo(() => {
     const seededRandom = new SeededRandom(88888);
-    return Array.from({ length: 50 }, (_, i) => ({
+    return Array.from({ length: 50 }, () => ({
       x: seededRandom.next() * 100,
       y: seededRandom.next() * 100,
       size: seededRandom.next() < 0.7 ? 1 : 2,
@@ -119,7 +119,7 @@ const Projects: React.FC = () => {
 
           {/* Projects Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
+            {projects.map((project) => (
               <motion.div
                 key={project.id}
                 variants={cardVariants}

@@ -7,7 +7,6 @@ import { motion, Variants } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 import { ShootingStars } from "@/components/ui/shooting-stars";
-import { StarsBackground } from "@/components/ui/stars-background";
 import { useMemo } from "react";
 
 // Seeded random number generator for consistent positioning
@@ -75,48 +74,10 @@ const Hero: React.FC = () => {
     }), []
   );
 
-  // Memoize dust clouds to prevent recreation with deterministic values
-  const dustClouds = useMemo(() => 
-    [...Array(6)].map((_, i) => {
-      const seed = i * 234.567;
-      const width = roundToPrecision(60 + seededRandom(seed) * 120, 2);
-      const height = roundToPrecision(25 + seededRandom(seed + 1) * 50, 2);
-      const left = roundToPrecision(seededRandom(seed + 2) * 100, 2);
-      const top = roundToPrecision(seededRandom(seed + 3) * 100, 2);
-      const rotate = roundToPrecision(seededRandom(seed + 4) * 360, 2);
-      
-      return {
-        id: i,
-        width: `${width}px`,
-        height: `${height}px`,
-        left: `${left}%`,
-        top: `${top}%`,
-        rotate: `${rotate}deg`,
-        duration: 20 + seededRandom(seed + 5) * 15,
-      };
-    }), []
-  );
-
-  // Memoize nebula effects to prevent recreation with deterministic values
-  const nebulaEffects = useMemo(() =>
-    [...Array(2)].map((_, i) => {
-      const seed = i * 345.678;
-      return {
-        id: i,
-        width: `${roundToPrecision(200 + seededRandom(seed) * 300, 2)}px`,
-        height: `${roundToPrecision(200 + seededRandom(seed + 1) * 300, 2)}px`,
-        left: `${roundToPrecision(seededRandom(seed + 2) * 100, 2)}%`,
-        top: `${roundToPrecision(seededRandom(seed + 3) * 100, 2)}%`,
-        color: ['#58a6ff', '#3fb950', '#f85149', '#d29922'][i],
-        duration: 15 + i * 5,
-      };
-    }), []
-  );
-
   // Generate background stars like other sections
   const backgroundStars = useMemo(() => {
     const seededRandom = new SeededRandom(11111);
-    return Array.from({ length: 80 }, (_, i) => ({
+    return Array.from({ length: 80 }, () => ({
       x: seededRandom.next() * 100,
       y: seededRandom.next() * 100,
       size: seededRandom.next() < 0.7 ? 1 : 2,
