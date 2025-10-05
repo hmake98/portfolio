@@ -100,28 +100,4 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/hmake98/nestjs-temporal-core",
   },
-  {
-    id: 5,
-    title: "NestJS Redis Cache",
-    description:
-      "A powerful and flexible Redis caching module for NestJS applications with smart key generation and advanced caching strategies. This library provides an intuitive decorator API for HTTP response caching with minimal configuration, intelligent cache key creation, and support for different caching patterns. Features include flexible TTL settings, debug mode with HTTP headers, background refresh with stale-while-revalidate support, and smart cache invalidation by resource and operation type.",
-    shortDescription:
-      "Flexible Redis caching for NestJS with smart keys, multiple strategies, and optimal performance patterns.",
-    image: "/images/projects/nest-og.png",
-    technologies: [
-      "NestJS",
-      "Redis",
-      "TypeScript",
-      "Caching",
-      "Performance Optimization",
-    ],
-    features: [
-      "Multiple caching strategies (Standard, Stale-While-Revalidate, Cache-Aside)",
-      "Smart key generation and invalidation",
-      "Decorator-based automatic caching",
-      "Cloud Redis support (TLS/SSL connections)",
-      "Failover handling with graceful degradation",
-    ],
-    github: "https://github.com/hmake98/nestjs-redis-cache",
-  },
 ];

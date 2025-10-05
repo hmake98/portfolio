@@ -1,9 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { FiMail, FiSend, FiMapPin, FiGithub, FiLinkedin } from "react-icons/fi";
+
+// Seeded random number generator for consistent positioning
+class SeededRandom {
+  private seed: number;
+
+  constructor(seed: number) {
+    this.seed = seed;
+  }
+
+  next(): number {
+    this.seed = (this.seed * 9301 + 49297) % 233280;
+    return this.seed / 233280;
+  }
+}
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -25,19 +39,36 @@ const Contact: React.FC = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.15,
       },
     },
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6 },
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        type: "spring",
+        stiffness: 100
+      },
     },
   };
+
+  // Generate background stars
+  const backgroundStars = useMemo(() => {
+    const seededRandom = new SeededRandom(55555);
+    return Array.from({ length: 60 }, (_, i) => ({
+      x: seededRandom.next() * 100,
+      y: seededRandom.next() * 100,
+      size: seededRandom.next() < 0.7 ? 1 : 2,
+      opacity: 0.2 + seededRandom.next() * 0.5,
+      duration: 2 + seededRandom.next() * 3
+    }));
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -95,8 +126,36 @@ const Contact: React.FC = () => {
   ];
 
   return (
-    <section id="contact" className="section bg-bg-secondary">
-      <div className="container mx-auto px-6">
+    <section id="contact" className="section relative overflow-hidden min-h-screen">
+      {/* Galaxy Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-bg-secondary via-bg-secondary to-bg-primary">
+        {/* Background Stars */}
+        <div className="absolute inset-0">
+          {backgroundStars.map((star, i) => (
+            <div
+              key={`contact-star-${i}`}
+              className="absolute rounded-full bg-white animate-pulse"
+              style={{
+                left: `${star.x}%`,
+                top: `${star.y}%`,
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+                opacity: star.opacity,
+                animationDuration: `${star.duration}s`,
+                animationDelay: `${i * 0.1}s`
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Nebula Effects */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute top-1/4 right-1/3 w-96 h-96 rounded-full blur-3xl bg-gradient-to-r from-blue-500/40 via-purple-500/40 to-pink-500/40" />
+          <div className="absolute bottom-1/4 left-1/3 w-80 h-80 rounded-full blur-3xl bg-gradient-to-r from-cyan-500/30 via-blue-500/30 to-purple-500/30" />
+        </div>
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
           ref={ref}
           variants={containerVariants}
@@ -105,53 +164,119 @@ const Contact: React.FC = () => {
           className="max-w-6xl mx-auto"
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12 md:mb-16"
+          >
             <h2 className="section-title">Let&apos;s Work Together</h2>
             <p className="section-subtitle mx-auto">
-              Have a project in mind or want to discuss opportunities? I&apos;d love to hear from you.
+              Connect across the cosmic network to build something amazing
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-8">
             {/* Contact Information */}
-            <motion.div variants={itemVariants} className="space-y-8">
-              <div>
-                <h3 className="text-2xl font-semibold text-text-primary mb-6">
-                  Get in Touch
-                </h3>
-                <p className="text-text-secondary leading-relaxed mb-8">
-                  I&apos;m always excited to work on new projects and collaborate with talented teams. 
-                  Whether you&apos;re looking for a backend engineer, need consultation on system architecture, 
-                  or want to discuss innovative ideas, feel free to reach out.
-                </p>
+            <motion.div variants={cardVariants} className="space-y-6">
+              {/* Main Info Card */}
+              <div
+                className="group relative rounded-2xl p-8 transition-all duration-500"
+                style={{
+                  background: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12), rgba(255,255,255,0.04))',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(88, 166, 255, 0.2)',
+                  boxShadow: '0 0 20px rgba(88, 166, 255, 0.1)'
+                }}
+              >
+                {/* Glow Effect */}
+                <div
+                  className="absolute -inset-1 rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(88, 166, 255, 0.4), transparent 70%)',
+                  }}
+                />
 
-                {/* Contact Details */}
-                <div className="space-y-4">
-                  {contactInfo.map((item, index) => (
-                    <div key={index} className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-bg-tertiary border border-border-primary rounded-lg flex items-center justify-center text-accent-primary">
-                        {item.icon}
+                <div className="relative space-y-6">
+                  <h3 className="text-2xl font-semibold text-text-primary flex items-center gap-3">
+                    <div
+                      className="w-1.5 h-8 rounded-full"
+                      style={{
+                        background: 'linear-gradient(to bottom, #58a6ff, #3fb950)',
+                        boxShadow: '0 0 10px rgba(88, 166, 255, 0.5)'
+                      }}
+                    />
+                    Get in Touch
+                  </h3>
+                  <p className="text-text-secondary leading-relaxed">
+                    I&apos;m always excited to work on new projects and collaborate with talented teams.
+                    Whether you&apos;re looking for a backend engineer, need consultation on system architecture,
+                    or want to discuss innovative ideas, feel free to reach out.
+                  </p>
+
+                  {/* Contact Details */}
+                  <div className="space-y-4 pt-4">
+                    {contactInfo.map((item, index) => (
+                      <div key={index} className="flex items-center gap-4 group/item">
+                        <div
+                          className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover/item:scale-110"
+                          style={{
+                            background: 'radial-gradient(circle at 30% 30%, rgba(88, 166, 255, 0.2), rgba(88, 166, 255, 0.05))',
+                            border: '1px solid rgba(88, 166, 255, 0.3)',
+                            boxShadow: '0 0 15px rgba(88, 166, 255, 0.2)'
+                          }}
+                        >
+                          <div className="text-accent-primary text-xl">{item.icon}</div>
+                        </div>
+                        <div>
+                          <p className="text-text-secondary text-sm mb-1">{item.label}</p>
+                          {item.href ? (
+                            <a
+                              href={item.href}
+                              className="text-text-primary hover:text-accent-primary transition-colors font-medium"
+                            >
+                              {item.value}
+                            </a>
+                          ) : (
+                            <p className="text-text-primary font-medium">{item.value}</p>
+                          )}
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-text-muted text-sm">{item.label}</p>
-                        {item.href ? (
-                          <a
-                            href={item.href}
-                            className="text-text-primary hover:text-accent-primary transition-colors"
-                          >
-                            {item.value}
-                          </a>
-                        ) : (
-                          <p className="text-text-primary">{item.value}</p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
 
-                {/* Social Links */}
-                <div className="pt-8">
-                  <h4 className="text-text-primary font-medium mb-4">Connect with me</h4>
+                {/* Corner Accent */}
+                <div
+                  className="absolute top-0 right-0 w-20 h-20 rounded-tr-2xl opacity-20 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(circle at top right, rgba(88, 166, 255, 0.3), transparent 70%)',
+                  }}
+                />
+              </div>
+
+              {/* Social Links Card */}
+              <div
+                className="group relative rounded-2xl p-6 transition-all duration-500"
+                style={{
+                  background: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1), rgba(255,255,255,0.03))',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(88, 166, 255, 0.2)',
+                  boxShadow: '0 0 15px rgba(88, 166, 255, 0.08)'
+                }}
+              >
+                <div
+                  className="absolute -inset-1 rounded-2xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(88, 166, 255, 0.3), transparent 70%)',
+                  }}
+                />
+
+                <div className="relative">
+                  <h4 className="text-accent-primary font-semibold mb-4 flex items-center gap-2">
+                    <div className="w-1 h-5 bg-accent-primary rounded-full" />
+                    Connect with me
+                  </h4>
                   <div className="flex gap-4">
                     {socialLinks.map((social) => (
                       <a
@@ -159,7 +284,12 @@ const Contact: React.FC = () => {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-12 h-12 bg-bg-primary border border-border-primary rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-primary hover:bg-bg-tertiary transition-all duration-200"
+                        className="group/social w-14 h-14 rounded-xl flex items-center justify-center text-text-secondary hover:text-accent-primary transition-all duration-300 hover:scale-110"
+                        style={{
+                          background: 'radial-gradient(circle at 30% 30%, rgba(88, 166, 255, 0.15), rgba(88, 166, 255, 0.03))',
+                          border: '1px solid rgba(88, 166, 255, 0.2)',
+                          boxShadow: '0 0 10px rgba(88, 166, 255, 0.1)'
+                        }}
                         aria-label={social.name}
                       >
                         {social.icon}
@@ -171,13 +301,37 @@ const Contact: React.FC = () => {
             </motion.div>
 
             {/* Contact Form */}
-            <motion.div variants={itemVariants}>
-              <div className="bg-bg-primary rounded-xl p-8 border border-border-primary">
-                <h3 className="text-2xl font-semibold text-text-primary mb-6">
-                  Send a Message
-                </h3>
+            <motion.div variants={cardVariants}>
+              <div
+                className="group relative rounded-2xl p-8 transition-all duration-500"
+                style={{
+                  background: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12), rgba(255,255,255,0.04))',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(88, 166, 255, 0.2)',
+                  boxShadow: '0 0 20px rgba(88, 166, 255, 0.1)'
+                }}
+              >
+                {/* Glow Effect */}
+                <div
+                  className="absolute -inset-1 rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(88, 166, 255, 0.4), transparent 70%)',
+                  }}
+                />
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="relative">
+                  <h3 className="text-2xl font-semibold text-text-primary mb-6 flex items-center gap-3">
+                    <div
+                      className="w-1.5 h-8 rounded-full"
+                      style={{
+                        background: 'linear-gradient(to bottom, #58a6ff, #3fb950)',
+                        boxShadow: '0 0 10px rgba(88, 166, 255, 0.5)'
+                      }}
+                    />
+                    Send a Message
+                  </h3>
+
+                  <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name and Email */}
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
@@ -194,7 +348,20 @@ const Contact: React.FC = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 bg-bg-secondary border border-border-primary rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-xl text-text-primary placeholder-text-muted transition-all duration-300"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          border: '1px solid rgba(88, 166, 255, 0.2)',
+                          outline: 'none'
+                        }}
+                        onFocus={(e) => {
+                          e.target.style.border = '1px solid rgba(88, 166, 255, 0.5)';
+                          e.target.style.boxShadow = '0 0 15px rgba(88, 166, 255, 0.2)';
+                        }}
+                        onBlur={(e) => {
+                          e.target.style.border = '1px solid rgba(88, 166, 255, 0.2)';
+                          e.target.style.boxShadow = 'none';
+                        }}
                         placeholder="Your name"
                       />
                     </div>
@@ -212,7 +379,20 @@ const Contact: React.FC = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 bg-bg-secondary border border-border-primary rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-xl text-text-primary placeholder-text-muted transition-all duration-300"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          border: '1px solid rgba(88, 166, 255, 0.2)',
+                          outline: 'none'
+                        }}
+                        onFocus={(e) => {
+                          e.target.style.border = '1px solid rgba(88, 166, 255, 0.5)';
+                          e.target.style.boxShadow = '0 0 15px rgba(88, 166, 255, 0.2)';
+                        }}
+                        onBlur={(e) => {
+                          e.target.style.border = '1px solid rgba(88, 166, 255, 0.2)';
+                          e.target.style.boxShadow = 'none';
+                        }}
                         placeholder="your.email@example.com"
                       />
                     </div>
@@ -233,7 +413,20 @@ const Contact: React.FC = () => {
                       value={formData.subject}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 bg-bg-secondary border border-border-primary rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 rounded-xl text-text-primary placeholder-text-muted transition-all duration-300"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(88, 166, 255, 0.2)',
+                        outline: 'none'
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.border = '1px solid rgba(88, 166, 255, 0.5)';
+                        e.target.style.boxShadow = '0 0 15px rgba(88, 166, 255, 0.2)';
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.border = '1px solid rgba(88, 166, 255, 0.2)';
+                        e.target.style.boxShadow = 'none';
+                      }}
                       placeholder="Project discussion, collaboration, etc."
                     />
                   </div>
@@ -253,7 +446,20 @@ const Contact: React.FC = () => {
                       onChange={handleInputChange}
                       required
                       rows={5}
-                      className="w-full px-4 py-3 bg-bg-secondary border border-border-primary rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all resize-none"
+                      className="w-full px-4 py-3 rounded-xl text-text-primary placeholder-text-muted transition-all duration-300 resize-none"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(88, 166, 255, 0.2)',
+                        outline: 'none'
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.border = '1px solid rgba(88, 166, 255, 0.5)';
+                        e.target.style.boxShadow = '0 0 15px rgba(88, 166, 255, 0.2)';
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.border = '1px solid rgba(88, 166, 255, 0.2)';
+                        e.target.style.boxShadow = 'none';
+                      }}
                       placeholder="Tell me about your project or what you'd like to discuss..."
                     />
                   </div>
@@ -262,16 +468,32 @@ const Contact: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full btn-primary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full group/btn px-8 py-4 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                    style={{
+                      background: 'radial-gradient(circle at 20% 20%, rgba(88, 166, 255, 0.3), rgba(88, 166, 255, 0.1))',
+                      border: '2px solid rgba(88, 166, 255, 0.4)',
+                      color: '#58a6ff',
+                      boxShadow: '0 0 20px rgba(88, 166, 255, 0.3)'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSubmitting) {
+                        e.currentTarget.style.boxShadow = '0 0 30px rgba(88, 166, 255, 0.5)';
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = '0 0 20px rgba(88, 166, 255, 0.3)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        <div className="w-5 h-5 border-2 border-accent-primary border-t-transparent rounded-full animate-spin" />
                         Sending...
                       </>
                     ) : (
                       <>
-                        <FiSend />
+                        <FiSend className="group-hover/btn:translate-x-1 transition-transform" />
                         Send Message
                       </>
                     )}
@@ -279,21 +501,48 @@ const Contact: React.FC = () => {
 
                   {/* Status Messages */}
                   {submitStatus === "success" && (
-                    <div className="p-4 bg-accent-success/10 border border-accent-success/20 rounded-lg">
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-4 rounded-xl"
+                      style={{
+                        background: 'rgba(63, 185, 80, 0.1)',
+                        border: '1px solid rgba(63, 185, 80, 0.3)',
+                        boxShadow: '0 0 15px rgba(63, 185, 80, 0.1)'
+                      }}
+                    >
                       <p className="text-accent-success text-sm">
                         Thank you! Your message has been sent successfully. I&apos;ll get back to you soon.
                       </p>
-                    </div>
+                    </motion.div>
                   )}
 
                   {submitStatus === "error" && (
-                    <div className="p-4 bg-accent-secondary/10 border border-accent-secondary/20 rounded-lg">
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-4 rounded-xl"
+                      style={{
+                        background: 'rgba(248, 81, 73, 0.1)',
+                        border: '1px solid rgba(248, 81, 73, 0.3)',
+                        boxShadow: '0 0 15px rgba(248, 81, 73, 0.1)'
+                      }}
+                    >
                       <p className="text-accent-secondary text-sm">
                         Sorry, there was an error sending your message. Please try again or contact me directly.
                       </p>
-                    </div>
+                    </motion.div>
                   )}
                 </form>
+
+                {/* Corner Accent */}
+                <div
+                  className="absolute top-0 right-0 w-20 h-20 rounded-tr-2xl opacity-20 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(circle at top right, rgba(88, 166, 255, 0.3), transparent 70%)',
+                  }}
+                />
+                </div>
               </div>
             </motion.div>
           </div>

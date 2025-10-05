@@ -10,6 +10,20 @@ import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { useMemo } from "react";
 
+// Seeded random number generator for consistent positioning
+class SeededRandom {
+  private seed: number;
+
+  constructor(seed: number) {
+    this.seed = seed;
+  }
+
+  next(): number {
+    this.seed = (this.seed * 9301 + 49297) % 233280;
+    return this.seed / 233280;
+  }
+}
+
 // Seeded random function for consistent values
 const seededRandom = (seed: number) => {
   const x = Math.sin(seed) * 10000;
@@ -84,7 +98,7 @@ const Hero: React.FC = () => {
   );
 
   // Memoize nebula effects to prevent recreation with deterministic values
-  const nebulaEffects = useMemo(() => 
+  const nebulaEffects = useMemo(() =>
     [...Array(2)].map((_, i) => {
       const seed = i * 345.678;
       return {
@@ -99,6 +113,18 @@ const Hero: React.FC = () => {
     }), []
   );
 
+  // Generate background stars like other sections
+  const backgroundStars = useMemo(() => {
+    const seededRandom = new SeededRandom(11111);
+    return Array.from({ length: 80 }, (_, i) => ({
+      x: seededRandom.next() * 100,
+      y: seededRandom.next() * 100,
+      size: seededRandom.next() < 0.7 ? 1 : 2,
+      opacity: 0.2 + seededRandom.next() * 0.5,
+      duration: 2 + seededRandom.next() * 3
+    }));
+  }, []);
+
   const scrollToNext = () => {
     const aboutSection = document.getElementById("about");
     if (aboutSection) {
@@ -107,61 +133,48 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 md:pt-0">
-      {/* Space Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-bg-secondary to-bg-primary">
-        {/* Accent Stars - Reduced count */}
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 md:pt-0" style={{ marginBottom: 0, paddingBottom: 0 }}>
+      {/* Space Background - Matching gradient with About section */}
+      <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-bg-secondary to-bg-secondary">
+        {/* Background Stars - CSS pulse animation like other sections */}
+        <div className="absolute inset-0">
+          {backgroundStars.map((star, i) => (
+            <div
+              key={`hero-star-${i}`}
+              className="absolute rounded-full bg-white animate-pulse"
+              style={{
+                left: `${star.x}%`,
+                top: `${star.y}%`,
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+                opacity: star.opacity,
+                animationDuration: `${star.duration}s`,
+                animationDelay: `${i * 0.1}s`
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Accent Stars - Additional glow */}
         <div className="absolute inset-0">
           {accentStars.map((star) => (
-            <motion.div
+            <div
               key={`accent-star-${star.id}`}
-              className="absolute w-1 h-1 bg-accent-primary rounded-full"
+              className="absolute w-1 h-1 bg-accent-primary rounded-full animate-pulse"
               style={{
                 left: star.left,
                 top: star.top,
-              }}
-              animate={{
-                opacity: [0.2, 0.8, 0.2],
-                scale: [0.5, 1.2, 0.5],
-              }}
-              transition={{
-                duration: star.duration,
-                repeat: Infinity,
-                delay: star.delay,
+                animationDuration: `${star.duration}s`,
+                animationDelay: `${star.delay}s`,
+                opacity: 0.4,
+                boxShadow: '0 0 4px rgba(88, 166, 255, 0.6)'
               }}
             />
           ))}
         </div>
 
-        {/* Cosmic Dust Clouds - Reduced count */}
-        <div className="absolute inset-0 opacity-20">
-          {dustClouds.map((dust) => (
-            <motion.div
-              key={`dust-${dust.id}`}
-              className="absolute rounded-full bg-gradient-to-r from-accent-primary/30 to-transparent"
-              style={{
-                width: dust.width,
-                height: dust.height,
-                left: dust.left,
-                top: dust.top,
-                transform: `rotate(${dust.rotate})`,
-              }}
-              animate={{
-                x: [0, 40, -40, 0],
-                opacity: [0.1, 0.4, 0.1],
-                rotate: [0, 180, 360],
-              }}
-              transition={{
-                duration: dust.duration,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Optimized Shooting Stars */}
-        <ShootingStars 
+        {/* Shooting Stars */}
+        <ShootingStars
           minSpeed={12}
           maxSpeed={25}
           minDelay={20000}
@@ -172,42 +185,33 @@ const Hero: React.FC = () => {
           starHeight={1.5}
           isVisible={inView}
         />
-        
-        {/* Optimized Stars Background */}
-        <StarsBackground 
-          starDensity={0.00005}
-          allStarsTwinkle={false}
-          twinkleProbability={0.2}
-          minTwinkleSpeed={1.0}
-          maxTwinkleSpeed={2.0}
-          isVisible={inView}
-        />
 
-        {/* Nebula Effects - Reduced count */}
-        <div className="absolute inset-0">
-          {nebulaEffects.map((nebula) => (
-            <motion.div
-              key={`nebula-${nebula.id}`}
-              className="absolute rounded-full blur-3xl opacity-10"
-              style={{
-                width: nebula.width,
-                height: nebula.height,
-                left: nebula.left,
-                top: nebula.top,
-                background: `radial-gradient(circle, ${nebula.color}40, transparent 70%)`,
-              }}
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.05, 0.15, 0.05],
-              }}
-              transition={{
-                duration: nebula.duration,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
+        {/* Nebula Effects - Static for performance */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl bg-gradient-to-r from-purple-500/40 via-blue-500/40 to-cyan-400/40" />
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30" />
         </div>
+      </div>
+
+      {/* Glowing Horizon Separator */}
+      <div className="absolute bottom-0 left-0 right-0 h-px pointer-events-none z-20">
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to right, transparent, rgba(88, 166, 255, 0.6) 20%, rgba(88, 166, 255, 0.8) 50%, rgba(88, 166, 255, 0.6) 80%, transparent)',
+            boxShadow: '0 0 40px rgba(88, 166, 255, 0.5), 0 0 80px rgba(88, 166, 255, 0.3)',
+            height: '2px'
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to right, transparent, rgba(88, 166, 255, 0.3) 30%, rgba(88, 166, 255, 0.4) 50%, rgba(88, 166, 255, 0.3) 70%, transparent)',
+            filter: 'blur(20px)',
+            height: '60px',
+            top: '-30px'
+          }}
+        />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-20 relative z-10">
@@ -237,17 +241,48 @@ const Hero: React.FC = () => {
               {/* CTA Buttons */}
               <motion.div variants={itemVariants} className="mb-6 sm:mb-8">
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                  <Link href="#contact" className="btn-primary text-center text-sm sm:text-base">
-                    <FiMail className="inline mr-2" />
+                  <Link
+                    href="#contact"
+                    className="group px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base"
+                    style={{
+                      background: 'radial-gradient(circle at 20% 20%, rgba(88, 166, 255, 0.3), rgba(88, 166, 255, 0.1))',
+                      border: '2px solid rgba(88, 166, 255, 0.4)',
+                      color: '#58a6ff',
+                      boxShadow: '0 0 20px rgba(88, 166, 255, 0.3)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = '0 0 30px rgba(88, 166, 255, 0.5)';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = '0 0 20px rgba(88, 166, 255, 0.3)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    <FiMail className="group-hover:scale-110 transition-transform" />
                     Get in Touch
                   </Link>
                   <a
                     href="/resume.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-secondary text-center text-sm sm:text-base"
+                    className="group px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base"
+                    style={{
+                      background: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1), rgba(255,255,255,0.03))',
+                      border: '2px solid rgba(88, 166, 255, 0.3)',
+                      color: '#58a6ff',
+                      boxShadow: '0 0 15px rgba(88, 166, 255, 0.1)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = '0 0 25px rgba(88, 166, 255, 0.3)';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = '0 0 15px rgba(88, 166, 255, 0.1)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
                   >
-                    <FiDownload className="inline mr-2" />
+                    <FiDownload className="group-hover:scale-110 transition-transform" />
                     Download Resume
                   </a>
                 </div>
@@ -260,26 +295,41 @@ const Hero: React.FC = () => {
                     href="https://github.com/hmake98"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 sm:w-12 sm:h-12 bg-bg-secondary border border-border-primary rounded-lg flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-all duration-200 hover:scale-105"
+                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-text-secondary hover:text-accent-primary transition-all duration-300 hover:scale-110"
+                    style={{
+                      background: 'radial-gradient(circle at 30% 30%, rgba(88, 166, 255, 0.15), rgba(88, 166, 255, 0.03))',
+                      border: '1px solid rgba(88, 166, 255, 0.2)',
+                      boxShadow: '0 0 10px rgba(88, 166, 255, 0.1)'
+                    }}
                     aria-label="GitHub"
                   >
-                    <FiGithub size={18} className="sm:w-5 sm:h-5" />
+                    <FiGithub size={20} />
                   </a>
                   <a
                     href="https://linkedin.com/in/hmake98"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 sm:w-12 sm:h-12 bg-bg-secondary border border-border-primary rounded-lg flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-all duration-200 hover:scale-105"
+                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-text-secondary hover:text-accent-primary transition-all duration-300 hover:scale-110"
+                    style={{
+                      background: 'radial-gradient(circle at 30% 30%, rgba(88, 166, 255, 0.15), rgba(88, 166, 255, 0.03))',
+                      border: '1px solid rgba(88, 166, 255, 0.2)',
+                      boxShadow: '0 0 10px rgba(88, 166, 255, 0.1)'
+                    }}
                     aria-label="LinkedIn"
                   >
-                    <FiLinkedin size={18} className="sm:w-5 sm:h-5" />
+                    <FiLinkedin size={20} />
                   </a>
                   <a
                     href="mailto:harsh.make1998@gmail.com"
-                    className="w-10 h-10 sm:w-12 sm:h-12 bg-bg-secondary border border-border-primary rounded-lg flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-all duration-200 hover:scale-105"
+                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-text-secondary hover:text-accent-primary transition-all duration-300 hover:scale-110"
+                    style={{
+                      background: 'radial-gradient(circle at 30% 30%, rgba(88, 166, 255, 0.15), rgba(88, 166, 255, 0.03))',
+                      border: '1px solid rgba(88, 166, 255, 0.2)',
+                      boxShadow: '0 0 10px rgba(88, 166, 255, 0.1)'
+                    }}
                     aria-label="Email"
                   >
-                    <FiMail size={18} className="sm:w-5 sm:h-5" />
+                    <FiMail size={20} />
                   </a>
                 </div>
               </motion.div>

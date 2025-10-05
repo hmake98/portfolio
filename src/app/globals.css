@@ -161,6 +161,8 @@ p {
 /* Section styles */
 .section {
   @apply py-20;
+  margin: 0;
+  border: none;
 }
 
 .section-title {
