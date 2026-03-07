@@ -15,9 +15,31 @@ export default function Home() {
         <div className="max-w-2xl">
           {/* Header */}
           <div className="mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-2">
-              Harsh Makwana
-            </h1>
+            <div className="flex items-center gap-4 mb-2">
+              <h1 className="text-4xl md:text-5xl font-bold text-text-primary">
+                Harsh Makwana
+              </h1>
+              <div className="flex gap-3">
+                <a
+                  href="https://github.com/hmake98"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-secondary hover:text-accent-primary transition-colors"
+                  aria-label="GitHub"
+                >
+                  <FiGithub size={24} />
+                </a>
+                <a
+                  href="https://linkedin.com/in/hmake98"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-secondary hover:text-accent-primary transition-colors"
+                  aria-label="LinkedIn"
+                >
+                  <FiLinkedin size={24} />
+                </a>
+              </div>
+            </div>
             <p className="text-base text-text-secondary mb-8">
               AI-Augmented Systems Engineer
             </p>
