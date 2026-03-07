@@ -94,14 +94,6 @@ export default function Home() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-text-primary mb-2">NestJS gRPC Framework</h3>
-                <p className="text-xs text-text-muted mb-2">NestJS, TypeScript, gRPC, Type Safety</p>
-                <p className="text-sm text-text-secondary leading-relaxed">
-                  An open-source type-safe gRPC framework for NestJS microservices. Simplifies service-to-service communication with full TypeScript support and automatic code generation.
-                </p>
-              </div>
-
-              <div>
                 <h3 className="font-semibold text-text-primary mb-2">Backend Platform Engineering</h3>
                 <p className="text-xs text-text-muted mb-2">Microservices, PostgreSQL, Infrastructure Automation</p>
                 <p className="text-sm text-text-secondary leading-relaxed">
