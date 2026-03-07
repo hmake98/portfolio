@@ -155,7 +155,7 @@ export default function Home() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <a
-                      href="https://github.com/hmake98/nestjs-temporal-core"
+                      href="https://github.com/harsh-simform/nestjs-temporal-core"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-semibold text-text-primary hover:text-accent-primary transition-colors"
