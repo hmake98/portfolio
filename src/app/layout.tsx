@@ -172,7 +172,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-bg-primary text-text-primary font-sans antialiased min-h-screen flex flex-col">
+      <body className="bg-bg-primary text-text-primary font-sans antialiased min-h-screen flex flex-col" suppressHydrationWarning>
         <Header />
         {children}
         <Analytics />
