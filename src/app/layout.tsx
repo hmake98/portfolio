@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     default: "Harsh Makwana — AI-Augmented Systems Engineer",
   },
   description:
-    "AI-Augmented Systems Engineer with 6+ years building production systems. I use AI as a collaborator for system design, rapid prototyping, and infrastructure experimentation. Specialized in distributed architectures, Node.js, NestJS, AWS, and event-driven systems.",
+    "AI-Augmented Systems Engineer with 6+ years building production systems. I use AI as a collaborator for system design, rapid prototyping, and infrastructure experimentation.",
   keywords: [
     "ai engineer",
     "ai-augmented development",
@@ -58,9 +58,9 @@ export const metadata: Metadata = {
       "AI-Augmented Systems Engineer with 6+ years building production systems. I use AI as a collaborator for system design, rapid prototyping, and infrastructure experimentation.",
     images: [
       {
-        url: "https://hmake.dev/og-image.jpg",
-        width: 1200,
-        height: 630,
+        url: "https://lh3.googleusercontent.com/a/ACg8ocK8LfJkQVL2Z0KznbW0n1XXWBWQlno6jWwCVXjtu4BLZqmBjszk6w=s576-c-no",
+        width: 576,
+        height: 576,
         alt: "Harsh Makwana - AI-Augmented Systems Engineer",
         type: "image/jpeg",
       },
@@ -70,8 +70,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Harsh Makwana — AI-Augmented Systems Engineer",
     description:
-      "AI-Augmented Systems Engineer. 6+ years building production systems using AI as a collaborator for design, prototyping, and experimentation.",
-    images: ["https://hmake.dev/og-image.jpg"],
+      "AI-Augmented Systems Engineer with 6+ years building production systems. I use AI as a collaborator for system design, rapid prototyping, and infrastructure experimentation.",
+    images: ["https://lh3.googleusercontent.com/a/ACg8ocK8LfJkQVL2Z0KznbW0n1XXWBWQlno6jWwCVXjtu4BLZqmBjszk6w=s576-c-no"],
     creator: "@hmake98",
   },
   robots: {
@@ -111,7 +111,6 @@ export default function RootLayout({
     >
       <head>
         {/* Preload critical resources */}
-        <link rel="preload" href="/images/profile.jpg" as="image" />
         <link rel="preload" href="/resume.pdf" as="document" />
 
         {/* DNS prefetch for external domains */}
@@ -133,9 +132,9 @@ export default function RootLayout({
               "@type": "Person",
               name: "Harsh Makwana",
               url: "https://hmake.dev",
-              image: "https://hmake.dev/images/profile.jpg",
+              image: "https://lh3.googleusercontent.com/a/ACg8ocK8LfJkQVL2Z0KznbW0n1XXWBWQlno6jWwCVXjtu4BLZqmBjszk6w=s576-c-no",
               description:
-                "AI-Augmented Systems Engineer with 6+ years building production systems. Uses AI as a collaborator for system design, rapid prototyping, and infrastructure experimentation.",
+                "AI-Augmented Systems Engineer with 6+ years building production systems. I use AI as a collaborator for system design, rapid prototyping, and infrastructure experimentation.",
               jobTitle: "AI-Augmented Systems Engineer",
               expertise: [
                 "AI-Augmented Development",
