@@ -177,7 +177,7 @@ export default function Home() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <a
-                      href="https://github.com/hmake98/nestjs-microservices"
+                      href="https://github.com/BackendWorks/nestjs-microservices"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-semibold text-text-primary hover:text-accent-primary transition-colors"
