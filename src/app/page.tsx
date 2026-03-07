@@ -2,7 +2,7 @@
 "use client";
 
 import Sidebar from "@/components/Sidebar";
-import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
+import { FiGithub, FiLinkedin, FiMail, FiDownload } from "react-icons/fi";
 
 export default function Home() {
   return (
@@ -37,6 +37,15 @@ export default function Home() {
                   aria-label="LinkedIn"
                 >
                   <FiLinkedin size={24} />
+                </a>
+                <a
+                  href="/resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-secondary hover:text-accent-primary transition-colors"
+                  aria-label="Download Resume"
+                >
+                  <FiDownload size={24} />
                 </a>
               </div>
             </div>
