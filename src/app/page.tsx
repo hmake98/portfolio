@@ -117,6 +117,87 @@ export default function Home() {
                 </p>
               </div>
             </div>
+
+            {/* Open Source Projects */}
+            <div className="mt-12 pt-8 border-t border-border-primary">
+              <h3 className="text-lg font-semibold text-text-primary mb-6">Open Source</h3>
+              <div className="space-y-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <a
+                      href="https://github.com/hmake98/nestjs-grpc"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-text-primary hover:text-accent-primary transition-colors"
+                    >
+                      nestjs-grpc
+                    </a>
+                    <p className="text-xs text-text-muted">NestJS, TypeScript, gRPC</p>
+                    <p className="text-sm text-text-secondary mt-1">Type-safe gRPC framework for NestJS microservices with automatic code generation.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <a
+                      href="https://github.com/hmake98/nest-mcp"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-text-primary hover:text-accent-primary transition-colors"
+                    >
+                      @hmake98/nest-mcp
+                    </a>
+                    <p className="text-xs text-text-muted">NestJS, MCP, TypeScript</p>
+                    <p className="text-sm text-text-secondary mt-1">MCP (Model Context Protocol) integration for NestJS applications.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <a
+                      href="https://github.com/hmake98/nestjs-temporal-core"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-text-primary hover:text-accent-primary transition-colors"
+                    >
+                      nestjs-temporal-core
+                    </a>
+                    <p className="text-xs text-text-muted">NestJS, Temporal, Workflows</p>
+                    <p className="text-sm text-text-secondary mt-1">Core bindings for Temporal.io workflow orchestration in NestJS.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <a
+                      href="https://github.com/hmake98/nestjs-starter"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-text-primary hover:text-accent-primary transition-colors"
+                    >
+                      nestjs-starter
+                    </a>
+                    <p className="text-xs text-text-muted">NestJS, Starter Template, MCP</p>
+                    <p className="text-sm text-text-secondary mt-1">Production-ready NestJS starter with MCP integration and best practices.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <a
+                      href="https://github.com/hmake98/nestjs-microservices"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-text-primary hover:text-accent-primary transition-colors"
+                    >
+                      nestjs-microservices
+                    </a>
+                    <p className="text-xs text-text-muted">NestJS, Microservices, Architecture</p>
+                    <p className="text-sm text-text-secondary mt-1">Reference implementation of distributed microservices architecture with NestJS.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
 
           {/* Misc Section */}
