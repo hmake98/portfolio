@@ -1,12 +1,18 @@
 // src/app/layout.tsx
 import { Metadata, Viewport } from "next";
 import { GeistSans, GeistMono } from "geist/font";
+import { Space_Grotesk } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  weight: ["400", "500", "600", "700"],
+});
+
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { Providers } from "./providers";
 import ClientPerformanceMonitor from "@/components/ClientPerformanceMonitor";
 
@@ -14,10 +20,10 @@ import ClientPerformanceMonitor from "@/components/ClientPerformanceMonitor";
 export const metadata: Metadata = {
   title: {
     template: "%s | Harsh Makwana",
-    default: "Harsh Makwana | Senior Backend Engineer",
+    default: "Harsh Makwana — Backend & Infrastructure Engineer",
   },
   description:
-    "Senior Backend Engineer specializing in scalable microservices, Node.js, NestJS, GraphQL, and cloud infrastructure with AWS.",
+    "Backend & Infrastructure Engineer designing and building production systems focused on distributed architectures, real-time infrastructure, and developer platforms.",
   keywords: [
     "software engineer",
     "backend developer",
@@ -36,10 +42,10 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://hmake.dev",
-    title: "Harsh Makwana | Senior Backend Engineer",
+    title: "Harsh Makwana — Backend & Infrastructure Engineer",
     description:
-      "Senior Backend Engineer with expertise in Node.js, NestJS, GraphQL, and microservices architecture",
-    siteName: "Harsh Makwana Portfolio",
+      "Backend & Infrastructure Engineer designing production systems focused on distributed architectures, real-time infrastructure, and developer platforms.",
+    siteName: "Harsh Makwana",
   },
   robots: {
     index: true,
@@ -49,7 +55,7 @@ export const metadata: Metadata = {
 
 // Define viewport for responsive design
 export const viewport: Viewport = {
-  themeColor: "#0d1117",
+  themeColor: "#0a0a0a",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -63,7 +69,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`scroll-smooth ${GeistSans.variable} ${GeistMono.variable}`}
+      className={`scroll-smooth ${spaceGrotesk.variable} ${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -84,8 +90,7 @@ export default function RootLayout({
       <body className="bg-bg-primary text-text-primary font-sans antialiased min-h-screen flex flex-col">
         <Providers>
           <Header />
-          <main className="flex-1 relative">{children}</main>
-          <Footer />
+          {children}
         </Providers>
         <Analytics />
         <SpeedInsights />

@@ -10,12 +10,10 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>("home");
 
-  // Header scroll effect and active section detection
   useEffect(() => {
     const handleScroll = (): void => {
       setIsScrolled(window.scrollY > 10);
 
-      // Determine active section for navigation highlighting
       const sections = document.querySelectorAll("section[id]");
       const scrollPosition = window.scrollY + 100;
 
@@ -37,58 +35,53 @@ const Header: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Menu toggle
   const toggleMenu = (): void => {
     setIsOpen(!isOpen);
   };
 
-  // Close menu when clicking on link
   const closeMenuOnClick = (): void => {
     if (isOpen) setIsOpen(false);
   };
 
-  // Navigation links
   const navLinks = [
-    { name: "Home", href: "#home" },
     { name: "About", href: "#about" },
     { name: "Skills", href: "#skills" },
-    { name: "Projects", href: "#projects" },
     { name: "Experience", href: "#experience" },
+    { name: "AI Usage", href: "#ai-usage" },
+    { name: "Projects", href: "#projects" },
     { name: "Contact", href: "#contact" },
   ];
 
   return (
     <header
-      className={`fixed w-full top-0 z-50 transition-all duration-500 ease-out ${
-        isScrolled || isOpen
-          ? "bg-bg-primary/95 backdrop-blur-md border-b border-border-primary shadow-lg"
-          : "bg-bg-primary/10 backdrop-blur-sm"
+      className={`fixed w-full top-0 z-50 transition-all duration-300 lg:hidden ${
+        isScrolled
+          ? "bg-bg-primary border-b border-border-primary"
+          : "bg-bg-primary/50 backdrop-blur-sm"
       }`}
     >
+      {isScrolled && <div className="header-accent-line" />}
+
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
-          {/* Logo */}
+          {/* Logo - Plain text in mono */}
           <Link
             href="#home"
-            className="relative group"
+            className="font-mono text-sm font-bold text-accent-primary hover:opacity-80 transition-opacity"
             onClick={closeMenuOnClick}
           >
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center font-mono font-bold text-sm text-white">
-                HM
-              </div>
-            </div>
+            hm_
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className={`nav-link relative text-sm font-medium transition-colors duration-200 ${
+                className={`nav-link text-sm font-medium transition-colors duration-200 ${
                   activeSection === link.href.substring(1)
-                    ? "text-accent-primary"
+                    ? "text-accent-primary active"
                     : "text-text-secondary hover:text-text-primary"
                 }`}
                 onClick={closeMenuOnClick}
@@ -101,15 +94,10 @@ const Header: React.FC = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden w-10 h-10 bg-bg-secondary border border-border-primary rounded-lg flex items-center justify-center text-text-primary hover:bg-bg-tertiary transition-colors duration-200"
+            className="md:hidden flex items-center justify-center text-text-primary hover:text-accent-primary transition-colors"
             aria-label={isOpen ? "Close menu" : "Open menu"}
           >
-            <motion.div
-              animate={{ rotate: isOpen ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {isOpen ? <FiX size={20} /> : <FiMenu size={20} />}
-            </motion.div>
+            {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
           </button>
         </div>
 
@@ -120,29 +108,23 @@ const Header: React.FC = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              transition={{ duration: 0.2 }}
               className="md:hidden border-t border-border-primary mt-4 pt-4 overflow-hidden"
             >
-              <nav className="flex flex-col space-y-3 pb-4">
-                {navLinks.map((link, index) => (
-                  <motion.div
+              <nav className="flex flex-col space-y-4 pb-4">
+                {navLinks.map((link) => (
+                  <Link
                     key={link.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    href={link.href}
+                    className={`text-sm font-medium transition-colors duration-200 ${
+                      activeSection === link.href.substring(1)
+                        ? "text-accent-primary"
+                        : "text-text-secondary hover:text-text-primary"
+                    }`}
+                    onClick={closeMenuOnClick}
                   >
-                    <Link
-                      href={link.href}
-                      className={`block py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                        activeSection === link.href.substring(1)
-                          ? "text-accent-primary bg-bg-tertiary"
-                          : "text-text-secondary hover:text-text-primary hover:bg-bg-secondary"
-                      }`}
-                      onClick={closeMenuOnClick}
-                    >
-                      {link.name}
-                    </Link>
-                  </motion.div>
+                    {link.name}
+                  </Link>
                 ))}
               </nav>
             </motion.div>
