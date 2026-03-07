@@ -14,7 +14,6 @@ const spaceGrotesk = Space_Grotesk({
 
 import Header from "@/components/Header";
 import { Providers } from "./providers";
-import ClientPerformanceMonitor from "@/components/ClientPerformanceMonitor";
 
 // Define metadata for better SEO
 export const metadata: Metadata = {
@@ -94,7 +93,6 @@ export default function RootLayout({
         </Providers>
         <Analytics />
         <SpeedInsights />
-        <ClientPerformanceMonitor />
       </body>
     </html>
   );
