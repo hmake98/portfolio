@@ -13,7 +13,6 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 import Header from "@/components/Header";
-import { Providers } from "./providers";
 
 // Define metadata for better SEO
 export const metadata: Metadata = {
@@ -87,10 +86,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://vercel.com" />
       </head>
       <body className="bg-bg-primary text-text-primary font-sans antialiased min-h-screen flex flex-col">
-        <Providers>
-          <Header />
-          {children}
-        </Providers>
+        <Header />
+        {children}
         <Analytics />
         <SpeedInsights />
       </body>
