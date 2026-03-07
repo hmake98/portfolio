@@ -31,8 +31,9 @@ const Sidebar: React.FC = () => {
 
   const navLinks = [
     { name: "About", id: "about" },
-    { name: "Experience", id: "experience" },
+    { name: "Writing", id: "writing" },
     { name: "Projects", id: "projects" },
+    { name: "Misc", id: "misc" },
   ];
 
   return (
@@ -41,7 +42,7 @@ const Sidebar: React.FC = () => {
       <div>
         <Link
           href="#about"
-          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-accent-primary text-bg-primary font-bold mb-12 hover:opacity-80 transition-opacity"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-accent-primary text-bg-primary font-bold mb-12 hover:opacity-80 transition-opacity text-sm"
         >
           HM
         </Link>
