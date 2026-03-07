@@ -49,22 +49,6 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Writing Section */}
-          <section id="writing" className="mb-20 scroll-mt-20">
-            <h2 className="text-2xl font-bold text-text-primary mb-6">Writing</h2>
-
-            <div className="space-y-6 text-sm text-text-secondary">
-              <p>
-                A collection of technical writing, engineering insights, and thoughts on building scalable systems. Coming soon.
-              </p>
-
-              <div className="border border-border-primary rounded p-4 hover:border-accent-primary/50 transition-colors">
-                <p className="text-text-muted text-xs">Placeholder</p>
-                <p className="text-text-secondary mt-2">Future articles on distributed systems, backend architecture, and AI-augmented development.</p>
-              </div>
-            </div>
-          </section>
-
           {/* Projects Section */}
           <section id="projects" className="mb-20 scroll-mt-20">
             <h2 className="text-2xl font-bold text-text-primary mb-6">Projects</h2>

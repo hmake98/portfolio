@@ -31,7 +31,6 @@ const Sidebar: React.FC = () => {
 
   const navLinks = [
     { name: "About", id: "about" },
-    { name: "Writing", id: "writing" },
     { name: "Projects", id: "projects" },
     { name: "Misc", id: "misc" },
   ];
