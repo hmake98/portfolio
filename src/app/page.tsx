@@ -49,8 +49,11 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <p className="text-base text-text-secondary mb-8">
-              AI-Augmented Systems Engineer
+            <p className="text-base text-text-secondary mb-3">
+              Backend Engineer · Systems Architecture · AI-Augmented Development
+            </p>
+            <p className="text-sm text-text-muted mb-8">
+              Building infrastructure that makes ambitious products possible.
             </p>
           </div>
 
@@ -58,24 +61,24 @@ export default function Home() {
           <section id="about" className="mb-20 scroll-mt-20">
             <h2 className="text-2xl font-bold text-text-primary mb-6">About</h2>
 
-            <div className="space-y-6 text-sm text-text-secondary leading-relaxed">
+            <div className="space-y-5 text-sm text-text-secondary leading-relaxed">
               <p>
-                I&apos;m a backend and infrastructure engineer with 6+ years of experience building production systems and distributed architectures. I focus on designing scalable systems that handle real-world complexity—from event-driven pipelines to microservice orchestration and infrastructure automation.
+                I&apos;m Harsh — a backend engineer with 6+ years of experience shipping production systems that run at scale. I work mostly in the infrastructure layer: distributed architectures, event-driven pipelines, microservice orchestration, and cloud systems that need to stay reliable under real-world pressure.
               </p>
 
               <p>
-                My core stack includes Node.js, NestJS, PostgreSQL, Prisma, gRPC, RabbitMQ, Python, AWS, Docker, and FFmpeg. A significant portion of my work involves building complex infrastructure systems, such as an on-demand game streaming platform that dynamically provisions GPU instances, orchestrates real-time streaming pipelines, and manages instance lifecycle automation using event-driven architecture.
+                My go-to stack is <span className="text-text-primary">Node.js, NestJS, PostgreSQL, gRPC, RabbitMQ, Python, AWS, and Docker</span>. A lot of my deeper work happens at the intersection of infrastructure and product — the kind of systems where latency, fault tolerance, and scale actually matter. One example: an on-demand game streaming platform I built that provisions GPU instances in under 60 seconds, manages FFmpeg/NVENC streaming pipelines in real time, and handles instance lifecycle entirely through event-driven automation.
               </p>
 
               <div>
-                <h3 className="text-sm font-semibold text-text-primary mb-3">AI-Augmented Workflow</h3>
+                <h3 className="text-sm font-semibold text-text-primary mb-2">How I use AI</h3>
                 <p>
-                  I strongly integrate AI into my engineering practice. Rather than treating AI as a simple code generator, I use it as a collaborator for system design exploration, architectural brainstorming, rapid prototyping, problem-solving, and infrastructure experimentation. This AI-augmented approach allows me to move from idea to working systems significantly faster while maintaining strong engineering standards.
+                  I treat AI as a collaborator, not a shortcut. I use it for architectural exploration, thinking through tradeoffs, rapid prototyping, and debugging complex system behavior — the parts of engineering where a second perspective actually moves things forward. It&apos;s changed how fast I can go from a rough idea to something working, without cutting corners on how it&apos;s built.
                 </p>
               </div>
 
               <p>
-                I&apos;m also building open-source developer tools, including a type-safe gRPC framework for NestJS microservices. Currently at Simform Solutions, I lead backend platform architecture and mentor teams on distributed system design.
+                Currently at <span className="text-text-primary">Simform Solutions</span>, where I lead backend platform architecture and mentor engineers on distributed system design. Outside of that, I build open-source tooling for the NestJS ecosystem — frameworks and integrations I created because I needed them and they didn&apos;t exist in a form I was happy with.
               </p>
             </div>
           </section>
@@ -86,26 +89,18 @@ export default function Home() {
 
             <div className="space-y-8">
               <div>
-                <h3 className="font-semibold text-text-primary mb-2">Game Streaming Infrastructure</h3>
-                <p className="text-xs text-text-muted mb-2">Python, FFmpeg, RabbitMQ, AWS, Event-Driven Architecture</p>
+                <h3 className="font-semibold text-text-primary mb-2">On-Demand GPU Game Streaming</h3>
+                <p className="text-xs text-text-muted mb-2">Python · FastAPI · FFmpeg NVENC · Amazon IVS · RabbitMQ · AWS EC2</p>
                 <p className="text-sm text-text-secondary leading-relaxed">
-                  Built an on-demand game streaming platform that dynamically provisions GPU instances with sub-60 second latency. The system orchestrates real-time streaming pipelines using FFmpeg and NVENC, manages complex instance lifecycle automation, and scales based on demand using event-driven architecture.
+                  End-to-end game streaming platform for Unreal Engine games with under 60-second GPU provisioning. Built a custom FastAPI service to orchestrate FFmpeg NVENC pipelines — capturing video and audio via Xorg dummy driver and PulseAudio, streaming to Amazon IVS. Designed the EC2 orchestrator with multi-AZ failover, AMI-based bootstrapping, and event-driven instance lifecycle automation via RabbitMQ. Self-healing, observable, and cost-optimized.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-text-primary mb-2">Backend Platform Engineering</h3>
-                <p className="text-xs text-text-muted mb-2">Microservices, PostgreSQL, Infrastructure Automation</p>
+                <h3 className="font-semibold text-text-primary mb-2">Authority Delegation Management — Microservices Platform</h3>
+                <p className="text-xs text-text-muted mb-2">NestJS · gRPC · Temporal.io · PostgreSQL · Microservices</p>
                 <p className="text-sm text-text-secondary leading-relaxed">
-                  Designed and implemented scalable backend platforms handling complex distributed workloads. Focus on observability, reliability, and resilience to real-world conditions.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="font-semibold text-text-primary mb-2">Experimental Ideas</h3>
-                <p className="text-xs text-text-muted mb-2">Snapflow, Automation Systems, Developer Tools</p>
-                <p className="text-sm text-text-secondary leading-relaxed">
-                  Exploring new ideas in automation systems, workflow orchestration, and developer productivity tools.
+                  Architected a microservices-based authority delegation system from scratch — repo structure, folder conventions, and service boundaries designed upfront. Built the gRPC infrastructure layer across all services and designed Temporal workflows per service for automated retries, timeouts, and long-running job reliability. Developed APIs, background jobs, and complex database queries using AI-augmented development throughout. Consolidated repetitive patterns into independent shared modules that work as drop-in extensions across services. Led a team session introducing Temporal, mentored on workflow design principles, and ran reviews on AI usage and prompting fundamentals to raise the team&apos;s baseline.
                 </p>
               </div>
             </div>
@@ -198,23 +193,16 @@ export default function Home() {
 
             <div className="space-y-8 text-sm text-text-secondary">
               <div>
-                <h3 className="font-semibold text-text-primary mb-2">Terrace Gardening 🌱</h3>
+                <h3 className="font-semibold text-text-primary mb-2">Terrace Gardening</h3>
                 <p className="leading-relaxed">
-                  I maintain a terrace garden where I grow vegetables, herbs, and flowering plants. Gardening helps me disconnect from screens and spend time nurturing living systems in the physical world. It&apos;s a meditative practice that complements the digital nature of engineering work.
+                  I grow vegetables, herbs, and flowering plants on my terrace. It&apos;s a good way to disconnect — tending to something slow and physical after days spent designing systems that move fast. Turns out nurturing living things is surprisingly calming.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-text-primary mb-2">Travelling 🌍</h3>
+                <h3 className="font-semibold text-text-primary mb-2">Travelling</h3>
                 <p className="leading-relaxed">
-                  I enjoy exploring new places, cultures, and environments. Travelling inspires new ideas and perspectives that influence my thinking and creativity. It&apos;s where I find inspiration for both personal growth and engineering innovation.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="font-semibold text-text-primary mb-2">Experiments & Notes</h3>
-                <p className="leading-relaxed">
-                  Space for personal experiments, technical explorations, and notes on ideas that don&apos;t fit elsewhere. A place to document learnings and unconventional thinking.
+                  I travel when I can — mostly to places that feel unfamiliar. New environments shift how I think, and some of my clearest ideas about system design have come while I was somewhere completely different from a screen.
                 </p>
               </div>
             </div>

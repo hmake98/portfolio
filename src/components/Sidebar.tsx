@@ -58,7 +58,7 @@ const Sidebar: React.FC = () => {
                     : "text-text-secondary hover:text-text-primary"
                 }`}
               >
-                • {link.name}
+                {link.name}
               </Link>
             </div>
           ))}
