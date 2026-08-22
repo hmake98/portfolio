@@ -18,10 +18,10 @@ import Header from "@/components/Header";
 export const metadata: Metadata = {
   title: {
     template: "%s | Harsh Makwana",
-    default: "Harsh Makwana — AI-Augmented Systems Engineer",
+    default: "Harsh Makwana — Senior Backend Engineer",
   },
   description:
-    "AI-Augmented Systems Engineer with 6+ years building production systems. I use AI as a collaborator for system design, rapid prototyping, and infrastructure experimentation.",
+    "Senior Backend Engineer with 6+ years building distributed systems and microservices. I use AI as a collaborator for architecture, rapid prototyping, and debugging complex problems.",
   keywords: [
     "ai engineer",
     "ai-augmented development",
@@ -53,9 +53,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://hmake.dev",
     siteName: "Harsh Makwana",
-    title: "Harsh Makwana — AI-Augmented Systems Engineer",
+    title: "Harsh Makwana — Senior Backend Engineer",
     description:
-      "AI-Augmented Systems Engineer with 6+ years building production systems. I use AI as a collaborator for system design, rapid prototyping, and infrastructure experimentation.",
+      "Senior Backend Engineer with 6+ years building distributed systems and microservices. I use AI as a collaborator for architecture, rapid prototyping, and debugging complex problems.",
     images: [
       {
         url: "https://lh3.googleusercontent.com/a/ACg8ocK8LfJkQVL2Z0KznbW0n1XXWBWQlno6jWwCVXjtu4BLZqmBjszk6w=s576-c-no",
@@ -68,9 +68,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Harsh Makwana — AI-Augmented Systems Engineer",
+    title: "Harsh Makwana — Senior Backend Engineer",
     description:
-      "AI-Augmented Systems Engineer with 6+ years building production systems. I use AI as a collaborator for system design, rapid prototyping, and infrastructure experimentation.",
+      "Senior Backend Engineer with 6+ years building distributed systems and microservices. I use AI as a collaborator for architecture, rapid prototyping, and debugging complex problems.",
     images: ["https://lh3.googleusercontent.com/a/ACg8ocK8LfJkQVL2Z0KznbW0n1XXWBWQlno6jWwCVXjtu4BLZqmBjszk6w=s576-c-no"],
     creator: "@hmake98",
   },
@@ -134,8 +134,8 @@ export default function RootLayout({
               url: "https://hmake.dev",
               image: "https://lh3.googleusercontent.com/a/ACg8ocK8LfJkQVL2Z0KznbW0n1XXWBWQlno6jWwCVXjtu4BLZqmBjszk6w=s576-c-no",
               description:
-                "AI-Augmented Systems Engineer with 6+ years building production systems. I use AI as a collaborator for system design, rapid prototyping, and infrastructure experimentation.",
-              jobTitle: "AI-Augmented Systems Engineer",
+                "Senior Backend Engineer with 6+ years building distributed systems and microservices. I use AI as a collaborator for architecture, rapid prototyping, and debugging complex problems.",
+              jobTitle: "Senior Backend Engineer",
               expertise: [
                 "AI-Augmented Development",
                 "System Design with AI Collaboration",

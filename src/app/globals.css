@@ -135,30 +135,6 @@ p {
   transform: translateY(-2px);
 }
 
-/* Navigation styles */
-.nav-link {
-  @apply relative transition-colors duration-200;
-  color: var(--text-secondary);
-}
-
-.nav-link:hover {
-  color: var(--text-primary);
-}
-
-.nav-link.active {
-  color: var(--accent-primary);
-}
-
-.nav-link.active::before {
-  content: '[';
-  margin-right: 0.25rem;
-}
-
-.nav-link.active::after {
-  content: ']';
-  margin-left: 0.25rem;
-}
-
 /* Section styles */
 .section {
   @apply py-20;
@@ -374,16 +350,6 @@ p {
 
 .timeline-item:last-child::after {
   display: none;
-}
-
-/* Header accent line */
-.header-accent-line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--accent-primary);
 }
 
 /* Section divider */
