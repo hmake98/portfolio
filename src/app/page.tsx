@@ -1,85 +1,100 @@
 // src/app/page.tsx
-import IdentityCard from "@/components/IdentityCard";
-import ProseSection from "@/components/ProseSection";
+import Image from "next/image";
 import Footer from "@/components/Footer";
+import OssShowcase from "@/components/OssShowcase";
+
+const links = [
+  { name: "GitHub", href: "https://github.com/hmake98" },
+  { name: "LinkedIn", href: "https://linkedin.com/in/hmake98" },
+  { name: "Email", href: "mailto:harsh.make1998@gmail.com" },
+  { name: "Resume", href: "/resume.pdf" },
+];
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-bg-primary">
-      <main className="max-w-4xl mx-auto px-6 md:px-10 pt-28 pb-20">
-        {/* Hero */}
-        <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-3">
-            I&apos;m Harsh Makwana
-          </h1>
-          <p className="text-base md:text-lg text-text-secondary max-w-2xl">
-            Senior Backend Engineer who loves working on distributed systems design and architecture, AI workflows, cloud-native solutions, debugging complex problems, and open-source projects.
-          </p>
-        </div>
-
-        <hr className="border-border-primary mb-10" />
-
-        {/* Two-column layout: identity card + prose sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-10 lg:gap-16">
-          <div className="lg:pt-1">
-            <IdentityCard />
+    <div className="bg-bg-primary min-h-screen">
+      <main className="mx-auto w-full max-w-[620px] px-6 pt-20 pb-20 md:pt-28 md:pb-24">
+        <header className="mb-16 md:mb-20">
+          <div className="mb-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-5">
+            <Image
+              src="/avatar.jpg"
+              alt="Harsh Makwana"
+              width={88}
+              height={88}
+              className="border-border-primary h-[88px] w-[88px] shrink-0 rounded-full border object-cover"
+              priority
+            />
+            <h1 className="text-text-primary text-[2rem] leading-none font-semibold tracking-[-0.035em] md:text-[2.35rem]">
+              Harsh Makwana
+            </h1>
           </div>
-
-          <div>
-            <ProseSection id="about" title="Intro">
-              <p>
-                I&apos;m a backend engineer with 6+ years of experience shipping production systems that run at scale. I work mostly in the infrastructure layer — distributed architectures, event-driven pipelines, microservice orchestration, and cloud systems that need to stay reliable under real-world pressure.
-              </p>
-              <p>
-                My go-to stack is <span className="text-text-primary">Node.js, NestJS, PostgreSQL, gRPC, RabbitMQ, Python, AWS, and Docker</span>. A lot of my deeper work happens at the intersection of infrastructure and product — the kind of systems where latency, fault tolerance, and scale actually matter.
-              </p>
-              <p>
-                Currently at <span className="text-text-primary">Simform Solutions</span>, where I lead backend platform architecture and mentor engineers on distributed system design.
-              </p>
-            </ProseSection>
-
-            <ProseSection id="ai" title="How I'm using AI">
-              <p>
-                I treat AI as a collaborator, not a shortcut — for architectural exploration, rapid prototyping, and debugging complex system behavior, the parts of engineering where a second perspective actually moves things forward.
-              </p>
-              <p>
-                In practice that means pairing with it directly in my editor for scaffolding and code review, and running it through structured prompts for system-design tradeoffs. It&apos;s changed how fast I can go from a rough idea to something working, without cutting corners on how it&apos;s built.
-              </p>
-            </ProseSection>
-
-            <ProseSection id="projects" title="What I'm building">
-              <p>
-                <span className="text-text-primary font-medium">On-Demand GPU Game Streaming</span>{" "}
-                <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-accent-success/40 text-accent-success align-middle">
-                  Completed
-                </span>{" "}
-                — an end-to-end streaming platform for Unreal Engine games with under 60-second GPU provisioning. Built a FastAPI service to orchestrate FFmpeg/NVENC pipelines and an EC2 orchestrator with multi-AZ failover and event-driven instance lifecycle automation via RabbitMQ.
-              </p>
-              <p>
-                <span className="text-text-primary font-medium">Authority Delegation Platform</span>{" "}
-                <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-accent-warning/40 text-accent-warning align-middle">
-                  In Progress
-                </span>{" "}
-                — a microservices-based authority delegation system architected from scratch, with a shared gRPC infrastructure layer and per-service Temporal workflows for reliable, long-running jobs.
-              </p>
-            </ProseSection>
-
-            <ProseSection title="Things I do to unwind">
-              <p>
-                🌱 Terrace gardening — I grow vegetables, herbs, and flowering plants on my terrace, a good way to disconnect after days spent designing systems that move fast.
-              </p>
-              <p>
-                ✈️ Travelling — new environments have a way of resetting how I think about problems, and some of my clearest ideas about system design have come from being somewhere completely different from a screen.
-              </p>
-            </ProseSection>
-
-            <ProseSection id="contact" title="Ways to reach me">
-              <p>
-                I&apos;m always happy to talk AI usage patterns, tools, plugins, and workflows, or distributed systems and cloud-native solutions. Reach out via email, GitHub, or LinkedIn — links are up top and below.
-              </p>
-            </ProseSection>
+          <div className="text-text-secondary space-y-4 text-[15px] leading-[1.72] md:text-base">
+            <p>
+              I design and build distributed backend systems — microservices, event-driven
+              pipelines, and infrastructure that holds up under real production load.
+            </p>
+            <p>
+              I can build with any stack a problem calls for, but my deepest hands-on experience is
+              Node.js, NestJS, Prisma, PostgreSQL, MongoDB, RabbitMQ, gRPC, Temporal, AWS, and
+              streaming systems.
+            </p>
+            <p>
+              6+ years in. Currently Senior Backend Engineer at Simform Solutions, based in
+              Ahmedabad, India.
+            </p>
+            <p>
+              Past work includes an end-to-end, sub-second-latency GPU streaming platform: on-demand
+              GPU orchestration that spins up cost-efficient instances only for the duration of a
+              session and streams live video straight to viewers.
+            </p>
+            <p>
+              I&apos;m building{" "}
+              <a
+                href="https://github.com/hmake98/snapflow-desktop"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-text-primary decoration-border-secondary hover:decoration-text-secondary underline underline-offset-4 transition-colors"
+              >
+                snapflow-desktop
+              </a>
+              , a screenshot, annotation, and issue-tracking desktop app, using a Claude AI workflow
+              end to end.
+            </p>
+            <p>
+              Outside of work, I grow vegetables and flowering plants in a small terrace garden — a
+              good way to disconnect after days spent designing systems that move fast. I also
+              travel often; new environments have a way of resetting how I think about problems, and
+              some of my clearest ideas about system design have come from being somewhere
+              completely different from a screen.
+            </p>
           </div>
-        </div>
+          <nav aria-label="Elsewhere" className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2">
+            {links.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                target={
+                  link.href.startsWith("http") || link.href.endsWith(".pdf") ? "_blank" : undefined
+                }
+                rel={
+                  link.href.startsWith("http") || link.href.endsWith(".pdf")
+                    ? "noopener noreferrer"
+                    : undefined
+                }
+                className="text-text-secondary decoration-border-secondary hover:text-text-primary hover:decoration-text-secondary text-sm underline underline-offset-4 transition-colors"
+              >
+                {link.name}
+              </a>
+            ))}
+          </nav>
+        </header>
+
+        <section aria-labelledby="open-source">
+          <h2 id="open-source" className="text-text-primary mb-5 text-[15px] font-medium">
+            Open source
+          </h2>
+          <OssShowcase />
+        </section>
 
         <Footer />
       </main>

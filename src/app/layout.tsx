@@ -12,8 +12,6 @@ const spaceGrotesk = Space_Grotesk({
   weight: ["400", "500", "600", "700"],
 });
 
-import Header from "@/components/Header";
-
 // Define metadata for better SEO
 export const metadata: Metadata = {
   title: {
@@ -21,26 +19,25 @@ export const metadata: Metadata = {
     default: "Harsh Makwana — Senior Backend Engineer",
   },
   description:
-    "Senior Backend Engineer with 6+ years building distributed systems and microservices. I use AI as a collaborator for architecture, rapid prototyping, and debugging complex problems.",
+    "Senior Backend Engineer, 6+ years building distributed systems and microservices with Node.js, NestJS, Prisma, PostgreSQL, MongoDB, RabbitMQ, gRPC, Temporal, and AWS. Maintainer of open-source NestJS tooling.",
   keywords: [
-    "ai engineer",
-    "ai-augmented development",
     "backend engineer",
-    "systems engineer",
-    "infrastructure engineer",
     "distributed systems",
-    "ai collaboration",
-    "prompt engineering",
-    "node.js developer",
-    "nestjs",
-    "typescript",
     "microservices",
-    "aws",
-    "system design",
-    "ai-driven development",
-    "event-driven architecture",
-    "graphql",
+    "node.js",
+    "nestjs",
+    "prisma",
+    "postgresql",
+    "mongodb",
+    "rabbitmq",
     "grpc",
+    "temporal",
+    "aws",
+    "streaming systems",
+    "system design",
+    "event-driven architecture",
+    "open source",
+    "typescript",
   ],
   authors: [{ name: "Harsh Makwana", url: "https://hmake.dev" }],
   creator: "Harsh Makwana",
@@ -55,13 +52,13 @@ export const metadata: Metadata = {
     siteName: "Harsh Makwana",
     title: "Harsh Makwana — Senior Backend Engineer",
     description:
-      "Senior Backend Engineer with 6+ years building distributed systems and microservices. I use AI as a collaborator for architecture, rapid prototyping, and debugging complex problems.",
+      "Senior Backend Engineer, 6+ years building distributed systems and microservices with Node.js, NestJS, Prisma, PostgreSQL, MongoDB, RabbitMQ, gRPC, Temporal, and AWS.",
     images: [
       {
-        url: "https://lh3.googleusercontent.com/a/ACg8ocK8LfJkQVL2Z0KznbW0n1XXWBWQlno6jWwCVXjtu4BLZqmBjszk6w=s576-c-no",
-        width: 576,
-        height: 576,
-        alt: "Harsh Makwana - AI-Augmented Systems Engineer",
+        url: "/avatar.jpg",
+        width: 800,
+        height: 800,
+        alt: "Harsh Makwana",
         type: "image/jpeg",
       },
     ],
@@ -70,8 +67,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Harsh Makwana — Senior Backend Engineer",
     description:
-      "Senior Backend Engineer with 6+ years building distributed systems and microservices. I use AI as a collaborator for architecture, rapid prototyping, and debugging complex problems.",
-    images: ["https://lh3.googleusercontent.com/a/ACg8ocK8LfJkQVL2Z0KznbW0n1XXWBWQlno6jWwCVXjtu4BLZqmBjszk6w=s576-c-no"],
+      "Senior Backend Engineer, 6+ years building distributed systems and microservices with Node.js, NestJS, Prisma, PostgreSQL, MongoDB, RabbitMQ, gRPC, Temporal, and AWS.",
+    images: ["/avatar.jpg"],
     creator: "@hmake98",
   },
   robots: {
@@ -85,9 +82,6 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  verification: {
-    google: "google-site-verification-code", // Replace with actual verification code
-  },
 };
 
 // Define viewport for responsive design
@@ -98,11 +92,7 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
@@ -132,34 +122,24 @@ export default function RootLayout({
               "@type": "Person",
               name: "Harsh Makwana",
               url: "https://hmake.dev",
-              image: "https://lh3.googleusercontent.com/a/ACg8ocK8LfJkQVL2Z0KznbW0n1XXWBWQlno6jWwCVXjtu4BLZqmBjszk6w=s576-c-no",
+              image: "https://hmake.dev/avatar.jpg",
               description:
-                "Senior Backend Engineer with 6+ years building distributed systems and microservices. I use AI as a collaborator for architecture, rapid prototyping, and debugging complex problems.",
+                "Senior Backend Engineer, 6+ years building distributed systems and microservices with Node.js, NestJS, Prisma, PostgreSQL, MongoDB, RabbitMQ, gRPC, Temporal, and AWS.",
               jobTitle: "Senior Backend Engineer",
-              expertise: [
-                "AI-Augmented Development",
-                "System Design with AI Collaboration",
-                "Backend Engineering",
-                "Infrastructure Automation",
-                "Distributed Systems",
-              ],
-              sameAs: [
-                "https://github.com/hmake98",
-                "https://linkedin.com/in/hmake98",
-              ],
+              sameAs: ["https://github.com/hmake98", "https://linkedin.com/in/hmake98"],
               knowsAbout: [
-                "AI-Augmented Workflow",
-                "LLM Integration",
-                "Prompt Engineering",
-                "Backend Engineering",
-                "Infrastructure",
-                "Distributed Systems",
                 "Node.js",
                 "NestJS",
-                "TypeScript",
-                "AWS",
-                "Microservices",
+                "Prisma",
+                "PostgreSQL",
+                "MongoDB",
+                "RabbitMQ",
                 "gRPC",
+                "Temporal",
+                "AWS",
+                "Streaming Systems",
+                "Distributed Systems",
+                "Microservices",
                 "Event-Driven Architecture",
                 "System Design",
               ],
@@ -167,12 +147,19 @@ export default function RootLayout({
                 "@type": "Organization",
                 name: "Simform Solutions",
               },
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Ahmedabad",
+                addressCountry: "IN",
+              },
             }),
           }}
         />
       </head>
-      <body className="bg-bg-primary text-text-primary font-sans antialiased min-h-screen flex flex-col" suppressHydrationWarning>
-        <Header />
+      <body
+        className="bg-bg-primary text-text-primary flex min-h-screen flex-col font-sans antialiased"
+        suppressHydrationWarning
+      >
         {children}
         <Analytics />
         <SpeedInsights />

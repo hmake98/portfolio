@@ -1,0 +1,23 @@
+# Harsh Makwana
+
+> Senior Backend Engineer, 6+ years building distributed systems and microservices. Preferred stack: Node.js, NestJS, Prisma, PostgreSQL, MongoDB, RabbitMQ, gRPC, Temporal, AWS, streaming systems — but can build with whatever a problem calls for. Currently at Simform Solutions, based in Ahmedabad, India.
+
+## Links
+
+- Portfolio: https://hmake.dev
+- GitHub: https://github.com/hmake98
+- LinkedIn: https://linkedin.com/in/hmake98
+- Resume: https://hmake.dev/resume.pdf
+
+## Past work
+
+- End-to-end, sub-second-latency GPU streaming platform: on-demand GPU orchestration that spins up cost-efficient instances only for the duration of a session and streams live video straight to viewers.
+
+## Open source
+
+- snapflow-desktop: https://github.com/hmake98/snapflow-desktop — Electron desktop app for screenshot capture, annotation, and issue tracking, with multi-monitor support and GitHub/Zoho/cloud sync. Built using a Claude AI workflow end to end. In progress.
+- nestjs-grpc: https://github.com/hmake98/nestjs-grpc — Production-ready NestJS gRPC framework with CLI type generation, connection pooling, and streaming support.
+- nest-mcp: https://github.com/hmake98/nest-mcp — NestJS library for integrating Model Context Protocol servers.
+- nestjs-temporal-core: https://github.com/harsh-simform/nestjs-temporal-core — NestJS integration for Temporal.io with automatic workflow discovery.
+- nestjs-starter: https://github.com/hmake98/nestjs-starter — NestJS boilerplate with JWT auth, Prisma, Redis, BullMQ, Swagger, i18n.
+- nestjs-microservices: https://github.com/BackendWorks/nestjs-microservices — NestJS monorepo for scalable microservices with gRPC and Kong API Gateway.
